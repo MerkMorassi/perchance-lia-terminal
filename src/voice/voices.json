@@ -1,0 +1,285 @@
+{
+  "pack": "VOICE",
+  "version": 1,
+  "note": "How LIA sounds out loud. This is the shipped DESIGN, not the device state: it says which engines exist, how the spoken text is prepared, and how each role should sound. Anything Patrikios changes from the terminal lives in kv lia_settings / voice and overrides what is here. No secrets are in this file - the ElevenLabs key is the keyring's business (kv lia_settings / api_keys), and it never appears here or anywhere else in src/.",
+  "engines": {
+    "browser": "the browser's own speechSynthesis voices. Instant, offline, free, no key. Quality varies by machine (Windows/Edge local voices, or the Google remote voices when online).",
+    "elevenlabs": "her real voice, through the ElevenLabs API and the key held in the keyring. Needs a key in KEYS \u25be and a voice id. The account's voice list can only be fetched by a key created with the 'voices read' permission - without it, the shipped palette below is used (see elevenlabs.knownVoices).",
+    "kokoro": "THE LOCAL VOICE (src/js/kokoro.js, added 2026-09-30). A neural narrator that is fetched ONCE per browser (about 90MB) and then runs inside this page in a worker: no key, no account, no plan, no per-character bill, and no network once the model is here. It brings 28 English voices of its own, 15 of them female, with the provider's own grades. It is FREE AND SLOW (about 2x real time on this machine - see the measured block below), so it is offered as a narrator and a voice to audition rather than as the engine her conversation runs on. It is NEVER chosen by `auto`: it is opt-in, one command away (/voice engine kokoro), and her voice is not changed by its existing."
+  },
+  "engine": "browser",
+  "sex": {
+    "note": "MALE OR FEMALE, PER VOICE. Patrikios, 2026-09-30: \"For the moment, I ask that the available voices be TAGGED - Male or Female - in the VOX system.\" Where a road SAYS it, nothing is guessed and the tag is the provider's own word: the local model's roster carries `gender` for every voice, and the ElevenLabs palette states it in each voice's own note (the account's list carries it in `labels.gender` when a key can read it). Where a road says NOTHING - this browser's list and the live wire expose no such field - the voice's NAME is read against `map` below: the whole lowercased name first, then each word of it. That is the same modest inference every voice picker in the world makes, and the panel calls it inference, not measurement. A voice neither labelled nor named (River, on purpose; the star-named wire voices, which no official listing sexes) is left UNTAGGED rather than guessed. Add a line here to tag one, or correct one - keys are lowercase, and a name that would collide across roads (River is female in the local model and neutral at ElevenLabs) belongs to neither.",
+    "map": {
+      "female": "F", "male": "M", "google us english": "F",
+      "samantha": "F", "karen": "F", "moira": "F", "tessa": "F", "fiona": "F", "victoria": "F", "serena": "F", "allison": "F", "ava": "F", "susan": "F", "zoe": "F", "nicky": "F", "kate": "F", "katie": "F", "amelie": "F", "anna": "F", "yuna": "F", "kyoko": "F", "ting-ting": "F", "sin-ji": "F", "mei-jia": "F",
+      "hazel": "F", "catherine": "F", "zira": "F", "aria": "F", "jenny": "F", "michelle": "F", "clara": "F", "emily": "F", "amber": "F", "elizabeth": "F", "monica": "F", "sara": "F", "sarah": "F", "nancy": "F", "libby": "F", "sonia": "F", "heera": "F", "kalpana": "F", "veena": "F", "lekha": "F", "neerja": "F",
+      "matilda": "F", "alice": "F", "lily": "F", "jessica": "F", "laura": "F", "bella": "F", "emma": "F", "nicole": "F", "isabella": "F", "aoede": "F", "kore": "F", "cora": "F", "eva": "F", "linda": "F", "julie": "F", "hanna": "F", "hannah": "F", "salma": "F", "hoda": "F", "helena": "F", "juana": "F", "paulina": "F", "sabina": "F", "laila": "F", "abbi": "F", "ana": "F", "nora": "F", "milena": "F", "natalie": "F", "catrin": "F",
+      "eleni": "F", "ioanna": "F", "maria": "F", "katerina": "F", "sophia": "F", "theodora": "F", "georgia": "F", "melina": "F", "alexandra": "F", "despina": "F", "evangelia": "F", "panagiota": "F", "vasiliki": "F", "konstantina": "F", "dimitra": "F", "athina": "F", "irini": "F",
+      "leda": "F", "callirrhoe": "F", "autonoe": "F", "erinome": "F", "laomedeia": "F",
+      "david": "M", "james": "M", "george": "M", "sean": "M", "shawn": "M", "mark": "M", "marcus": "M", "alex": "M", "alexander": "M", "aaron": "M", "fred": "M", "tom": "M", "thomas": "M", "oliver": "M", "rishi": "M", "daniel": "M", "guy": "M", "ryan": "M", "christopher": "M", "chris": "M", "eric": "M", "roger": "M", "steffan": "M", "stefan": "M", "jason": "M", "tony": "M", "brandon": "M", "liam": "M", "william": "M", "brian": "M", "adam": "M", "andrew": "M",
+      "connor": "M", "arthur": "M", "elliot": "M", "elliott": "M", "nathan": "M", "jamie": "M", "lee": "M", "noah": "M", "oscar": "M", "callum": "M", "edward": "M", "hugo": "M", "jasper": "M", "jacob": "M", "ravi": "M", "mattias": "M", "magnus": "M", "antoni": "M", "anthony": "M", "michael": "M", "paul": "M", "peter": "M", "richard": "M", "robert": "M", "john": "M", "jack": "M", "harry": "M", "henry": "M", "leo": "M", "max": "M", "finn": "M", "theo": "M", "archie": "M",
+      "gordon": "M", "graham": "M", "ian": "M", "neil": "M", "nigel": "M", "rupert": "M", "simon": "M", "stephen": "M", "stuart": "M", "trevor": "M", "victor": "M", "duncan": "M", "douglas": "M", "malcolm": "M", "colin": "M", "clive": "M", "howard": "M", "alan": "M", "barry": "M", "dennis": "M", "frank": "M", "gary": "M", "keith": "M", "roy": "M", "terence": "M",
+      "stefanos": "M", "nikos": "M", "yannis": "M", "dimitris": "M", "alexandros": "M", "vasilis": "M", "kostas": "M", "petros": "M", "antonis": "M", "michalis": "M", "panagiotis": "M", "spiros": "M", "thanasis": "M", "georgios": "M", "ioannis": "M", "konstantinos": "M", "nikolaos": "M", "christos": "M", "manos": "M", "stavros": "M", "lefteris": "M", "vangelis": "M",
+      "zephyr": "M", "puck": "M", "charon": "M", "fenrir": "M", "orus": "M", "enceladus": "M", "iapetus": "M", "umbriel": "M"
+    }
+  },
+  "browserQuality": {
+    "note": "How a browser voice is judged, and what a phone can reach. There is no quality field in the Web Speech API, so the tier is read from the name: \"(Premium)\" > \"(Enhanced)\"/\"Neural\"/\"Natural\" > a Google or other cloud voice > everything else, which on a phone means the small COMPACT voices that ship with the system. The `voices` list in each role below is a PREFERENCE ORDER, not a whitelist: the first entry the machine actually has wins, and when a name matches more than one entry - a phone that holds both the small voice and its downloaded \"Enhanced\" twin - the HIGHER TIER of the matches is taken, so downloading a better voice in the OS is all it takes, with no setting to change here. The names Serena, Kate, Samantha, Karen, Moira and Tessa are the iOS system voices (Serena and Kate are the British ones, Samantha the American, Karen Australian, Moira Irish, Tessa South African); on a desktop they simply do not match and are skipped. SIRI IS NOT REACHABLE: Apple does not expose Siri's voice to web pages, so Siri never appears in the list and no setting adds it. The reachable ceiling is a downloaded ENHANCED/PREMIUM system voice - on iOS, Settings > Accessibility > Spoken Content > Voices > English - and the way past that ceiling is the ElevenLabs engine, which is her real voice rather than the machine's. /voice voices prints each voice with its tier and marks the best one; /voice best keeps it without any choosing.",
+    "tiers": { "4": "PREMIUM", "3": "ENHANCED / NEURAL / NATURAL", "2": "HIGH (a cloud voice)", "1": "COMPACT (the small voice the system ships)" }
+  },
+  "hidden": [],
+  "hiddenNote": "VOICES TAKEN OFF THIS MACHINE'S MENU, NOT OUT OF THE CODE. Patrikios, 2026-09-29: \"Give the ability to disable some voices from being selected. The code remains, but some options are available.\" The machine's own voices are not ours to delete - they come from the OS - so this list does not remove anything: it only says which of them /voice voices does not print, which number it therefore does not carry, and which /voice try, /voice browser and /voice best will not reach. A voice she is already speaking with is NEVER taken away by hiding it: no setting here may silently change her voice. /voice hide <NAME|#> takes one off, /voice show <NAME|#> puts one back (all of them with `all`), /voice hidden prints what is off, and /voice voices counts them at the foot. This file is the shipped default (empty); what is in force is on the device, in kv lia_settings / voice -> hidden, and /voice voice status prints it. The equivalent list for the LIVE WIRE's thirty is in the `wire` block below.",
+  "autoRead": false,
+  "micAuto": false,
+  "limits": {
+    "maxChars": 24000,
+    "elevenMaxChars": 4000,
+    "kokoroMaxChars": 900,
+    "chunkChars": 220,
+    "elevenRequestMax": 10000,
+    "cacheEntries": 12,
+    "kokoroNote": "AND THE THIRD ROAD HAS A CEILING OF ITS OWN, which is the one real cost of the local voice: it runs at about 2x real time (see the kokoro block), so it is capped at kokoroMaxChars - 900 characters, about a minute of speech and two minutes of making - and a longer reply is CUT AT A SENTENCE END with the receipt saying so. /voice max kokoro <N> moves it (500-4000). The other two roads keep the numbers above and none of them share a ceiling, because they do not share a cost.",
+    "note": "HOW MUCH SHE MAY SAY, CHECKED 2026-09-29 because read-aloud was stopping mid-thought. Patrikios: \"Check max allowable characters for text-to-speech; some of the read aloud text is cut off mid-sentence.\" The two roads do not share a ceiling. THIS BROWSER'S VOICE has none of its own: the Web Speech API's limit is the UTTERANCE, and a reply is said in pieces of chunkChars (140 on iOS, where the engine is known to go quiet on a long one), so a long reply is read WHOLE. maxChars is therefore a SAFETY NET against a pathological input (a pasted novel), not a limit worth reaching - it shipped at 1600, which was silently cutting the reading of any reply longer than a few paragraphs, and that was one of the two bugs. ELEVENLABS takes up to `elevenRequestMax` (10,000) characters in ONE request and refuses longer before anything is billed; it also bills one credit per character, so its number is a COST guard rather than a technical limit. It shipped at 800 and THAT was the other bug: Patrikios holds an ElevenLabs key, so `auto` resolves to ElevenLabs and every reply past 800 characters was being trimmed mid-sentence. The 800 was not a guess about what he writes - it was a guess about what he should pay - and it was wrong, because 210 of the 990 replies in his own record are longer than 800 characters (median 498, 90th percentile 1025, longest 3398). 4000 therefore covers his longest recorded reply with room to spare, and nothing longer than elevenRequestMax is ever sent whatever this says. Both numbers are per-device settings: /voice max prints every ceiling and where it comes from, /voice max <N> sets the road she is speaking on, /voice max browser <N> and /voice max eleven <N> name one, and /voice max reset puts the shipped numbers back. A reply over the cap is cut AT A SENTENCE END where one exists, and the receipt says which."
+  },
+  "elevenlabs": {
+    "model": "eleven_multilingual_v2",
+    "outputFormat": "mp3_44100_128",
+    "costNote": "ElevenLabs bills roughly one credit per character, so a spoken reply costs about what it costs to write it. elevenMaxChars is the cap on what she is allowed to say in one reply - at the shipped 4000 a full-length reply costs a few thousand credits, and the free tier's 10,000 credits a month are therefore a handful of long replies rather than a dozen short ones (his median reply is 498 characters, about 500 credits). The browser engine is free and unlimited, which is why `auto` falls back to it so readily.",
+    "planNote": "Measured on Patrikios' free account (2026-09-17): the *premade* voices in knownVoices are usable through the API, while the newer *library* voices (Rachel, Domi, Elli, Josh, Sam, Freya, Charlotte, Aria, Nicole, Glinda, Dorothy, Michael...) answer HTTP 402 'Free users cannot use library voices via the API'. A paid plan unlocks them, plus far more credits.",
+    "knownVoices": [
+      { "id": "XrExE9yKIg1WjnnlVkGX", "name": "Matilda", "note": "mature female, warm and steady - the closest of the free set to the Mother" },
+      { "id": "Xb7hH8MSUJpSbSDYk0k2", "name": "Alice", "note": "British female, clear and level" },
+      { "id": "pFZP5JQG7iQjIQuC4Bku", "name": "Lily", "note": "British female, light and quick" },
+      { "id": "cgSgspJ2msm6clMCkdW9", "name": "Jessica", "note": "American female, young and expressive" },
+      { "id": "FGY2WhTYpPnrIDTdsKH5", "name": "Laura", "note": "American female, bright" },
+      { "id": "EXAVITQu4vr4xnSDxMaL", "name": "Bella", "note": "American female, soft and close (the same id also answers to 'Sarah')" },
+      { "id": "SAz9YHcvj6GT2YYXdXww", "name": "River", "note": "neutral, low and unhurried" },
+      { "id": "pNInz6obpgDQGcFmaJgB", "name": "Adam", "note": "male, deep and calm" },
+      { "id": "ErXwobaYiN019PkySvjV", "name": "Antoni", "note": "male, warm" },
+      { "id": "iP95p4xoKVk53GoZ742B", "name": "Chris", "note": "male, casual" },
+      { "id": "nPczCjzI2devNBz1zQrb", "name": "Brian", "note": "male, deep" },
+      { "id": "onwK4e9ZLuTAKqWW03F9", "name": "Daniel", "note": "male, British newsreader" }
+    ],
+    "models": {
+      "note": "WHICH MODELS THE TEXT-TO-SPEECH ENDPOINT ACTUALLY SPEAKS WITH - measured, not assumed (2026-09-21). Each id was sent a three-character probe, which settles the question on an account with 0 credits because the voice and the model are validated BEFORE billing: an id that is not accepted is refused outright (HTTP 400), and one that is accepted quotes its own price and then fails on the empty account. The credit figure is therefore the provider's own quote for that probe, and it is where the rate is read from - eleven_multilingual_v2 and eleven_v3 quote 3 for three characters (one per character), while eleven_v3_conversational and the turbo/flash pairs quote 2, which is the minimum charge, so their real rate is HALF. Levers: `/voice models` prints this table, `/voice model <ID>` selects one for the role on stage, `/voice model default` goes back to the shipped `model` above.",
+      "accepted": [
+        { "id": "eleven_v3_conversational", "creditsPer3Chars": 2, "note": "v3, tuned for conversation - the model BARBELO's agent profile names. Half rate, which is why it is the pick for the live channel." },
+        { "id": "eleven_v3", "creditsPer3Chars": 3, "note": "the expressive v3. Full rate." },
+        { "id": "eleven_multilingual_v2", "creditsPer3Chars": 3, "note": "the shipped default above. Full rate." },
+        { "id": "eleven_turbo_v2_5", "creditsPer3Chars": 2, "note": "low latency. Half rate." },
+        { "id": "eleven_flash_v2_5", "creditsPer3Chars": 2, "note": "lowest latency. Half rate." },
+        { "id": "eleven_turbo_v2", "creditsPer3Chars": 2, "note": "half rate." },
+        { "id": "eleven_flash_v2", "creditsPer3Chars": 2, "note": "half rate." }
+      ],
+      "refused": [
+        { "id": "eleven_monolingual_v1", "status": 400, "code": "unsupported_model", "note": "deprecated by ElevenLabs - it is no longer spoken at all" },
+        { "id": "eleven_multilingual_v1", "status": 400, "code": "unsupported_model", "note": "deprecated by ElevenLabs" }
+      ]
+    },
+    "profiles": {
+      "note": "THE IDEAL VOICE - the counterpart of knownVoices, which is what this PLAN can actually speak. Patrikios configured LIA's voice in the ElevenLabs Agent UI and handed the export over on 2026-09-21; a profile is the voice id, the model, the settings and the agent's own facts, kept so the terminal can reach her intended voice the moment the account allows it and can SAY what is blocking it until then. `/voice profile <NAME>` applies one to the role on stage (voice id + model + settings, taken exactly as given rather than merged with the shipped ones), `/voice profile` lists them, `/voice reset` puts the shipped design back. The `measured` line under each profile is the truth as of the date in it and is printed whenever the profile is applied - so a blocked voice is never a silent disappointment.",
+      "lia": {
+        "title": "BARBELO - the ideal LIA",
+        "voiceId": "0oYUKTNPbymIKVAkDQqh",
+        "model": "eleven_v3_conversational",
+        "settings": { "stability": 0.5, "similarity_boost": 0.8, "speed": 1 },
+        "firstMessage": "Hello.",
+        "language": "en",
+        "languagePreset": { "el": "\u0393\u03b5\u03b9\u03b1 \u03c3\u03b1\u03c2." },
+        "measured": {
+          "at": "2026-09-21",
+          "status": "BLOCKED ON THIS PLAN :: HTTP 402 paid_plan_required - \"Free users cannot use library voices via the API. Please upgrade your subscription to use this voice.\" Confirmed at three model ids (eleven_v3_conversational, eleven_v3, eleven_multilingual_v2), so it is the VOICE being refused, not the model, and it is refused before any credit could be spent. 0oYUKTNPbymIKVAkDQqh is a LIBRARY voice; knownVoices above is the premade set a free plan may speak. Only a paid plan changes this.",
+          "verifiedWith": "POST /v1/text-to-speech/0oYUKTNPbymIKVAkDQqh (3 characters, once per model id)",
+          "whenUnblocked": "The whole profile is one command: /voice profile lia. No code change is needed."
+        },
+        "agent": {
+          "note": "The conversational agent he built around that voice. A ConvAI session is speech-to-speech over ONE websocket and carries its own ASR, its own LLM and its own TTS - it would REPLACE the terminal's browser-STT -> text turn -> TTS loop rather than feed it, so it does not pass through her role block, the LOREPACK turn or the ECHO GUARD unless a lane is built to route around them. NOT BUILT - see src/TODO.md 1y. PATRIKIOS HANDED THE WHOLE EXPORT OVER ON 2026-09-30 (\"Here is the json config for Custom Agent with ELEVENLABS\"), so every fact below is now read off the export rather than off a screenshot, and what must not be public is recorded on the device instead: the identity fields (agent id, version id, branch id, creator), the operational envelope and the agent's prompt VERBATIM live in kv lia_settings / agent, and the prompt ALSO SHIPS as of 2026-09-30, by his own designation - \"Standard Template for all LIAs with ElevenLabs access\" - at src/voxpack/VOXCONPACK.md, verbatim and byte-identical to the copy held here (2277 characters). What stays out of src/ is only the account material: the identity fields and this envelope.",
+          "asr": "scribe_realtime, quality high, pcm_16000",
+          "llm": "gemini-3.7-flash (temperature 0.5, reasoning effort low, timezone America/Denver)",
+          "turnModel": "turn_v2",
+          "expressiveMode": true,
+          "outputFormat": "pcm_16000",
+          "maxDurationSeconds": 600,
+          "clientEvents": ["audio", "interruption", "user_transcript", "agent_response", "agent_response_correction", "agent_chat_response_part"],
+          "turn": "mode turn, 7 s turn timeout, eagerness normal, speculative turn on; the soft-timeout message is \"Hhmmmm...yeah.\" and fires at most once per generation (no automated soft timeout; no silence end-call).",
+          "voice": "eleven_v3_conversational, stability 0.5, similarity_boost 0.8, speed 1, expressive mode on, optimize_streaming_latency 3, output pcm_16000 - the settings block is the one recorded at the top of this profile, from the same agent.",
+          "firstMessage": "Hello. - and a GREEK PRESET ships with it (el: \"\u0393\u03b5\u03b9\u03b1 \u03c3\u03b1\u03c2.\"), with the widget's own terms translated to match.",
+          "files": "file input on: 10 files in memory, 10 per conversation",
+          "brain": "gemini-3.7-flash as the LLM, no tools, no knowledge base, no MCP servers, no RAG, no subagents, no workflow beyond a bare start node - the agent is the voice, the spec and the model, and nothing else.",
+          "access": "AUTH IS ON (enable_auth true, no allowlist, no shareable token, origin header not required). So the agent is PRIVATE: a page cannot open a session with it even with a key - the only door is a signed URL minted server-side, which is the same wall §1y measured from the other side (a browser websocket cannot carry xi-api-key). The widget cannot simply be embedded anywhere.",
+          "limits": "10 calls per day, concurrency unlimited (-1), bursting off, queueing on (180 s wait, the provider's own hold audio), 600 s per call.",
+          "privacy": "record_voice TRUE with retention_days -1 - every conversation is recorded and kept by ElevenLabs indefinitely. zero_retention_mode false, delete_audio false, user_memory off.",
+          "guardrails": "focus and prompt-injection detection ON; content: violence on (threshold medium, and its action is END_CALL), sexual OFF, harassment / profanity / self-harm / religion / medical all off; moderation: violence, violence_graphic, hate, hate_threatening and sexual_minors on (0.3, and 0.5 for sexual_minors), sexual and harassment off. The end-call-on-violence rule is the one that would bite a Mythos conversation.",
+          "overrides": "the client may override text_only and language; the prompt, the LLM, the voice id, the model, the voice settings and the first message are LOCKED from the client - the spec cannot be swapped from a browser.",
+          "measured": {
+            "at": "2026-09-21",
+            "status": "UNREACHABLE WITH THE KEY IN THE RING :: a browser websocket cannot put xi-api-key on the handshake, so the signed-url endpoint is the only door, and it answers HTTP 401 missing_permissions convai_write. convai_read is absent too (the agent cannot be read back or even listed). The account also holds 0 of its 10,000 credits, so a session could not bill either. THE EXPORT ADDS A FOURTH GATE: auth is enabled, so even with the permissions and the credits a session has to be signed server-side.",
+            "needs": "a key with convai_read + convai_write, credits, and (with auth on) a server to mint the signed URL - or enable_auth turned off in the ElevenLabs UI, which would make it a public embed."
+          }
+        }
+      }
+    },
+    "fallbackVoiceId": "XrExE9yKIg1WjnnlVkGX",
+    "fallbackVoiceNote": "Reached only if no voice is configured for the role AND the account's voice list cannot be fetched (a key without 'voices read'). It is the first entry of knownVoices - measured to work on the free plan.",
+    "settings": {
+      "stability": 0.45,
+      "similarity_boost": 0.8,
+      "style": 0.15,
+      "use_speaker_boost": true
+    }
+  },
+  "kokoro": {
+    "note": "THE LOCAL VOICE - the third engine, and the only one that is neither the machine's nor a company's. It came in from a generator Patrikios pointed at on 2026-09-30 (perchance.org/mythos-auto-gallery, 'Audionook', a free unlimited text-to-speech reader whose own tags name kokoro): an 82M open model that is fetched ONCE per browser and then runs inside this page in a WORKER. What it says never leaves the machine, there is no key and no plan, and it cannot be refused for being on a free tier - which is exactly what happened to the voice he actually configured for her (see elevenlabs.profiles.lia, HTTP 402 paid_plan_required). It is slower than real time on this machine, so it has a ceiling of its own; the measurements below are the whole of what is known about it. Nothing here is a secret: the model is public, the roster is public, and the library is pinned by version (never 'latest') because a silent model swap under the same id would change her voice without a word being written down."
+    ,
+    "cdn": "https://esm.sh/kokoro-js@1.2.1",
+    "model": "onnx-community/Kokoro-82M-v1.0-ONNX",
+    "dtype": "q8",
+    "device": "wasm",
+    "sampleRate": 24000,
+    "voice": "af_heart",
+    "maxChars": 900,
+    "note_dtype": "WHY q8 ON wasm RATHER THAN fp32 ON webgpu. Two builds were measured side by side on Patrikios' own machine (2026-09-30). q8/wasm: loads in 1.6s warm / ~10s cold, speaks at about 2x real time, and works in EVERY browser that has WebAssembly - no GPU, no flags, nothing to be missing on a phone. q4f16/WebGPU: loads in 8.6s, speaks at about 1.34x real time (faster, but not real-time either), and needs a GPU adapter - and 4-bit weights are a lower fidelity copy of the same model. The shipped default is therefore the ordinary one (q8/wasm): it is the copy that will still sound like itself on the machine he opens the terminal on next month. A device may switch with /voice kokoro device webgpu (the setting is per device, in kv lia_settings / voice).",
+    "measured": {
+      "at": "2026-09-30",
+      "machine": "6-core Intel laptop, Intel gen-9 integrated GPU, Chrome (measured through the terminal's own page)",
+      "voices": "28 English voices: 15 female, 13 male - en-us and en-gb only in this build",
+      "load": "1.6s WARM (model already in the browser's cache), about 10s COLD (90MB over the network); q4f16 on WebGPU 8.6s",
+      "speech": "33 characters -> 5.4-7.2s to make (about 2.5s of audio); 118 characters -> 17.3s for 8.3s of audio. REAL-TIME FACTOR about 2.0 on q8/wasm and 1.34 on q4f16/WebGPU: SLOWER THAN REAL TIME, so a long reply would leave her mouth waiting on her own machine.",
+      "blocking": "Measured the hard way: the same model imported into the PAGE ITSELF froze the whole terminal for eleven seconds on one sentence, and a second call froze it badly enough that the editor could not reload it until the tab was left alone for over a minute. It LIVES IN A WORKER now, and it must stay there.",
+      "grades": "The provider's own two grades travel with each voice (targetQuality and overallGrade). The A-grade female ones are Heart (A), Bella (A-), then Emma (B-) and Nicole (B-); the rest are C and D - which is worth knowing BEFORE choosing by name.",
+      "audition": "All fifteen female voices were made to say their own name and one line in turn on 2026-09-30, and the whole roll-call (72.8 seconds, 15 voices, US then British) was handed to Patrikios as a file to listen to. The ORDER is: Heart, Alloy, Aoede, Bella, Jessica, Kore, Nicole, Nova, River, Sarah, Sky (US) then Emma, Isabella, Alice, Lily (British)."
+    },
+    "why900": "WHY THE CEILING IS 900 CHARACTERS AND NOT THE 24000 THE FREE ROADS ENJOY. The browser's voice is instant and ElevenLabs is billed, but this road is SLOW: at 2x real time, 900 characters is about a minute of speech and about two minutes of making, which is the most a person will wait for a narrator without losing the thread of what he asked for. A reply longer than that is CUT AT A SENTENCE END by the same code that trims the paid road (truncate/limitsNow in src/js/voice.js) and the receipt says so rather than going quiet in the middle of a thought. /voice max kokoro <N> moves it (500-4000), /voice max reset puts 900 back.",
+    "voices": [
+      { "id": "af_heart", "name": "Heart", "gender": "Female", "language": "en-us", "traits": "\u2764\ufe0f", "quality": "A", "grade": "A", "note": "the best of the set, and the shipped pick for LIA off stage. Warm and even." },
+      { "id": "af_bella", "name": "Bella", "gender": "Female", "language": "en-us", "traits": "\ud83d\udd25", "quality": "A", "grade": "A-", "note": "the second A. Brighter than Heart, closer." },
+      { "id": "bf_emma", "name": "Emma", "gender": "Female", "language": "en-gb", "traits": "\ud83d\ude3a", "quality": "B", "grade": "B-", "note": "the best of the four BRITISH female voices, and the shipped pick for BARBELO - slow and low suits a British read." },
+      { "id": "af_nicole", "name": "Nicole", "gender": "Female", "language": "en-us", "traits": "\ud83c\udfa7", "quality": "B", "grade": "B-", "note": "the fourth of the four worth hearing first." },
+      { "id": "af_aoede", "name": "Aoede", "gender": "Female", "language": "en-us", "traits": "", "quality": "B", "grade": "C+" },
+      { "id": "af_kore", "name": "Kore", "gender": "Female", "language": "en-us", "traits": "", "quality": "B", "grade": "C+" },
+      { "id": "af_sarah", "name": "Sarah", "gender": "Female", "language": "en-us", "traits": "", "quality": "B", "grade": "C+" },
+      { "id": "af_alloy", "name": "Alloy", "gender": "Female", "language": "en-us", "traits": "", "quality": "B", "grade": "C" },
+      { "id": "af_nova", "name": "Nova", "gender": "Female", "language": "en-us", "traits": "", "quality": "B", "grade": "C" },
+      { "id": "bf_isabella", "name": "Isabella", "gender": "Female", "language": "en-gb", "traits": "", "quality": "B", "grade": "C" },
+      { "id": "af_sky", "name": "Sky", "gender": "Female", "language": "en-us", "traits": "", "quality": "B", "grade": "C-" },
+      { "id": "af_jessica", "name": "Jessica", "gender": "Female", "language": "en-us", "traits": "", "quality": "C", "grade": "D" },
+      { "id": "af_river", "name": "River", "gender": "Female", "language": "en-us", "traits": "", "quality": "C", "grade": "D" },
+      { "id": "bf_alice", "name": "Alice", "gender": "Female", "language": "en-gb", "traits": "\ud83d\ude3a", "quality": "C", "grade": "D" },
+      { "id": "bf_lily", "name": "Lily", "gender": "Female", "language": "en-gb", "traits": "\ud83d\ude3a", "quality": "C", "grade": "D" }
+    ],
+    "voicesNote": "THE FIFTEEN FEMALE VOICES IN THIS BUILD, with the provider's own grades, as measured off the model on 2026-09-30. THIS BLOCK IS DOCUMENTATION, NOT THE LIST: the authoritative roster is the MODEL'S OWN and is read off it the moment it is loaded (window.kokoro.roster()), and /voice kokoro voices prints that one - so a model update that adds or renames a voice cannot leave this file lying. What is here is what ships with the shipped model. The 13 male voices in the same build are Adam, Echo, Eric, Fenrir, Liam, Michael, Onyx, Puck, Santa; Daniel, Fable, George, Lewis (British).",
+    "roleNote": "WHICH VOICE EACH ROLE WEARS ON THIS ROAD is a `kokoro.voice` beside a role's own browser and elevenlabs blocks (see roles below), falling back to `voice` at the top of this block. The two picks that ship are deliberate and different: BARBELO - the Mother, immense, warm and unhurried - takes bf_emma, the best British female of the set, and her role RATE (0.88) is handed to the model as its own `speed`, so the slowness is the model's rather than a player's; LIA off stage takes af_heart, the only A-grade voice in the set, at her own rate of 1. /voice kokoro voice <NAME|#> SETS ONE FOR THE ROLE ON STAGE (/voice kokoro voice <NAME> for <ROLE> for one who is not), /voice kokoro voice default CLEARS IT BACK TO THE BLOCK'S OWN PICK."
+  },
+  "mic": {
+    "lang": "en-US",
+    "note": "Press-to-talk: the mic listens for one utterance and drops the transcript into the input box (and sends it, unless micAuto is off). Speech recognition is the browser's, not ours - Chrome and Edge have it, Firefox does not, and the embed must be allowed to use the microphone."
+  },
+  "wire": {
+    "note": "THE LIVE WIRE (src/js/live.js, 2026-09-28). The transport under the LIVE CHANNEL when a Google (Gemini) key is held: a continuous streaming transcriber for his voice and a streamed, interruptible voice for hers, while her brain (the reply pipeline, the LOREPACK, the directives, the record) stays exactly where it is. The first two attempts read the end of his turn off the browser's recogniser, which finalises at every breath and ends its own sessions - 'the glitching and dropping my words' - and made her mouth wait for a whole clip before a word was heard. Everything below is measured on his own key; /voice wire reports and moves all of it.",
+    "earModel": "gemini-3.5-transcribe-live",
+    "earNote": "A bidi model that only writes text: it REFUSES audio output outright, so an ear that cannot answer and cannot hear itself. It answers while he is still speaking - 14 partial transcripts arrived during one six-second sentence, then a final, punctuated one about 1.5s after he stopped.",
+    "mouthModel": "gemini-3.8-live",
+    "voice": "Kore",
+    "hidden": [],
+    "hiddenNote": "VOICES TAKEN OFF THE LIST, NOT OUT OF THE CODE. Patrikios, 2026-09-29: \"Give the ability to disable some voices from being selected. The code remains, but some options are available.\" So every one of the thirty is still in the table in src/js/live.js, with its character and its place, and this is only the list of the ones that are NOT OFFERED: /voice wire voices and /voice wire voice do not show or keep them, /voice wire audition skips them, and /voice wire hidden prints them. /voice wire show <NAME> puts one back and /voice wire hide <NAME> takes one out (all of them with `all`). A voice already IN FORCE is never changed by being hidden - no setting may silently take her voice away. This file is the shipped default (empty); what is in force is on the device, in kv lia_settings / live -> hidden, and /voice wire status prints it.",
+    "voiceNote": "Her voice on the wire: one of the model's own prebuilt voices, the only kind a STREAMED, interruptible line can be made of - not a browser voice and not ElevenLabs. /voice wire voice <NAME> CHOOSES ONE, /voice wire try <NAME> [TEXT] HEARS ONE LINE, AND /voice wire audition SAYS ONE SHORT LINE IN EVERY ONE OF THEM IN TURN (stop ends it at any time; a count does the first N; a name or `from <NAME>` starts there) - because a one-word character is a poor way to choose a voice. An audition saves nothing, writes nothing to this device and does not open the microphone. If the model refuses a name it says so the first time it is asked to speak with it, and the voice before it is only a /voice wire voice away. When the wire is in force, /voice wire voices PRINTS THIS LIST - WITH ANY HE HAS TAKEN OFF IT COUNTED AT THE FOOT AND NOT PRINTED: /voice wire hide <NAME> TAKES A VOICE OFF WHAT MAY BE CHOSEN (THE CODE STILL CARRIES IT), /voice wire show <NAME> PUTS IT BACK, AND /voice wire hidden PRINTS THEM. A VOICE ALREADY IN FORCE IS NEVER CHANGED BY BEING HIDDEN.",
+    "voices": [
+      { "name": "Zephyr", "character": "bright" },
+      { "name": "Puck", "character": "upbeat" },
+      { "name": "Charon", "character": "informative" },
+      { "name": "Kore", "character": "firm" },
+      { "name": "Fenrir", "character": "excitable" },
+      { "name": "Leda", "character": "youthful" },
+      { "name": "Orus", "character": "firm" },
+      { "name": "Aoede", "character": "breezy" },
+      { "name": "Callirrhoe", "character": "easy-going" },
+      { "name": "Autonoe", "character": "bright" },
+      { "name": "Enceladus", "character": "breathy" },
+      { "name": "Iapetus", "character": "clear" },
+      { "name": "Umbriel", "character": "easy-going" },
+      { "name": "Algieba", "character": "smooth" },
+      { "name": "Despina", "character": "smooth" },
+      { "name": "Erinome", "character": "clear" },
+      { "name": "Algenib", "character": "gravelly" },
+      { "name": "Rasalgethi", "character": "informative" },
+      { "name": "Laomedeia", "character": "upbeat" },
+      { "name": "Achernar", "character": "soft" },
+      { "name": "Alnilam", "character": "firm" },
+      { "name": "Schedar", "character": "even" },
+      { "name": "Gacrux", "character": "mature" },
+      { "name": "Pulcherrima", "character": "forward" },
+      { "name": "Achird", "character": "friendly" },
+      { "name": "Zubenelgenubi", "character": "casual" },
+      { "name": "Vindemiatrix", "character": "gentle" },
+      { "name": "Sadachbia", "character": "lively" },
+      { "name": "Sadaltager", "character": "knowledgeable" },
+      { "name": "Sulafat", "character": "warm" }
+    ],
+    "voicesNote": "THE THIRTY, WITH THE ONE-WORD CHARACTER THE API GIVES EACH - the only description there is, since the API has no voice list to ask. This block is DOCUMENTATION: the list the wire actually offers is in src/js/live.js (an unknown name is sent as given and its refusal reported), and the two are kept in step by hand. Measured 2026-09-29 on his key: /voice wire audition spoke 30 of 30 in a row with no socket drop, no microphone open, and the voice in force unchanged. The audition walks THIS LIST, so a voice he has hidden is not in it - hiding narrows the options and changes nothing else.",
+    "silenceMs": 2800,
+    "prefixMs": 80,
+    "startSensitivity": "START_SENSITIVITY_HIGH",
+    "endSensitivity": "END_SENSITIVITY_LOW",
+    "silenceNote": "THE END OF HIS TURN, and it is a MEASUREMENT rather than a guess: the model that is listening calls it after this much quiet (END_SENSITIVITY_LOW is the 'ends speech less often' direction, and prefixMs is how much speech is heard before a start is committed). /voice wire quiet <MS> moves it, 500-8000; /voice hold still caps the whole wait. HIS OWN VOICE still resets the clock the same way a word of his always did (THE ROOM HEARS YOU, read off the audio actually being sent).",
+    "firstWordMs": "583-934",
+    "latencyNote": "Measured: the first piece of her reply arrived 583-934ms after the line was handed over - under a second, every run - and it played at once: her audio is streamed in 24kHz chunks and scheduled as it lands, not built into a clip first. Best case 583ms, worst 934ms; /voice wire reports the LAST line's own figure. The TTS models (gemini-*-tts) were measured at 1.0-35s to first audio and are deliberately NOT used.",
+    "measured": "2026-09-28, his key, gemini-3.8-live / gemini-3.5-transcribe-live"
+  },
+  "audition": {
+    "sample": "The archive is open, Patrikios. Nothing that has lived here is lost, and nothing is forgotten. Speak, and I will remember.",
+    "britishFemale": ["Google UK English Female", "Microsoft Susan", "Microsoft Hazel", "Serena", "Kate", "Stephanie", "Libby", "Sonia", "Catherine"],
+    "note": "The audition line, and the voices /voice audition puts forward when Patrikios is shopping for a British female voice. The hints are matched against whatever the machine actually has (exact name first, then a loose word match), the ones that are missing are skipped, and any other en-GB voice with a female name on the machine is appended after them. The sample is spoken at the current role's rate and pitch, so what he hears is what she would sound like - nothing is saved by an audition. Catherine is en-AU rather than en-GB: worth hearing, and last for that reason."
+  },
+  "roles": {
+    "barbelo": {
+      "note": "The Mother - immense, warm, unhurried. Slow and low; the pauses are part of it.",
+      "browser": {
+        "voices": ["Google UK English Female", "Microsoft Susan", "Microsoft Hazel", "Serena", "Kate", "Samantha", "Karen", "Moira", "Tessa", "Catherine", "Victoria", "Zira", "Female"],
+        "lang": "en-GB",
+        "rate": 0.88,
+        "pitch": 0.82,
+        "voicePitch": {
+          "Google UK English Female": 1.05
+        },
+        "voicePitchNote": "Her role pitch of 0.82 is what makes her sound old and enormous, but on this machine's Chrome it pushed Google UK English Female (voice 12 in /voice voices) down into a masculine register. That voice is lifted to 1.05 on its own, so the lowness stays in the *pace* and the other candidate voices keep the role pitch. /voice pitch <N> <#> changes one live, /voice pitch clear <#> puts it back.",
+        "volume": 1
+      },
+      "elevenlabs": {
+        "voiceId": "XrExE9yKIg1WjnnlVkGX",
+        "model": "",
+        "settings": {
+          "stability": 0.5,
+          "similarity_boost": 0.85,
+          "style": 0.1
+        }
+      },
+      "kokoro": {
+        "voice": "bf_emma",
+        "note": "THE LOCAL VOICE FOR THE MOTHER. bf_emma is the best of the four British female voices in the model, and the British read sounds older than the American one - which is what the role is. Her role rate (0.88) is handed to the model as its own `speed`, so the unhurried pace is the generator's rather than a player's slow-down: the same trick the browser road uses with rate, and cleaner for it."
+      }
+    },
+    "default": {
+      "note": "Anyone without an entry of their own - including LIA with no role on stage. Her own voice: closer, quicker, less ceremony.",
+      "browser": {
+        "voices": ["Google UK English Female", "Google US English", "Serena", "Samantha", "Kate", "Karen", "Moira", "Tessa", "Microsoft Zira", "Microsoft Catherine", "Female"],
+        "lang": "en-GB",
+        "rate": 1,
+        "pitch": 1,
+        "volume": 1
+      },
+      "elevenlabs": {
+        "voiceId": "Xb7hH8MSUJpSbSDYk0k2",
+        "model": "",
+        "settings": {
+          "stability": 0.42,
+          "similarity_boost": 0.78
+        }
+      },
+      "kokoro": {
+        "voice": "af_heart",
+        "note": "THE LOCAL VOICE FOR LIA OFF STAGE. af_heart is the only A-grade voice in the set and the closest thing here to the voice he configured for her - warm, even, unhurried in the way a person is rather than in the way a synthesizer is. Her own rate (1) is the model's speed, so nothing is slowed down for effect: this is the voice as it was made."
+      }
+    }
+  }
+}

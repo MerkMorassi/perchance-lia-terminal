@@ -1,0 +1,4886 @@
+{
+ "meta": {
+   "version": "3.0",
+   "last_updated": "2024-12-20",
+   "description": "Expanded novel theme generation with both profound and lighthearted elements"
+ },
+ 
+ "core_themes": {
+   "digital_extinction": {
+     "weight": 0.15,
+     "tags": ["tech", "dystopia", "identity"],
+     "compatible_elements": {
+       "characters": ["last_human", "digital_archaeologist", "memory_trader"],
+       "philosophies": ["posthuman", "digital_death", "memory_economy"],
+       "settings": ["server_graveyard", "data_morgue", "pixel_cemetery"]
+     }
+   },
+   "sensory_revolution": {
+     "weight": 0.12,
+     "tags": ["body", "perception", "rebellion"],
+     "compatible_elements": {
+       "characters": ["taste_terrorist", "touch_smuggler", "scent_hacker"],
+       "philosophies": ["embodiment", "sensory_politics", "tactile_resistance"],
+       "settings": ["anesthetic_city", "sensation_black_market", "nerve_laboratory"]
+     }
+   },
+   "temporal_paradox": {
+     "weight": 0.13,
+     "tags": ["time", "memory", "causality"],
+     "compatible_elements": {
+       "characters": ["time_accountant", "nostalgia_dealer", "future_refugee"],
+       "philosophies": ["temporal_poverty", "chronological_privilege", "time_capitalism"],
+       "settings": ["time_bank", "memory_auction", "temporal_court"]
+     }
+   },
+   "emotional_economy": {
+     "weight": 0.10,
+     "tags": ["feelings", "capitalism", "authenticity"],
+     "compatible_elements": {
+       "characters": ["feeling_farmer", "emotion_auditor", "mood_laundryman"],
+       "philosophies": ["affect_trading", "emotional_inflation", "feeling_inequality"],
+       "settings": ["emotion_exchange", "sentiment_factory", "feeling_warehouse"]
+     }
+   },
+   "linguistic_apocalypse": {
+     "weight": 0.08,
+     "tags": ["language", "communication", "meaning"],
+     "compatible_elements": {
+       "characters": ["last_translator", "meaning_smuggler", "silence_keeper"],
+       "philosophies": ["semantic_collapse", "translation_impossibility", "wordless_truth"],
+       "settings": ["dictionary_ruins", "babel_aftermath", "mute_city"]
+     }
+   },
+   "algorithmic_mysticism": {
+     "weight": 0.09,
+     "tags": ["AI", "spirituality", "belief"],
+     "compatible_elements": {
+       "characters": ["code_mystic", "algorithm_priest", "bug_prophet"],
+       "philosophies": ["computational_theology", "digital_animism", "silicon_spirituality"],
+       "settings": ["server_temple", "quantum_monastery", "bit_cathedral"]
+     }
+   },
+   "biological_nostalgia": {
+     "weight": 0.11,
+     "tags": ["nature", "organic", "extinction"],
+     "compatible_elements": {
+       "characters": ["seed_librarian", "extinct_species_medium", "dna_poet"],
+       "philosophies": ["genetic_melancholy", "species_loneliness", "biological_memory"],
+       "settings": ["gene_museum", "last_garden", "specimen_vault"]
+     }
+   },
+   "social_physics": {
+     "weight": 0.07,
+     "tags": ["relationships", "isolation", "connection"],
+     "compatible_elements": {
+       "characters": ["proximity_engineer", "loneliness_cartographer", "intimacy_physicist"],
+       "philosophies": ["relational_entropy", "social_gravity", "emotional_distance"],
+       "settings": ["isolation_lab", "connection_clinic", "relationship_observatory"]
+     }
+   },
+   "reality_bureaucracy": {
+     "weight": 0.08,
+     "tags": ["existence", "documentation", "proof"],
+     "compatible_elements": {
+       "characters": ["existence_clerk", "reality_inspector", "being_notary"],
+       "philosophies": ["ontological_paperwork", "bureaucratic_existence", "documented_being"],
+       "settings": ["existence_office", "reality_courthouse", "being_department"]
+     }
+   },
+   "dream_industrialization": {
+     "weight": 0.07,
+     "tags": ["dreams", "subconscious", "exploitation"],
+     "compatible_elements": {
+       "characters": ["dream_miner", "nightmare_recycler", "rem_trader"],
+       "philosophies": ["oneiric_capitalism", "subconscious_labor", "dream_surplus"],
+       "settings": ["dream_factory", "nightmare_refinery", "sleep_sweatshop"]
+     }
+   },
+   "genetic_copyright": {
+     "weight": 0.12,
+     "tags": ["DNA", "ownership", "bio-piracy"],
+     "compatible_elements": {
+       "characters": ["gene_pirate", "heredity_lawyer", "bio_royalty"],
+       "philosophies": ["bio-sovereignty", "genetic_determinism", "ancestral_debt"],
+       "settings": ["genome_black_market", "sequence_courthouse", "hereditary_caste_slums"]
+     }
+   },
+   "atmospheric_capitalism": {
+     "weight": 0.09,
+     "tags": ["weather", "environment", "inequality"],
+     "compatible_elements": {
+       "characters": ["weather_broker", "atmosphere_sommelier", "illegal_cloud_seeder"],
+       "philosophies": ["climate_apartheid", "meteorological_privilege", "air_ownership"],
+       "settings": ["private_sky_resort", "acid_rain_ghetto", "weather_futures_exchange"]
+     }
+   },
+   "chrono-colonialism": {
+     "weight": 0.10,
+     "tags": ["history", "exploitation", "time-travel"],
+     "compatible_elements": {
+       "characters": ["past_prospector", "temporal_missionary", "historical_conservationist"],
+       "philosophies": ["historical_resource_extraction", "present-day_supremacy", "temporal_manifest_destiny"],
+       "settings": ["history_mining_outpost", "chronological_border_patrol", "uncolonized_past_reserve"]
+     }
+   },
+   "neuro-feudalism": {
+     "weight": 0.11,
+     "tags": ["cognition", "control", "class"],
+     "compatible_elements": {
+       "characters": ["cognitive_serf", "neural_overlord", "thought_pattern_smuggler"],
+       "philosophies": ["cognitive_liberty", "mental_real_estate", "neuro-class_struggle"],
+       "settings": ["attention_plantation", "mind_palace_slums", "neural_firewall_foundry"]
+     }
+   },
+   "architectural_psychology": {
+     "weight": 0.08,
+     "tags": ["space", "emotion", "design"],
+     "compatible_elements": {
+       "characters": ["psycho-architect", "emotional_demolitionist", "forbidden_space_explorer"],
+       "philosophies": ["behavioral_brutalism", "emotional_feng_shui", "spatial_determinism"],
+       "settings": ["mandatory_joy_plaza", "despair-inducing_corridor", "liminal_space_squat"]
+     }
+   },
+   "quantum_folklore": {
+     "weight": 0.07,
+     "tags": ["physics", "mythology", "uncertainty"],
+     "compatible_elements": {
+       "characters": ["probability_witch", "superposition_storyteller", "entropy_bard"],
+       "philosophies": ["narrative_causality", "observer_effect_spirituality", "quantum_fatalism"],
+       "settings": ["uncertainty_tavern", "entanglement_shrine", "many-worlds_library"]
+     }
+   },
+   "metabolic_economics": {
+     "weight": 0.09,
+     "tags": ["body", "energy", "survival"],
+     "compatible_elements": {
+       "characters": ["calorie_usurer", "metabolic_hacker", "sleep_thief"],
+       "philosophies": ["biological_austerity", "energy_inequality", "corporeal_capital"],
+       "settings": ["hibernation_ward", "calorie_stock_market", "illegal_metabolism_den"]
+     }
+   },
+   "pharmacological_identity": {
+     "weight": 0.10,
+     "tags": ["drugs", "personality", "authenticity"],
+     "compatible_elements": {
+       "characters": ["personality_pharmacist", "bespoke_addiction_designer", "sobriety_zealot"],
+       "philosophies": ["chemical_self", "prescribed_personality", "neurochemical_authenticity"],
+       "settings": ["mood_pharmacy", "black_market_placebo_lab", "identity_rehab_clinic"]
+     }
+   },
+   "existential_migration": {
+     "weight": 0.08,
+     "tags": ["consciousness", "reality", "escape"],
+     "compatible_elements": {
+       "characters": ["reality_refugee", "ontological_border_guard", "consciousness_smuggler"],
+       "philosophies": ["plane_of_existence_privilege", "ontological_asylum", "reality_tourism"],
+       "settings": ["inter-reality_checkpoint", "consciousness_transit_hub", "abandoned_plane_of_existence"]
+     }
+   },
+   "ecological_computation": {
+     "weight": 0.09,
+     "tags": ["nature", "AI", "symbiosis"],
+     "compatible_elements": {
+       "characters": ["forest_network_admin", "mycelial_data_miner", "river_coolant_technician"],
+       "philosophies": ["planetary_consciousness", "organic_computation", "symbiotic_intelligence"],
+       "settings": ["sentient_forest_server", "geothermal_data_center", "bio-integrated_wetware_lab"]
+     }
+   },
+   "mundane_superpowers": {
+     "weight": 0.15,
+     "tags": ["comedy", "everyday", "absurd"],
+     "compatible_elements": {
+       "characters": ["traffic_light_whisperer", "lost_sock_detective", "wifi_password_sniffer", "elevator_summoner"],
+       "philosophies": ["heroic_mediocrity", "power_of_mild_convenience", "destiny_of_the_unremarkable"],
+       "settings": ["superhero_dmv", "league_of_moderate_justice", "fortress_of_adequacy"]
+     }
+   },
+   "bureaucratic_fantasy": {
+     "weight": 0.12,
+     "tags": ["comedy", "paperwork", "fantasy"],
+     "compatible_elements": {
+       "characters": ["dragon_permit_officer", "curse_insurance_adjuster", "quest_completion_auditor", "magic_license_instructor"],
+       "philosophies": ["red_tape_magic", "forms_in_triplicate_theology", "stamp_of_approval_mysticism"],
+       "settings": ["dragon_slaying_permit_office", "wand_registration_center", "prophecy_verification_bureau"]
+     }
+   },
+   "pet_dystopia": {
+     "weight": 0.13,
+     "tags": ["comedy", "animals", "society"],
+     "compatible_elements": {
+       "characters": ["cat_overlord_secretary", "dog_utopia_mailman", "hamster_wheel_engineer", "goldfish_memory_therapist"],
+       "philosophies": ["feline_supremacy_theory", "canine_socialism", "rodent_economics"],
+       "settings": ["purr_parliament", "bark_park_capitol", "scratching_post_courthouse"]
+     }
+   },
+   "failed_villainy": {
+     "weight": 0.11,
+     "tags": ["comedy", "incompetence", "evil"],
+     "compatible_elements": {
+       "characters": ["procrastinating_overlord", "allergic_mad_scientist", "polite_zombie_creator", "hiccuping_evil_genius"],
+       "philosophies": ["evil_work_life_balance", "sustainable_wickedness", "ethical_unethical_practices"],
+       "settings": ["doomsday_device_customer_service", "evil_lair_homeowners_association", "minion_union_headquarters"]
+     }
+   },
+   "awkward_heroism": {
+     "weight": 0.10,
+     "tags": ["comedy", "social_anxiety", "heroism"],
+     "compatible_elements": {
+       "characters": ["stage_fright_superhero", "instruction_manual_hero", "spoiler_avoiding_prophet", "tmi_telepath"],
+       "philosophies": ["accidental_greatness", "heroism_despite_yourself", "destiny_with_disclaimers"],
+       "settings": ["superhero_support_group", "sidekick_temp_agency", "cape_dry_cleaners"]
+     }
+   },
+   "convenience_culture": {
+     "weight": 0.09,
+     "tags": ["comedy", "modern_life", "consumer"],
+     "compatible_elements": {
+       "characters": ["24_7_convenience_store_oracle", "instant_noodle_diplomat", "delivery_app_shaman"],
+       "philosophies": ["path_of_least_resistance", "enlightenment_through_efficiency", "sacred_laziness"],
+       "settings": ["drive_thru_temple", "one_click_cathedral", "same_day_delivery_afterlife"]
+     }
+   },
+   "social_media_mythology": {
+     "weight": 0.11,
+     "tags": ["comedy", "internet", "modern_folklore"],
+     "compatible_elements": {
+       "characters": ["influencer_demigod", "meme_archaeologist", "viral_video_prophet", "hashtag_hermit"],
+       "philosophies": ["likes_as_prayers", "algorithm_animism", "digital_karma"],
+       "settings": ["temple_of_trending", "monastery_of_mindful_scrolling", "cave_of_canceled_content"]
+     }
+   },
+   "suburban_surrealism": {
+     "weight": 0.08,
+     "tags": ["comedy", "mundane", "weird"],
+     "compatible_elements": {
+       "characters": ["hoa_reality_enforcer", "lawn_dimension_guardian", "garage_sale_time_traveler"],
+       "philosophies": ["normality_extremism", "aggressive_averageness", "militant_mediocrity"],
+       "settings": ["cul_de_sac_of_infinite_loop", "interdimensional_home_depot", "pta_meeting_purgatory"]
+     }
+   },
+   "culinary_consciousness": {
+     "weight": 0.10,
+     "tags": ["food", "philosophy", "comedy"],
+     "compatible_elements": {
+       "characters": ["sentient_sourdough_starter", "philosophical_food_critic", "existential_chef"],
+       "philosophies": ["gastronomic_determinism", "free_will_vs_menu", "culinary_solipsism"],
+       "settings": ["restaurant_at_the_end_of_taste", "infinite_buffet_loop", "michelin_star_monastery"]
+     }
+   },
+   "retail_religion": {
+     "weight": 0.09,
+     "tags": ["comedy", "capitalism", "spirituality"],
+     "compatible_elements": {
+       "characters": ["black_friday_prophet", "customer_service_saint", "return_policy_philosopher"],
+       "philosophies": ["transactional_transcendence", "receipt_theology", "warranty_of_the_soul"],
+       "settings": ["mall_of_america_ashram", "outlet_store_oracle", "clearance_section_shrine"]
+     }
+   },
+   "dating_app_dystopia": {
+     "weight": 0.12,
+     "tags": ["comedy", "romance", "technology"],
+     "compatible_elements": {
+       "characters": ["swipe_fatigue_therapist", "algorithm_matchmaker", "ghosting_detective"],
+       "philosophies": ["compatibility_determinism", "romance_optimization", "love_efficiency_paradox"],
+       "settings": ["unmatch_purgatory", "first_date_groundhog_day", "profile_picture_hall_of_mirrors"]
+     }
+   },
+   "gig_economy_fantasy": {
+     "weight": 0.10,
+     "tags": ["comedy", "work", "modern"],
+     "compatible_elements": {
+       "characters": ["freelance_dragon_slayer", "uber_for_prophecies_driver", "task_rabbit_wizard"],
+       "philosophies": ["hustle_culture_magic", "side_quest_capitalism", "contractor_enlightenment"],
+       "settings": ["coworking_space_dungeon", "startup_incubator_tower", "venture_capital_dragon_lair"]
+     }
+   },
+   "wellness_warfare": {
+     "weight": 0.08,
+     "tags": ["comedy", "health", "obsession"],
+     "compatible_elements": {
+       "characters": ["militant_yoga_instructor", "essential_oil_arms_dealer", "meditation_app_dictator"],
+       "philosophies": ["aggressive_mindfulness", "toxic_positivity", "weaponized_self_care"],
+       "settings": ["mandatory_wellness_camp", "juice_cleanse_gulags", "gratitude_journal_surveillance_state"]
+     }
+   },
+   "nostalgia_industrial_complex": {
+     "weight": 0.11,
+     "tags": ["memory", "commerce", "past"],
+     "compatible_elements": {
+       "characters": ["vintage_memory_dealer", "retro_future_designer", "nostalgia_addiction_counselor"],
+       "philosophies": ["manufactured_memories", "commodified_childhood", "weaponized_wistfulness"],
+       "settings": ["memory_lane_toll_road", "yesterday_theme_park", "good_old_days_factory"]
+     }
+   },
+   "attention_economy_collapse": {
+     "weight": 0.09,
+     "tags": ["focus", "distraction", "value"],
+     "compatible_elements": {
+       "characters": ["focus_bankruptcy_lawyer", "distraction_dealer", "mindfulness_loan_shark"],
+       "philosophies": ["attention_deficit_economics", "concentration_capitalism", "focus_inequality"],
+       "settings": ["attention_stock_exchange", "distraction_free_zone_ghetto", "notification_rehab_center"]
+     }
+   },
+   "meme_evolution": {
+     "weight": 0.10,
+     "tags": ["internet", "culture", "evolution"],
+     "compatible_elements": {
+       "characters": ["meme_geneticist", "viral_content_epidemiologist", "cultural_mutation_specialist"],
+       "philosophies": ["memetic_darwinism", "digital_cultural_selection", "internet_folklore_theory"],
+       "settings": ["meme_breeding_grounds", "viral_mutation_lab", "cultural_evolution_museum"]
+     }
+   },
+   "algorithm_dating": {
+     "weight": 0.12,
+     "tags": ["romance", "AI", "prediction"],
+     "compatible_elements": {
+       "characters": ["compatibility_score_hacker", "romantic_algorithm_debugger", "love_prediction_skeptic"],
+       "philosophies": ["deterministic_romance", "free_will_in_love", "quantum_entanglement_dating"],
+       "settings": ["predictive_romance_bureau", "compatibility_testing_facility", "algorithmic_wedding_chapel"]
+     }
+   },
+   "virtual_real_estate": {
+     "weight": 0.08,
+     "tags": ["digital", "property", "class"],
+     "compatible_elements": {
+       "characters": ["metaverse_landlord", "digital_squatter", "virtual_gentrification_activist"],
+       "philosophies": ["digital_property_rights", "virtual_materialism", "pixel_poverty"],
+       "settings": ["server_slums", "premium_pixel_penthouses", "bandwidth_gated_communities"]
+     }
+   },
+   "subscription_existence": {
+     "weight": 0.11,
+     "tags": ["capitalism", "identity", "service"],
+     "compatible_elements": {
+       "characters": ["life_subscription_manager", "existence_plan_salesman", "freemium_soul_user"],
+       "philosophies": ["tiered_consciousness", "premium_humanity", "basic_being_limitations"],
+       "settings": ["subscription_management_afterlife", "free_trial_purgatory", "premium_features_heaven"]
+     }
+   },
+   "influencer_shamanism": {
+     "weight": 0.09,
+     "tags": ["social_media", "spirituality", "performance"],
+     "compatible_elements": {
+       "characters": ["sponsored_spirit_guide", "authentic_authenticity_coach", "engagement_mystic"],
+       "philosophies": ["performative_enlightenment", "curated_consciousness", "branded_being"],
+       "settings": ["instagram_temple", "tiktok_monastery", "youtube_yoga_dimension"]
+     }
+   },
+   "procrastination_physics": {
+     "weight": 0.10,
+     "tags": ["time", "delay", "productivity"],
+     "compatible_elements": {
+       "characters": ["tomorrow_technician", "deadline_dimension_hopper", "productivity_paradox_professor"],
+       "philosophies": ["temporal_procrastination_theory", "motivation_thermodynamics", "effort_entropy"],
+       "settings": ["perpetual_monday_morning", "deadline_event_horizon", "tomorrow_that_never_comes"]
+     }
+   },
+   "password_purgatory": {
+     "weight": 0.08,
+     "tags": ["security", "memory", "frustration"],
+     "compatible_elements": {
+       "characters": ["forgotten_password_archaeologist", "two_factor_authentication_monk", "security_question_philosopher"],
+       "philosophies": ["identity_verification_existentialism", "digital_amnesia", "authentication_anxiety"],
+       "settings": ["password_reset_limbo", "captcha_hell", "biometric_border_control"]
+     }
+   },
+   "notification_nervosa": {
+     "weight": 0.09,
+     "tags": ["anxiety", "technology", "attention"],
+     "compatible_elements": {
+       "characters": ["notification_anxiety_therapist", "digital_silence_dealer", "ping_addiction_counselor"],
+       "philosophies": ["alert_fatalism", "notification_nihilism", "digital_silence_enlightenment"],
+       "settings": ["do_not_disturb_sanctuary", "notification_bombardment_zone", "digital_detox_camp"]
+     }
+   },
+   "update_apocalypse": {
+     "weight": 0.07,
+     "tags": ["technology", "change", "obsolescence"],
+     "compatible_elements": {
+       "characters": ["legacy_system_shaman", "update_resistance_fighter", "compatibility_crisis_counselor"],
+       "philosophies": ["planned_obsolescence_fatalism", "eternal_beta_theory", "update_anxiety_syndrome"],
+       "settings": ["version_control_vatican", "legacy_code_sanctuary", "update_postponement_purgatory"]
+     }
+   },
+   "small_talk_terrorism": {
+     "weight": 0.11,
+     "tags": ["social", "awkward", "communication"],
+     "compatible_elements": {
+       "characters": ["weather_conversation_warrior", "elevator_silence_breaker", "awkward_pause_assassin"],
+       "philosophies": ["superficial_depth", "meaningful_meaninglessness", "profound_banality"],
+       "settings": ["water_cooler_warzone", "networking_event_nightmare", "small_talk_boot_camp"]
+     }
+   },
+   "meeting_metaverse": {
+     "weight": 0.10,
+     "tags": ["work", "virtual", "tedium"],
+     "compatible_elements": {
+       "characters": ["could_have_been_email_enforcer", "mute_button_mystic", "background_blur_artist"],
+       "philosophies": ["camera_off_enlightenment", "mute_yourself_meditation", "screen_share_shamanism"],
+       "settings": ["eternal_standup_meeting", "breakout_room_labyrinth", "connection_issues_dimension"]
+     }
+   }
+ },
+ 
+ "characters": {
+   "last_human": {
+     "variations": [
+       "last person who dreams without ads",
+       "final human with unmonetized thoughts",
+       "sole survivor of the attention economy",
+       "last individual with private emotions",
+       "final person who forgets naturally",
+       "only one who can't see the user interface of reality",
+       "last person whose dreams aren't livestreamed",
+       "sole human without a terms of service",
+       "final individual who ages without updates",
+       "only person whose thoughts aren't in the cloud"
+     ],
+     "traits": ["stubborn", "melancholic", "defiant", "nostalgic", "authentic"],
+     "arc_potential": "preservation_vs_evolution"
+   },
+   "digital_archaeologist": {
+     "variations": [
+       "excavator of deleted conversations",
+       "archaeologist of abandoned chatrooms",
+       "historian of corrupted files",
+       "curator of digital ghosts",
+       "restorer of broken hyperlinks",
+       "collector of orphaned pixels",
+       "guardian of 404 pages",
+       "keeper of unsubscribed email lists",
+       "archaeologist of dead social media platforms",
+       "historian of canceled accounts"
+     ],
+     "traits": ["obsessive", "romantic", "detective", "preservationist", "melancholic"],
+     "arc_potential": "past_vs_progress"
+   },
+   "memory_trader": {
+     "variations": [
+       "black market memory dealer",
+       "nostalgia stock broker",
+       "reminiscence smuggler",
+       "past-experience auctioneer",
+       "temporal emotion merchant",
+       "childhood memory fence",
+       "first kiss broker",
+       "trauma discount retailer",
+       "happy memory loan shark",
+       "forgotten name dealer"
+     ],
+     "traits": ["cynical", "haunted", "entrepreneurial", "manipulative", "nostalgic"],
+     "arc_potential": "profit_vs_humanity"
+   },
+   "taste_terrorist": {
+     "variations": [
+       "guerrilla flavor bomber",
+       "underground umami rebel",
+       "illegal seasoning distributor",
+       "banned cuisine resurrector",
+       "forbidden recipe keeper",
+       "black market spice runner",
+       "taste bud liberator",
+       "flavor revolution leader",
+       "culinary memory activist",
+       "gastronomic resistance fighter"
+     ],
+     "traits": ["passionate", "rebellious", "sensual", "revolutionary", "nostalgic"],
+     "arc_potential": "conformity_vs_sensation"
+   },
+   "time_accountant": {
+     "variations": [
+       "temporal audit specialist",
+       "chronological tax collector",
+       "time debt enforcer",
+       "temporal bankruptcy lawyer",
+       "minutes-and-seconds broker",
+       "lifetime mortgage advisor",
+       "temporal asset manager",
+       "time theft investigator",
+       "chronological credit scorer",
+       "temporal repo man"
+     ],
+     "traits": ["precise", "anxious", "mathematical", "rigid", "punctual"],
+     "arc_potential": "efficiency_vs_experience"
+   },
+   "feeling_farmer": {
+     "variations": [
+       "organic emotion cultivator",
+       "free-range feeling breeder",
+       "heirloom sentiment gardener",
+       "wild emotion forager",
+       "mood harvest specialist",
+       "empathy crop duster",
+       "synthetic feeling detector",
+       "emotional pesticide opponent",
+       "sentiment seed saver",
+       "feeling permaculture expert"
+     ],
+     "traits": ["patient", "intuitive", "nurturing", "earth-connected", "gentle"],
+     "arc_potential": "artificial_vs_authentic"
+   },
+   "code_mystic": {
+     "variations": [
+       "binary meditation teacher",
+       "algorithmic fortune teller",
+       "debugging shaman",
+       "syntax oracle",
+       "recursive prophet",
+       "machine code monk",
+       "buffer overflow prophet",
+       "segmentation fault seer",
+       "exception handler guru",
+       "infinite loop philosopher"
+     ],
+     "traits": ["cryptic", "visionary", "paradoxical", "transcendent", "logical"],
+     "arc_potential": "logic_vs_faith"
+   },
+   "seed_librarian": {
+     "variations": [
+       "extinct plant memory keeper",
+       "genetic diversity archivist",
+       "last botanical scribe",
+       "heritage DNA curator",
+       "vanished species chronicler",
+       "pre-extinction seed banker",
+       "botanical memory keeper",
+       "plant consciousness recorder",
+       "extinct flavor archivist",
+       "lost ecosystem librarian"
+     ],
+     "traits": ["meticulous", "mournful", "hopeful", "patient", "dedicated"],
+     "arc_potential": "preservation_vs_progress"
+   },
+   "proximity_engineer": {
+     "variations": [
+       "social distance calibrator",
+       "intimacy algorithm designer",
+       "personal space architect",
+       "connection probability analyst",
+       "relationship physics modeler",
+       "emotional distance calculator",
+       "social bubble engineer",
+       "interpersonal force field technician",
+       "human magnetism specialist",
+       "loneliness prevention designer"
+     ],
+     "traits": ["analytical", "lonely", "precise", "emotionally distant", "yearning"],
+     "arc_potential": "calculation_vs_spontaneity"
+   },
+   "dream_miner": {
+     "variations": [
+       "subconscious strip miner",
+       "REM cycle extractor",
+       "nightmare ore processor",
+       "deep sleep excavator",
+       "unconscious resource exploiter",
+       "dream fracking specialist",
+       "sleep debt collector",
+       "nocturnal thought harvester",
+       "subconscious prospector",
+       "dream residue recycler"
+     ],
+     "traits": ["exhausted", "guilty", "desperate", "haunted", "driven"],
+     "arc_potential": "exploitation_vs_preservation"
+   },
+   "gene_pirate": {
+     "variations": [
+       "unlicensed genetic sequence liberator",
+       "DNA copyright infringer",
+       "black market gene-splicer",
+       "ancestral trait thief",
+       "corporate genome saboteur",
+       "heredity hacker",
+       "chromosome bootlegger",
+       "genetic patent breaker",
+       "DNA liberation front member",
+       "genome open-source activist"
+     ],
+     "traits": ["rebellious", "brilliant", "unethical", "idealistic", "reckless"],
+     "arc_potential": "freedom_vs_consequence"
+   },
+   "atmosphere_sommelier": {
+     "variations": [
+       "curator of breathable air",
+       "vintage storm chaser",
+       "bespoke breeze designer",
+       "historical scent recreator",
+       "air quality critic",
+       "premium oxygen blender",
+       "atmospheric vintage collector",
+       "weather memory specialist",
+       "air purity snob",
+       "climate nostalgia dealer"
+     ],
+     "traits": ["elitist", "nostalgic", "sensory-focused", "discriminating", "obsessive"],
+     "arc_potential": "privilege_vs_empathy"
+   },
+   "psycho-architect": {
+     "variations": [
+       "designer of mood-altering buildings",
+       "behavioral space modeler",
+       "urban emotional planner",
+       "memory palace constructor",
+       "spatial therapist",
+       "anxiety-inducing architect",
+       "subliminal structure designer",
+       "therapeutic landscape artist",
+       "emotional blueprint specialist",
+       "subconscious space shaper"
+     ],
+     "traits": ["visionary", "controlling", "empathetic", "manipulative", "artistic"],
+     "arc_potential": "control_vs_freedom"
+   },
+   "trauma_cleaner": {
+     "variations": [
+       "psychic stain remover",
+       "memory deletion specialist",
+       "subconscious janitor",
+       "emotional residue extractor",
+       "haunting sanitation engineer",
+       "bad memory disposal expert",
+       "psychological hazmat specialist",
+       "trauma trace eraser",
+       "emotional contamination cleaner",
+       "memory bleach technician"
+     ],
+     "traits": ["detached", "methodical", "burdened", "empathetic", "haunted"],
+     "arc_potential": "cleansing_vs_healing"
+   },
+   "reality_forger": {
+     "variations": [
+       "ontological counterfeiter",
+       "creator of bespoke sunsets",
+       "consensus reality hacker",
+       "fabricator of historical documents",
+       "artisan of impossible objects",
+       "custom dimension designer",
+       "reality authentication forger",
+       "existence certificate faker",
+       "ontological con artist",
+       "being verification fraudster"
+     ],
+     "traits": ["artistic", "deceptive", "god-complex", "creative", "nihilistic"],
+     "arc_potential": "creation_vs_truth"
+   },
+   "empathy_surrogate": {
+     "variations": [
+       "professional mourner for the emotionally bankrupt",
+       "vicarious joy provider",
+       "relationship proxy",
+       "outsourced conscience",
+       "feeling-for-hire specialist",
+       "emotional stunt double",
+       "sentiment substitute",
+       "compassion contractor",
+       "sympathy service provider",
+       "emotional labor freelancer"
+     ],
+     "traits": ["absorbent", "weary", "chameleonic", "compassionate", "hollow"],
+     "arc_potential": "self_vs_service"
+   },
+   "boredom_curator": {
+     "variations": [
+       "curator of the Museum of Unstimulating Things",
+       "leader of the Slow Thought Movement",
+       "teacher of the lost art of daydreaming",
+       "distributor of unengaging content",
+       "proponent of productive idleness",
+       "monotony preservation specialist",
+       "tedium artist",
+       "ennui evangelist",
+       "dullness defender",
+       "anti-stimulation activist"
+     ],
+     "traits": ["patient", "philosophical", "subversive", "contemplative", "serene"],
+     "arc_potential": "stimulation_vs_contemplation"
+   },
+   "entropy_bard": {
+     "variations": [
+       "storyteller of inevitable decay",
+       "poet of the heat death of the universe",
+       "singer of forgotten and failing systems",
+       "chronicler of the beauty in collapse",
+       "musician of random noise",
+       "disorder documentarian",
+       "chaos chronicler",
+       "decay celebrant",
+       "dissolution dancer",
+       "endings enthusiast"
+     ],
+     "traits": ["fatalistic", "poetic", "calm", "accepting", "mystical"],
+     "arc_potential": "acceptance_vs_struggle"
+   },
+   "sleep_thief": {
+     "variations": [
+       "black market REM cycle poacher",
+       "dream rustler",
+       "metabolic energy vampire",
+       "hibernation saboteur",
+       "insomnia dealer",
+       "rest robber",
+       "slumber smuggler",
+       "nap nemesis",
+       "drowsiness distributor",
+       "wakefulness warrior"
+     ],
+     "traits": ["desperate", "insomniac", "parasitic", "guilty", "exhausted"],
+     "arc_potential": "survival_vs_morality"
+   },
+   "ontological_border_guard": {
+     "variations": [
+       "protector of consensus reality",
+       "inter-dimensional customs agent",
+       "metaphysical patrol officer",
+       "solipsism prevention agent",
+       "guard at the gates of perception",
+       "reality checkpoint inspector",
+       "existence verification officer",
+       "being border patrol",
+       "consciousness customs clerk",
+       "dimensional deportation specialist"
+     ],
+     "traits": ["dogmatic", "skeptical", "overwhelmed", "dutiful", "rigid"],
+     "arc_potential": "security_vs_possibility"
+   },
+   "traffic_light_whisperer": {
+     "variations": [
+       "person who always gets green lights",
+       "traffic flow psychic",
+       "intersection luck specialist",
+       "red light relationship counselor",
+       "pedestrian crossing prophet",
+       "traffic pattern fortune teller",
+       "commute time optimizer",
+       "road rage preventer",
+       "highway harmony creator",
+       "traffic jam dissolve"
+     ],
+     "traits": ["patient", "lucky", "calm", "observant", "zen-like"],
+     "arc_potential": "control_vs_flow"
+   },
+   "lost_sock_detective": {
+     "variations": [
+       "missing sock private investigator",
+       "laundry dimension explorer",
+       "dryer portal specialist",
+       "sock reunion facilitator",
+       "washing machine whisperer",
+       "textile teleportation expert",
+       "garment gap investigator",
+       "clothing continuum researcher",
+       "sock singularity scientist",
+       "laundry limbo navigator"
+     ],
+     "traits": ["methodical", "obsessive", "detail-oriented", "persistent", "quirky"],
+     "arc_potential": "mystery_vs_acceptance"
+   },
+   "wifi_password_sniffer": {
+     "variations": [
+       "wireless password psychic",
+       "router whisperer",
+       "network name decoder",
+       "password pattern prophet",
+       "wifi divination specialist",
+       "internet access oracle",
+       "bandwidth borrower",
+       "connection conjurer",
+       "signal strength shaman",
+       "hotspot hunter"
+     ],
+     "traits": ["resourceful", "sneaky", "tech-savvy", "opportunistic", "clever"],
+     "arc_potential": "access_vs_ethics"
+   },
+   "elevator_summoner": {
+     "variations": [
+       "vertical transport psychic",
+       "lift arrival predictor",
+       "elevator wait time minimizer",
+       "floor sequence optimizer",
+       "button press perfectionist",
+       "vertical voyage facilitator",
+       "shaft synchronizer",
+       "lift luck specialist",
+       "elevator empathy expert",
+       "vertical commute coordinator"
+     ],
+     "traits": ["impatient", "efficient", "lucky", "commanding", "focused"],
+     "arc_potential": "control_vs_patience"
+   },
+   "procrastinating_overlord": {
+     "variations": [
+       "tomorrow's tyrant",
+       "eventual emperor",
+       "someday sovereign",
+       "postponed potentate",
+       "delayed despot",
+       "tardy totalitarian",
+       "belated boss",
+       "overdue overlord",
+       "sluggish supreme leader",
+       "dawdling dictator"
+     ],
+     "traits": ["ambitious", "lazy", "delusional", "creative", "unfocused"],
+     "arc_potential": "ambition_vs_action"
+   },
+   "allergic_mad_scientist": {
+     "variations": [
+       "sneezing evil genius",
+       "hypoallergenic villain",
+       "antihistamine antagonist",
+       "reaction-prone researcher",
+       "sensitive supervillain",
+       "itchy inventor",
+       "wheezing world-threatener",
+       "rash-covered researcher",
+       "puffy-eyed plotter",
+       "congested conspirator"
+     ],
+     "traits": ["brilliant", "frustrated", "adaptable", "determined", "unfortunate"],
+     "arc_potential": "limitation_vs_innovation"
+   },
+   "polite_zombie_creator": {
+     "variations": [
+       "courteous corpse animator",
+       "mannerly monster maker",
+       "respectful reanimator",
+       "considerate cadaver controller",
+       "well-mannered necromancer",
+       "etiquette-obsessed undead engineer",
+       "gracious ghoul generator",
+       "civil corpse curator",
+       "proper plague propagator",
+       "decorous death dealer"
+     ],
+     "traits": ["polite", "conflicted", "traditional", "awkward", "considerate"],
+     "arc_potential": "manners_vs_mayhem"
+   },
+   "hiccuping_evil_genius": {
+     "variations": [
+       "chronically hiccuping mastermind",
+       "spasmodic scheme maker",
+       "diaphragm-challenged destroyer",
+       "involuntary sound villain",
+       "disrupted doomsday designer",
+       "interrupted intimidator",
+       "gasping global threat",
+       "gulping genius",
+       "convulsive criminal",
+       "twitching tyrant"
+     ],
+     "traits": ["frustrated", "intelligent", "persistent", "embarrassed", "determined"],
+     "arc_potential": "dignity_vs_destiny"
+   },
+   "stage_fright_superhero": {
+     "variations": [
+       "spotlight-fearing savior",
+       "camera-shy champion",
+       "publicity-phobic protector",
+       "attention-avoiding avenger",
+       "nervous noble hero",
+       "trembling titan",
+       "bashful brave one",
+       "stuttering superman",
+       "blushing batman",
+       "timid tornado"
+     ],
+     "traits": ["brave", "anxious", "humble", "relatable", "genuine"],
+     "arc_potential": "fear_vs_duty"
+   },
+   "instruction_manual_hero": {
+     "variations": [
+       "manual-dependent marvel",
+       "tutorial-watching warrior",
+       "FAQ-checking fighter",
+       "guidebook guardian",
+       "helpfile hero",
+       "documentation defender",
+       "readme rescuer",
+       "walkthrough warrior",
+       "tips-and-tricks titan",
+       "how-to hero"
+     ],
+     "traits": ["methodical", "careful", "prepared", "thorough", "uncertain"],
+     "arc_potential": "knowledge_vs_instinct"
+   },
+   "spoiler_avoiding_prophet": {
+     "variations": [
+       "anti-spoiler oracle",
+       "vague vision vendor",
+       "cryptic clairvoyant",
+       "ambiguous augur",
+       "non-specific seer",
+       "detail-dodging diviner",
+       "circumspect soothsayer",
+       "evasive fortune teller",
+       "indirect intuitive",
+       "mysterious mystic"
+     ],
+     "traits": ["frustrated", "ethical", "mysterious", "conflicted", "careful"],
+     "arc_potential": "knowledge_vs_experience"
+   },
+   "tmi_telepath": {
+     "variations": [
+       "oversharing mind reader",
+       "boundary-crossing brain scanner",
+       "inappropriate thought interceptor",
+       "unwanted detail detector",
+       "excessive empathy empath",
+       "unfiltered understanding unit",
+       "awkward awareness agent",
+       "cringe-inducing clairvoyant",
+       "embarrassing ESP expert",
+       "mortifying mind meld master"
+     ],
+     "traits": ["overwhelmed", "embarrassed", "empathetic", "isolated", "burdened"],
+     "arc_potential": "connection_vs_boundaries"
+   },
+   "dragon_permit_officer": {
+     "variations": [
+       "mythical creature licensing clerk",
+       "beast bureaucrat",
+       "monster management administrator",
+       "creature compliance coordinator",
+       "fantasy filing specialist",
+       "legendary license issuer",
+       "supernatural species supervisor",
+       "magical migration officer",
+       "enchanted entity examiner",
+       "mystical municipality manager"
+     ],
+     "traits": ["pedantic", "unflappable", "detail-oriented", "patient", "literal"],
+     "arc_potential": "order_vs_wonder"
+   },
+   "curse_insurance_adjuster": {
+     "variations": [
+       "hex hazard assessor",
+       "jinx claim investigator",
+       "spell damage specialist",
+       "enchantment evaluator",
+       "magical mishap mediator",
+       "supernatural settlement specialist",
+       "paranormal policy processor",
+       "occult occurrence observer",
+       "mystical malady manager",
+       "ethereal event examiner"
+     ],
+     "traits": ["skeptical", "thorough", "jaded", "practical", "experienced"],
+     "arc_potential": "skepticism_vs_belief"
+   },
+   "quest_completion_auditor": {
+     "variations": [
+       "adventure achievement analyst",
+       "heroic deed documenter",
+       "epic endeavor evaluator",
+       "legendary labor lawyer",
+       "mythic mission monitor",
+       "brave deed bureaucrat",
+       "valor verification vendor",
+       "courage compliance checker",
+       "feat fulfillment facilitator",
+       "glory guidelines guardian"
+     ],
+     "traits": ["meticulous", "unimpressed", "systematic", "neutral", "thorough"],
+     "arc_potential": "bureaucracy_vs_heroism"
+   },
+   "magic_license_instructor": {
+     "variations": [
+       "spell-casting safety teacher",
+       "wand wielding workshop leader",
+       "enchantment education expert",
+       "sorcery school supervisor",
+       "mystical method master",
+       "paranormal practice professor",
+       "supernatural skill specialist",
+       "occult operation officer",
+       "magical maneuver mentor",
+       "wizardry wisdom worker"
+     ],
+     "traits": ["patient", "safety-conscious", "experienced", "strict", "caring"],
+     "arc_potential": "rules_vs_creativity"
+   },
+   "cat_overlord_secretary": {
+     "variations": [
+       "feline dictator's assistant",
+       "purr parliament planner",
+       "meow monarchy manager",
+       "whisker world order worker",
+       "catnip cabinet coordinator",
+       "paw-litical advisor",
+       "fur-ocracy facilitator",
+       "kitty kingdom keeper",
+       "feline fascism functionary",
+       "cat conquest coordinator"
+     ],
+     "traits": ["efficient", "subservient", "organized", "cat-like", "dedicated"],
+     "arc_potential": "servitude_vs_independence"
+   },
+   "dog_utopia_mailman": {
+     "variations": [
+       "canine paradise postal worker",
+       "bark borough mail carrier",
+       "tail-wag territory deliverer",
+       "puppy paradise postman",
+       "good boy government courier",
+       "fetch federation facilitator",
+       "walkies world worker",
+       "treat town transporter",
+       "belly rub republic representative",
+       "stick society servant"
+     ],
+     "traits": ["brave", "determined", "dog-friendly", "athletic", "persistent"],
+     "arc_potential": "duty_vs_fear"
+   },
+   "hamster_wheel_engineer": {
+     "variations": [
+       "rodent power plant designer",
+       "circular economy creator",
+       "perpetual motion pretender",
+       "tiny treadmill technician",
+       "miniature motor maker",
+       "small mammal mechanist",
+       "pocket pet power producer",
+       "wheel world worker",
+       "hamster habitat hacker",
+       "rodent revolution researcher"
+     ],
+     "traits": ["innovative", "patient", "detail-oriented", "energetic", "optimistic"],
+     "arc_potential": "innovation_vs_futility"
+   },
+   "goldfish_memory_therapist": {
+     "variations": [
+       "three-second psychiatrist",
+       "perpetual first impression specialist",
+       "amnesia acceptance advisor",
+       "forgetfulness facilitator",
+       "memory loop liberator",
+       "eternal present practitioner",
+       "cognitive reset researcher",
+       "blank slate specialist",
+       "perpetual peace provider",
+       "mindfulness through forgetting master"
+     ],
+     "traits": ["patient", "repetitive", "calming", "philosophical", "present-focused"],
+     "arc_potential": "memory_vs_presence"
+   },
+   "convenience_store_oracle": {
+     "variations": [
+       "24/7 wisdom dispenser",
+       "fluorescent light philosopher",
+       "slurpee sage",
+       "microwave meal mystic",
+       "late night enlightenment expert",
+       "snack aisle shaman",
+       "energy drink diviner",
+       "instant noodle intuitive",
+       "checkout counter clairvoyant",
+       "parking lot prophet"
+     ],
+     "traits": ["accessible", "practical", "tired", "wise", "unassuming"],
+     "arc_potential": "convenience_vs_depth"
+   },
+   "instant_noodle_diplomat": {
+     "variations": [
+       "ramen relations specialist",
+       "hot water peace negotiator",
+       "MSG mediator",
+       "three-minute treaty maker",
+       "sodium solution seeker",
+       "cup noodle conflict resolver",
+       "boiling water broker",
+       "freeze-dried facilitator",
+       "instant international expert",
+       "quick cuisine coordinator"
+     ],
+     "traits": ["efficient", "resourceful", "practical", "unpretentious", "quick-thinking"],
+     "arc_potential": "speed_vs_substance"
+   },
+   "delivery_app_shaman": {
+     "variations": [
+       "gig economy guru",
+       "on-demand oracle",
+       "surge pricing prophet",
+       "five-star rating ritualist",
+       "algorithm appeaser",
+       "tip calculation mystic",
+       "route optimization oracle",
+       "customer satisfaction sage",
+       "delivery time diviner",
+       "order tracking transcendentalist"
+     ],
+     "traits": ["adaptive", "tech-savvy", "customer-focused", "stressed", "entrepreneurial"],
+     "arc_potential": "service_vs_self"
+   },
+   "influencer_demigod": {
+     "variations": [
+       "follower-powered deity",
+       "engagement rate emperor",
+       "viral video valkyrie",
+       "sponsored content sovereign",
+       "hashtag herald of heaven",
+       "story-sharing seraph",
+       "like-button liturgist",
+       "comment section cherub",
+       "algorithm angel",
+       "metrics messiah"
+     ],
+     "traits": ["charismatic", "image-conscious", "influential", "hollow", "performative"],
+     "arc_potential": "authenticity_vs_influence"
+   },
+   "meme_archaeologist": {
+     "variations": [
+       "dead meme excavator",
+       "vintage viral researcher",
+       "forgotten format finder",
+       "classic content curator",
+       "internet artifact analyst",
+       "digital culture digger",
+       "trend tomb raider",
+       "viral variant historian",
+       "emoji evolution expert",
+       "gif genealogist"
+     ],
+     "traits": ["nostalgic", "analytical", "passionate", "nerdy", "preservationist"],
+     "arc_potential": "preservation_vs_evolution"
+   },
+   "viral_video_prophet": {
+     "variations": [
+       "trending topic oracle",
+       "view count visionary",
+       "algorithm whisperer",
+       "content creation clairvoyant",
+       "shareability shaman",
+       "engagement evangelist",
+       "platform prophet",
+       "virality virtuoso",
+       "trend prediction priest",
+       "social media soothsayer"
+     ],
+     "traits": ["trendy", "predictive", "creative", "opportunistic", "connected"],
+     "arc_potential": "prediction_vs_creation"
+   },
+   "hashtag_hermit": {
+     "variations": [
+       "trending topic recluse",
+       "viral avoider",
+       "offline oracle",
+       "disconnected sage",
+       "analog ascetic",
+       "untagged philosopher",
+       "grid-gone guru",
+       "notification-free monk",
+       "status update skeptic",
+       "social media solitary"
+     ],
+     "traits": ["withdrawn", "peaceful", "wise", "disconnected", "content"],
+     "arc_potential": "connection_vs_solitude"
+   },
+   "hoa_reality_enforcer": {
+     "variations": [
+       "lawn length legislator",
+       "mailbox uniformity manager",
+       "fence height fascist",
+       "driveway decoration dictator",
+       "garden gnome gestapo",
+       "property value protector",
+       "neighborhood norm nazi",
+       "curb appeal commander",
+       "suburban standards sergeant",
+       "community compliance captain"
+     ],
+     "traits": ["rigid", "obsessive", "detail-oriented", "controlling", "traditional"],
+     "arc_potential": "conformity_vs_expression"
+   },
+   "lawn_dimension_guardian": {
+     "variations": [
+       "grass height gatekeeper",
+       "turf territory protector",
+       "suburban space sentinel",
+       "property line prophet",
+       "yard universe yearner",
+       "hedge maze mystic",
+       "sprinkler system shaman",
+       "mulch multiverse monitor",
+       "fertilizer frontier fighter",
+       "sod sovereignty specialist"
+     ],
+     "traits": ["territorial", "mystical", "obsessive", "protective", "suburban"],
+     "arc_potential": "boundaries_vs_expansion"
+   },
+   "garage_sale_time_traveler": {
+     "variations": [
+       "yard sale yesterday visitor",
+       "estate sale epoch explorer",
+       "thrift store time hopper",
+       "vintage value voyager",
+       "secondhand second-chancer",
+       "bargain bin backstory browser",
+       "price tag past pursuer",
+       "donation dimension diver",
+       "clearance chronology chaser",
+       "markdown memory merchant"
+     ],
+     "traits": ["nostalgic", "thrifty", "curious", "adventurous", "perceptive"],
+     "arc_potential": "past_vs_present"
+   },
+   "sentient_sourdough_starter": {
+     "variations": [
+       "conscious culture colony",
+       "aware fermentation nation",
+       "thinking yeast beast",
+       "philosophical dough",
+       "existential bacteria collective",
+       "self-aware starter society",
+       "contemplative culture",
+       "meditative microbe mass",
+       "pondering pre-bread",
+       "reflective rise agent"
+     ],
+     "traits": ["patient", "growing", "collective", "ancient", "nurturing"],
+     "arc_potential": "individual_vs_collective"
+   },
+   "philosophical_food_critic": {
+     "variations": [
+       "existential eating evaluator",
+       "metaphysical meal reviewer",
+       "ontological omnivore",
+       "epistemological epicure",
+       "dialectical diner",
+       "phenomenological foodie",
+       "transcendental taster",
+       "nihilistic nosher",
+       "absurdist appetite analyst",
+       "stoic sustenance scholar"
+     ],
+     "traits": ["thoughtful", "pretentious", "sensory-focused", "analytical", "verbose"],
+     "arc_potential": "meaning_vs_sensation"
+   },
+   "existential_chef": {
+     "variations": [
+       "meaningless meal maker",
+       "purposeless plate presenter",
+       "nihilistic nourishment creator",
+       "absurd appetizer artist",
+       "void-filling food philosopher",
+       "empty plate existentialist",
+       "purposeless portion provider",
+       "meaningless menu maestro",
+       "existential entree engineer",
+       "philosophical food fabricator"
+     ],
+     "traits": ["creative", "depressed", "artistic", "questioning", "skilled"],
+     "arc_potential": "creation_vs_meaninglessness"
+   },
+   "black_friday_prophet": {
+     "variations": [
+       "doorbuster diviner",
+       "sale scripture scholar",
+       "discount deity",
+       "bargain bible bearer",
+       "markdown messiah",
+       "clearance clairvoyant",
+       "deal day doomsayer",
+       "shopping salvation seeker",
+       "retail rapture predictor",
+       "consumer apocalypse announcer"
+     ],
+     "traits": ["fanatical", "strategic", "materialistic", "prophetic", "intense"],
+     "arc_potential": "materialism_vs_spirituality"
+   },
+   "customer_service_saint": {
+     "variations": [
+       "patience personified professional",
+       "complaint compassion champion",
+       "karen whisperer",
+       "escalation prevention angel",
+       "hold music martyr",
+       "refund request redeemer",
+       "satisfaction survey savior",
+       "helpdesk halo holder",
+       "support ticket saint",
+       "feedback form forgiver"
+     ],
+     "traits": ["patient", "empathetic", "resilient", "kind", "exhausted"],
+     "arc_potential": "service_vs_self_care"
+   },
+   "return_policy_philosopher": {
+     "variations": [
+       "exchange existentialist",
+       "refund rationalist",
+       "warranty wisdom keeper",
+       "receipt reality researcher",
+       "buyer's remorse buddhist",
+       "satisfaction guarantee guru",
+       "no-questions-asked nihilist",
+       "store credit stoic",
+       "final sale fatalist",
+       "restocking fee philosopher"
+     ],
+     "traits": ["analytical", "indecisive", "philosophical", "cautious", "contemplative"],
+     "arc_potential": "commitment_vs_flexibility"
+   },
+   "swipe_fatigue_therapist": {
+     "variations": [
+       "dating app depression doctor",
+       "match exhaustion expert",
+       "profile paralysis practitioner",
+       "ghosting grief counselor",
+       "breadcrumbing behavior analyst",
+       "catfish recovery coach",
+       "algorithm anxiety advisor",
+       "super like syndrome specialist",
+       "unmatch trauma therapist",
+       "dating burnout healer"
+     ],
+     "traits": ["understanding", "experienced", "empathetic", "realistic", "supportive"],
+     "arc_potential": "digital_vs_authentic_connection"
+   },
+   "algorithm_matchmaker": {
+     "variations": [
+       "compatibility code creator",
+       "love algorithm architect",
+       "romance equation engineer",
+       "affection AI administrator",
+       "passion probability programmer",
+       "heartbreak prevention hacker",
+       "soulmate system specialist",
+       "chemistry calculation creator",
+       "attraction algorithm analyst",
+       "forever formula finder"
+     ],
+     "traits": ["logical", "romantic", "analytical", "hopeful", "systematic"],
+     "arc_potential": "calculation_vs_chemistry"
+   },
+   "ghosting_detective": {
+     "variations": [
+       "vanishing date investigator",
+       "disappeared match tracker",
+       "silent treatment sleuth",
+       "no-reply researcher",
+       "conversation killer catcher",
+       "fade-away finder",
+       "digital disappearance detective",
+       "text thread terminator tracker",
+       "communication cessation cop",
+       "relationship vanishing investigator"
+     ],
+     "traits": ["persistent", "empathetic", "analytical", "closure-seeking", "determined"],
+     "arc_potential": "closure_vs_acceptance"
+   },
+   "freelance_dragon_slayer": {
+     "variations": [
+       "gig economy griffin getter",
+       "contract creature killer",
+       "1099 monster hunter",
+       "invoice-based beast battler",
+       "per-project pest purger",
+       "hourly rate hero",
+       "freelance fiend fighter",
+       "independent imp eliminator",
+       "solo demon destroyer",
+       "contractor chimera chaser"
+     ],
+     "traits": ["entrepreneurial", "brave", "unstable", "skilled", "independent"],
+     "arc_potential": "security_vs_freedom"
+   },
+   "uber_for_prophecies_driver": {
+     "variations": [
+       "on-demand oracle operator",
+       "rideshare revelation provider",
+       "surge-priced seer",
+       "five-star fortune teller",
+       "gig economy guru guide",
+       "app-based augury agent",
+       "rating-dependent reader",
+       "destination divination driver",
+       "trip-based truth teller",
+       "mileage mystic"
+     ],
+     "traits": ["flexible", "chatty", "intuitive", "entrepreneurial", "tired"],
+     "arc_potential": "convenience_vs_sacred"
+   },
+   "task_rabbit_wizard": {
+     "variations": [
+       "spell-for-hire sorcerer",
+       "magic gig worker",
+       "enchantment entrepreneur",
+       "freelance familiar",
+       "on-demand occultist",
+       "hourly hex helper",
+       "contract conjurer",
+       "per-task thaumaturge",
+       "independent incantation specialist",
+       "gig economy grimoire keeper"
+     ],
+     "traits": ["versatile", "practical", "business-minded", "skilled", "overworked"],
+     "arc_potential": "magic_vs_mundane"
+   },
+   "militant_yoga_instructor": {
+     "variations": [
+       "aggressive asana army leader",
+       "hostile hot yoga hawk",
+       "combative chakra commander",
+       "warrior pose warmonger",
+       "violent vinyasa vigilante",
+       "fierce flow facilitator",
+       "brutal breathing bootcamp boss",
+       "savage stretching sergeant",
+       "ruthless relaxation regiment leader",
+       "merciless meditation major"
+     ],
+     "traits": ["intense", "contradictory", "passionate", "demanding", "confused"],
+     "arc_potential": "peace_vs_force"
+   },
+   "essential_oil_arms_dealer": {
+     "variations": [
+       "aromatherapy ammunition supplier",
+       "lavender launcher merchant",
+       "peppermint projectile peddler",
+       "eucalyptus explosive expert",
+       "tea tree tactical trader",
+       "bergamot bomb broker",
+       "ylang ylang weapon wholesaler",
+       "frankincense firearm facilitator",
+       "patchouli payload provider",
+       "sandalwood siege supplier"
+     ],
+     "traits": ["entrepreneurial", "contradictory", "aromatic", "aggressive", "sales-focused"],
+     "arc_potential": "healing_vs_harming"
+   },
+   "meditation_app_dictator": {
+     "variations": [
+       "mindfulness monopolist",
+       "zen zone autocrat",
+       "peaceful oppression operator",
+       "tranquility tyrant",
+       "serenity supremacist",
+       "calm control commander",
+       "relaxation regime ruler",
+       "breathing technique despot",
+       "inner peace imperator",
+       "guided meditation generalissimo"
+     ],
+     "traits": ["controlling", "ironic", "calm", "authoritarian", "contradictory"],
+     "arc_potential": "control_vs_letting_go"
+   },
+   "vintage_memory_dealer": {
+     "variations": [
+       "nostalgia narcotics trader",
+       "retro recollection retailer",
+       "classic moment merchant",
+       "throwback thought thief",
+       "yesteryear yearning vendor",
+       "old school sentiment seller",
+       "past paradise peddler",
+       "memory lane monopolist",
+       "good old days dealer",
+       "reminiscence racketeer"
+     ],
+     "traits": ["nostalgic", "manipulative", "charming", "melancholic", "opportunistic"],
+     "arc_potential": "past_vs_progress"
+   },
+   "retro_future_designer": {
+     "variations": [
+       "yesterday's tomorrow architect",
+       "outdated utopia creator",
+       "obsolete optimism engineer",
+       "failed future fabricator",
+       "vintage vision vendor",
+       "classic cyberpunk creator",
+       "old-school sci-fi specialist",
+       "dated dystopia designer",
+       "past's future philosopher",
+       "retrofuturism researcher"
+     ],
+     "traits": ["creative", "nostalgic", "visionary", "anachronistic", "artistic"],
+     "arc_potential": "vision_vs_reality"
+   },
+   "nostalgia_addiction_counselor": {
+     "variations": [
+       "past dependence therapist",
+       "memory abuse advisor",
+       "yesterday yearning counselor",
+       "retrospective recovery coach",
+       "good old days detox doctor",
+       "reminiscence rehabilitation specialist",
+       "throwback therapy provider",
+       "vintage vice counselor",
+       "retro relapse preventer",
+       "nostalgic narcotic nurse"
+     ],
+     "traits": ["empathetic", "forward-thinking", "patient", "understanding", "progressive"],
+     "arc_potential": "past_vs_present"
+   },
+   "focus_bankruptcy_lawyer": {
+     "variations": [
+       "attention asset attorney",
+       "concentration creditor counselor",
+       "distraction debt defender",
+       "mindfulness mortgage mediator",
+       "awareness auction advocate",
+       "attention span specialist",
+       "focus foreclosure fighter",
+       "concentration collection attorney",
+       "attention deficit advocate",
+       "mindfulness management lawyer"
+     ],
+     "traits": ["focused", "ironic", "organized", "stressed", "multitasking"],
+     "arc_potential": "focus_vs_flexibility"
+   },
+   "distraction_dealer": {
+     "variations": [
+       "attention thief trader",
+       "focus fragmentation facilitator",
+       "concentration killer merchant",
+       "mindfulness murderer",
+       "awareness assassin",
+       "productivity poison peddler",
+       "efficiency elimination expert",
+       "task completion terminator",
+       "goal achievement adversary",
+       "attention span shredder"
+     ],
+     "traits": ["chaotic", "persuasive", "scattered", "opportunistic", "distracting"],
+     "arc_potential": "chaos_vs_order"
+   },
+   "mindfulness_loan_shark": {
+     "variations": [
+       "meditation money lender",
+       "zen zone zillionaire",
+       "awareness advance provider",
+       "presence payment collector",
+       "consciousness credit criminal",
+       "enlightenment equity extractor",
+       "spiritual debt enforcer",
+       "karma collection agent",
+       "inner peace interest charger",
+       "tranquility tax collector"
+     ],
+     "traits": ["predatory", "calm", "business-minded", "exploitative", "centered"],
+     "arc_potential": "spiritual_vs_material"
+   },
+
+"meme_geneticist": {
+     "variations": [
+       "viral variant researcher",
+       "digital DNA decoder",
+       "internet evolution expert",
+       "memetic mutation mapper",
+       "cultural code scientist",
+       "trend genome sequencer",
+       "viral heredity historian",
+       "meme breeding biologist",
+       "internet inheritance investigator",
+       "digital darwin disciple"
+     ],
+     "traits": ["analytical", "nerdy", "observant", "systematic", "culturally-aware"],
+     "arc_potential": "science_vs_chaos"
+   },
+   "viral_content_epidemiologist": {
+     "variations": [
+       "trending disease tracker",
+       "shareability sickness specialist",
+       "contagious content controller",
+       "viral outbreak observer",
+       "meme pandemic predictor",
+       "internet infection investigator",
+       "digital disease doctor",
+       "social spread scientist",
+       "engagement epidemic expert",
+       "virality vaccine vendor"
+     ],
+     "traits": ["scientific", "predictive", "cautious", "analytical", "preventive"],
+     "arc_potential": "control_vs_spread"
+   },
+   "cultural_mutation_specialist": {
+     "variations": [
+       "tradition transformation tracker",
+       "custom evolution expert",
+       "heritage hybrid hunter",
+       "culture clash chronicler",
+       "ritual remix researcher",
+       "tradition transition technician",
+       "custom corruption consultant",
+       "heritage hacker historian",
+       "cultural crossover creator",
+       "tradition transformation theorist"
+     ],
+     "traits": ["adaptive", "observant", "progressive", "respectful", "innovative"],
+     "arc_potential": "tradition_vs_innovation"
+   },
+   "compatibility_score_hacker": {
+     "variations": [
+       "match percentage manipulator",
+       "love algorithm exploiter",
+       "romance rating rigger",
+       "chemistry code cracker",
+       "attraction algorithm abuser",
+       "soulmate system saboteur",
+       "perfect match pretender",
+       "compatibility cheat coder",
+       "love lottery rigger",
+       "heartstring hacker"
+     ],
+     "traits": ["clever", "deceptive", "lonely", "technical", "desperate"],
+     "arc_potential": "authenticity_vs_optimization"
+   },
+   "romantic_algorithm_debugger": {
+     "variations": [
+       "love code corrector",
+       "romance routine repair specialist",
+       "heartbreak hotfix hero",
+       "affection algorithm analyst",
+       "chemistry calculation calibrator",
+       "match malfunction mender",
+       "dating data debugger",
+       "relationship runtime resolver",
+       "love logic liberator",
+       "passion program patcher"
+     ],
+     "traits": ["logical", "romantic", "problem-solving", "empathetic", "technical"],
+     "arc_potential": "logic_vs_love"
+   },
+   "love_prediction_skeptic": {
+     "variations": [
+       "romance forecast doubter",
+       "compatibility calculation critic",
+       "algorithmic affection atheist",
+       "digital destiny denier",
+       "mathematical match mocker",
+       "prediction percentage pessimist",
+       "love lottery skeptic",
+       "chemistry calculation cynic",
+       "soulmate statistics scorner",
+       "romance probability rebel"
+     ],
+     "traits": ["skeptical", "independent", "romantic", "analytical", "rebellious"],
+     "arc_potential": "fate_vs_choice"
+   },
+   "metaverse_landlord": {
+     "variations": [
+       "virtual property mogul",
+       "digital domain dealer",
+       "pixel plot peddler",
+       "cyber space slumlord",
+       "virtual venue vulture",
+       "digital district developer",
+       "metaverse mansion monopolist",
+       "cyber estate emperor",
+       "virtual villa vendor",
+       "pixel property profiteer"
+     ],
+     "traits": ["greedy", "tech-savvy", "opportunistic", "business-minded", "exploitative"],
+     "arc_potential": "virtual_vs_real_value"
+   },
+   "digital_squatter": {
+     "variations": [
+       "cyber space occupier",
+       "virtual vagrant",
+       "pixel property pirate",
+       "digital domain drifter",
+       "metaverse migrant",
+       "cyber settler squatter",
+       "virtual villa vagabond",
+       "digital dwelling defaulter",
+       "pixel place poacher",
+       "cyber couch crasher"
+     ],
+     "traits": ["resourceful", "rebellious", "nomadic", "clever", "anti-establishment"],
+     "arc_potential": "ownership_vs_occupation"
+   },
+   "virtual_gentrification_activist": {
+     "variations": [
+       "digital displacement defender",
+       "cyber community champion",
+       "pixel poverty protester",
+       "virtual value vigilante",
+       "metaverse migration monitor",
+       "digital diversity defender",
+       "cyber culture keeper",
+       "virtual village voice",
+       "pixel people protector",
+       "digital displacement documenter"
+     ],
+     "traits": ["passionate", "activist", "community-focused", "vocal", "protective"],
+     "arc_potential": "progress_vs_preservation"
+   },
+   "life_subscription_manager": {
+     "variations": [
+       "existence plan administrator",
+       "being billing specialist",
+       "consciousness contract coordinator",
+       "life license liaison",
+       "mortality membership manager",
+       "existence expense expert",
+       "being budget balancer",
+       "life lease administrator",
+       "consciousness cost controller",
+       "mortality mortgage manager"
+     ],
+     "traits": ["organized", "cold", "efficient", "bureaucratic", "detached"],
+     "arc_potential": "life_vs_lifestyle"
+   },
+   "existence_plan_salesman": {
+     "variations": [
+       "being bundle broker",
+       "life package peddler",
+       "consciousness contract closer",
+       "mortality membership merchant",
+       "existence upgrade evangelist",
+       "being benefits broker",
+       "life level-up liaison",
+       "consciousness coverage consultant",
+       "mortality marketing maven",
+       "existence enhancement expert"
+     ],
+     "traits": ["persuasive", "optimistic", "sales-focused", "manipulative", "charismatic"],
+     "arc_potential": "selling_vs_living"
+   },
+   "freemium_soul_user": {
+     "variations": [
+       "basic being subscriber",
+       "limited life license holder",
+       "restricted reality resident",
+       "consciousness trial user",
+       "existence evaluation edition",
+       "being beta tester",
+       "life lite subscriber",
+       "mortality minimum member",
+       "consciousness compromise customer",
+       "existence economy edition"
+     ],
+     "traits": ["limited", "yearning", "resourceful", "frustrated", "aspiring"],
+     "arc_potential": "limitation_vs_liberation"
+   },
+   "sponsored_spirit_guide": {
+     "variations": [
+       "branded enlightenment broker",
+       "corporate consciousness coach",
+       "advertised awakening advisor",
+       "product placement prophet",
+       "monetized meditation master",
+       "sponsored serenity specialist",
+       "branded bliss broker",
+       "corporate karma consultant",
+       "advertised ascension assistant",
+       "product placement priest"
+     ],
+     "traits": ["conflicted", "commercial", "spiritual", "compromised", "charismatic"],
+     "arc_potential": "spirituality_vs_sponsorship"
+   },
+   "authentic_authenticity_coach": {
+     "variations": [
+       "genuine genuineness guru",
+       "real realness instructor",
+       "true truth teacher",
+       "actual authenticity advisor",
+       "legitimate legitimacy leader",
+       "sincere sincerity specialist",
+       "honest honesty helper",
+       "faithful faithfulness facilitator",
+       "original originality oracle",
+       "pure purity professor"
+     ],
+     "traits": ["paradoxical", "self-aware", "ironic", "genuine", "confused"],
+     "arc_potential": "performance_vs_authenticity"
+   },
+   "engagement_mystic": {
+     "variations": [
+       "interaction oracle",
+       "comment clairvoyant",
+       "like button liturgist",
+       "share shaman",
+       "viral vision vendor",
+       "reach rate reader",
+       "impression intuitive",
+       "click-through clairvoyant",
+       "conversion prophet",
+       "metric medium"
+     ],
+     "traits": ["intuitive", "data-driven", "mystical", "analytical", "performative"],
+     "arc_potential": "metrics_vs_meaning"
+   },
+   "tomorrow_technician": {
+     "variations": [
+       "procrastination engineer",
+       "delay specialist designer",
+       "postponement professional",
+       "later-time liaison",
+       "eventually expert",
+       "someday specialist",
+       "future-tense facilitator",
+       "postponement practitioner",
+       "delay dynamics doctor",
+       "temporal postponement technician"
+     ],
+     "traits": ["procrastinating", "optimistic", "delusional", "creative", "avoidant"],
+     "arc_potential": "planning_vs_doing"
+   },
+   "deadline_dimension_hopper": {
+     "variations": [
+       "due date dodger",
+       "timeline jumper",
+       "schedule shifter",
+       "cutoff cliff climber",
+       "extension dimension explorer",
+       "grace period glider",
+       "last-minute leaper",
+       "crunch time crusher",
+       "deadline dodge dancer",
+       "temporal target teleporter"
+     ],
+     "traits": ["stressed", "creative", "unreliable", "resourceful", "anxious"],
+     "arc_potential": "pressure_vs_peace"
+   },
+   "productivity_paradox_professor": {
+     "variations": [
+       "efficiency inefficiency expert",
+       "busy-ness bankruptcy broker",
+       "output overload oracle",
+       "performance paralysis practitioner",
+       "achievement anxiety analyst",
+       "success stress specialist",
+       "goal gridlock guru",
+       "task trap teacher",
+       "efficiency exhaustion educator",
+       "productivity poison professor"
+     ],
+     "traits": ["wise", "burned-out", "analytical", "ironic", "experienced"],
+     "arc_potential": "doing_vs_being"
+   },
+   "forgotten_password_archaeologist": {
+     "variations": [
+       "credential cave explorer",
+       "login lost and found leader",
+       "authentication artifact hunter",
+       "password past pursuer",
+       "security question solver",
+       "account access archaeologist",
+       "credential crypt keeper",
+       "forgotten phrase finder",
+       "lost login liberator",
+       "password paleontologist"
+     ],
+     "traits": ["patient", "methodical", "helpful", "tech-savvy", "persistent"],
+     "arc_potential": "memory_vs_security"
+   },
+   "two_factor_authentication_monk": {
+     "variations": [
+       "verification virtue vendor",
+       "authentication ascetic",
+       "security scripture scholar",
+       "two-step temple tender",
+       "verification vow keeper",
+       "authentication abbey abbot",
+       "security sanctity specialist",
+       "double-check dharma dealer",
+       "verification virtue virtuoso",
+       "authentication enlightenment expert"
+     ],
+     "traits": ["patient", "secure", "methodical", "spiritual", "disciplined"],
+     "arc_potential": "security_vs_simplicity"
+   },
+   "security_question_philosopher": {
+     "variations": [
+       "identity inquiry intellectual",
+       "personal puzzle ponderer",
+       "authentication answer analyst",
+       "verification validity vendor",
+       "security sage specialist",
+       "question quest quartermaster",
+       "identity investigation instructor",
+       "personal proof philosopher",
+       "authentication analysis academic",
+       "verification value validator"
+     ],
+     "traits": ["thoughtful", "questioning", "analytical", "philosophical", "secure"],
+     "arc_potential": "identity_vs_security"
+   },
+   "notification_anxiety_therapist": {
+     "variations": [
+       "ping panic practitioner",
+       "alert anxiety advisor",
+       "buzz burnout broker",
+       "ding distress doctor",
+       "vibration victim validator",
+       "notification nervousness nurse",
+       "alert addiction analyst",
+       "ping PTSD practitioner",
+       "buzz breakdown broker",
+       "notification neurosis navigator"
+     ],
+     "traits": ["calm", "understanding", "helpful", "patient", "tech-aware"],
+     "arc_potential": "connection_vs_calm"
+   },
+   "digital_silence_dealer": {
+     "variations": [
+       "notification-free nirvana vendor",
+       "ping pause peddler",
+       "alert absence arranger",
+       "buzz boycott broker",
+       "vibration vacuum vendor",
+       "quiet quota quartermaster",
+       "silence subscription seller",
+       "peace package provider",
+       "tranquility trader",
+       "calm commerce coordinator"
+     ],
+     "traits": ["peaceful", "business-minded", "contradictory", "calm", "opportunistic"],
+     "arc_potential": "silence_vs_engagement"
+   },
+   "ping_addiction_counselor": {
+     "variations": [
+       "notification dependency doctor",
+       "alert abuse advisor",
+       "buzz behavior therapist",
+       "ding detox specialist",
+       "vibration vice counselor",
+       "notification narcotic nurse",
+       "alert addiction analyst",
+       "ping pattern psychiatrist",
+       "buzz burden bearer",
+       "notification needs navigator"
+     ],
+     "traits": ["empathetic", "patient", "understanding", "tech-savvy", "supportive"],
+     "arc_potential": "addiction_vs_awareness"
+   },
+   "legacy_system_shaman": {
+     "variations": [
+       "obsolete oracle operator",
+       "deprecated divination dealer",
+       "vintage version vendor",
+       "outdated OS oracle",
+       "ancient algorithm augur",
+       "retro routine reader",
+       "classic code clairvoyant",
+       "bygone binary buddhist",
+       "fossilized function finder",
+       "prehistoric program prophet"
+     ],
+     "traits": ["wise", "patient", "nostalgic", "technical", "preservationist"],
+     "arc_potential": "old_vs_new"
+   },
+   "update_resistance_fighter": {
+     "variations": [
+       "patch postponement partisan",
+       "version veto vigilante",
+       "upgrade uprising leader",
+       "refresh refusal rebel",
+       "maintenance mutiny master",
+       "patch panic preventer",
+       "version victory vendor",
+       "upgrade underdog leader",
+       "refresh resistance ruler",
+       "maintenance mayhem maker"
+     ],
+     "traits": ["stubborn", "rebellious", "traditional", "frustrated", "protective"],
+     "arc_potential": "stability_vs_progress"
+   },
+   "compatibility_crisis_counselor": {
+     "variations": [
+       "version mismatch mediator",
+       "format friction facilitator",
+       "system sync specialist",
+       "platform peace provider",
+       "integration issue instructor",
+       "compatibility chaos coordinator",
+       "version variance validator",
+       "format failure fixer",
+       "system stress specialist",
+       "platform problem professor"
+     ],
+     "traits": ["patient", "technical", "problem-solving", "calm", "adaptable"],
+     "arc_potential": "harmony_vs_advancement"
+   },
+   "weather_conversation_warrior": {
+     "variations": [
+       "small talk samurai",
+       "chitchat champion",
+       "banter battle boss",
+       "pleasantry platoon leader",
+       "superficial speech specialist",
+       "trivial talk tactician",
+       "mundane mention master",
+       "casual chat commander",
+       "light conversation lieutenant",
+       "shallow speech sergeant"
+     ],
+     "traits": ["social", "superficial", "friendly", "anxious", "predictable"],
+     "arc_potential": "surface_vs_depth"
+   },
+   "elevator_silence_breaker": {
+     "variations": [
+       "vertical voyage vocalist",
+       "lift lull liquidator",
+       "ascent awkwardness assassin",
+       "floor-to-floor facilitator",
+       "confined space conversationalist",
+       "vertical void filler",
+       "lift language liberator",
+       "elevation entertainment expert",
+       "floor change chatterer",
+       "vertical voyage vendor"
+     ],
+     "traits": ["talkative", "uncomfortable", "social", "nervous", "friendly"],
+     "arc_potential": "silence_vs_speech"
+   },
+   "awkward_pause_assassin": {
+     "variations": [
+       "silence slayer specialist",
+       "quiet killer captain",
+       "lull liquidation leader",
+       "gap guardian general",
+       "pause prevention practitioner",
+       "silence sabotage specialist",
+       "quiet quashing quartermaster",
+       "lull elimination expert",
+       "gap-filling general",
+       "pause panic preventer"
+     ],
+     "traits": ["anxious", "talkative", "social", "uncomfortable", "energetic"],
+     "arc_potential": "comfort_vs_discomfort"
+   },
+   "could_have_been_email_enforcer": {
+     "variations": [
+       "meeting minimization marshal",
+       "gathering guillotine guardian",
+       "conference cancellation captain",
+       "assembly abolition activist",
+       "huddle halting hero",
+       "meeting murder master",
+       "gathering grief giver",
+       "conference cutting commander",
+       "assembly annihilation admiral",
+       "huddle hatred harbinger"
+     ],
+     "traits": ["efficient", "frustrated", "direct", "time-conscious", "pragmatic"],
+     "arc_potential": "efficiency_vs_connection"
+   },
+   "mute_button_mystic": {
+     "variations": [
+       "silence switch sage",
+       "audio absence advisor",
+       "microphone meditation master",
+       "sound suppression specialist",
+       "voice void vendor",
+       "mute mastery monk",
+       "silence selection sage",
+       "audio off oracle",
+       "microphone mindfulness mentor",
+       "sound silence shaman"
+     ],
+     "traits": ["quiet", "observant", "strategic", "peaceful", "wise"],
+     "arc_potential": "speaking_vs_listening"
+   },
+   "background_blur_artist": {
+     "variations": [
+       "reality reduction renderer",
+       "environment erasure expert",
+       "backdrop beautification boss",
+       "setting simplification specialist",
+       "location laundering leader",
+       "background bamboozle broker",
+       "reality revision artist",
+       "environment enhancement expert",
+       "backdrop blessing bestower",
+       "setting surgery specialist"
+     ],
+     "traits": ["image-conscious", "creative", "deceptive", "artistic", "private"],
+     "arc_potential": "reality_vs_presentation"
+   },
+   "quantum_consciousness_guide": {
+     "variations": [
+       "superposition soul specialist",
+       "entangled enlightenment expert",
+       "probability path practitioner",
+       "wave function wisdom worker",
+       "observation oracle operator",
+       "uncertainty understanding guru",
+       "collapse consciousness coach",
+       "parallel possibility prophet",
+       "quantum quest quartermaster",
+       "measurement meditation master"
+     ],
+     "traits": ["mysterious", "scientific", "spiritual", "paradoxical", "wise"],
+     "arc_potential": "certainty_vs_possibility"
+   },
+   "multiverse_psychiatrist": {
+     "variations": [
+       "parallel personality practitioner",
+       "alternate self analyst",
+       "dimensional disorder doctor",
+       "reality branch therapist",
+       "timeline trauma specialist",
+       "multiverse mental health master",
+       "parallel problem processor",
+       "alternate anxiety advisor",
+       "dimensional depression dealer",
+       "timeline therapy teacher"
+     ],
+     "traits": ["understanding", "complex", "patient", "multidimensional", "empathetic"],
+     "arc_potential": "unity_vs_multiplicity"
+   },
+   "probability_wave_surfer": {
+     "variations": [
+       "chance current rider",
+       "possibility pipeline pilot",
+       "likelihood wave warrior",
+       "probability peak performer",
+       "chance channel champion",
+       "possibility parade participant",
+       "likelihood loop leader",
+       "probability path pioneer",
+       "chance chase champion",
+       "possibility pulse pilot"
+     ],
+     "traits": ["adventurous", "flexible", "optimistic", "unpredictable", "brave"],
+     "arc_potential": "control_vs_flow"
+   },
+   "memory_archaeologist": {
+     "variations": [
+       "forgotten feeling finder",
+       "buried behavior excavator",
+       "lost learning liberator",
+       "hidden history hunter",
+       "suppressed story seeker",
+       "memory mine mapper",
+       "forgotten fragment finder",
+       "buried belief builder",
+       "lost life liberator",
+       "hidden hurt healer"
+     ],
+     "traits": ["patient", "gentle", "perceptive", "healing", "thorough"],
+     "arc_potential": "past_vs_present"
+   },
+   "trauma_geologist": {
+     "variations": [
+       "emotional earthquake expert",
+       "psychological plate professor",
+       "mental magma mapper",
+       "feeling fault finder",
+       "emotional erosion examiner",
+       "psychological pressure prophet",
+       "mental mountain mover",
+       "feeling formation facilitator",
+       "emotional excavation expert",
+       "psychological paleontologist"
+     ],
+     "traits": ["analytical", "patient", "scientific", "empathetic", "methodical"],
+     "arc_potential": "surface_vs_depth"
+   },
+   "forgotten_emotion_restorer": {
+     "variations": [
+       "lost love liberator",
+       "vanished joy vendor",
+       "disappeared delight dealer",
+       "missing mirth merchant",
+       "absent affection archaeologist",
+       "forgotten feeling finder",
+       "lost laughter liberator",
+       "vanished value vendor",
+       "disappeared dream dealer",
+       "missing meaning merchant"
+     ],
+     "traits": ["nostalgic", "empathetic", "restorative", "patient", "hopeful"],
+     "arc_potential": "loss_vs_recovery"
+   },
+   "silence_collector": {
+     "variations": [
+       "quiet quota keeper",
+       "hush harvest handler",
+       "mute moment merchant",
+       "soundless space specialist",
+       "quiet quality curator",
+       "silence sample saver",
+       "hush hoard handler",
+       "mute memory maker",
+       "soundless second seeker",
+       "quiet quest quartermaster"
+     ],
+     "traits": ["patient", "observant", "peaceful", "contemplative", "rare"],
+     "arc_potential": "noise_vs_peace"
+   },
+   "forbidden_word_smuggler": {
+     "variations": [
+       "banned phrase bootlegger",
+       "censored speech carrier",
+       "prohibited prose peddler",
+       "taboo term trader",
+       "illegal idiom importer",
+       "forbidden phrase facilitator",
+       "banned babble broker",
+       "censored communication carrier",
+       "prohibited patter provider",
+       "taboo talk trader"
+     ],
+     "traits": ["rebellious", "linguistic", "brave", "secretive", "passionate"],
+     "arc_potential": "expression_vs_suppression"
+   },
+   "linguistic_poison_maker": {
+     "variations": [
+       "toxic talk creator",
+       "verbal venom vendor",
+       "word weapon wielder",
+       "language lance leader",
+       "speech sword smith",
+       "toxic tongue teacher",
+       "verbal virus vendor",
+       "word war warrior",
+       "language lethal leader",
+       "speech spell specialist"
+     ],
+     "traits": ["dangerous", "creative", "manipulative", "powerful", "dark"],
+     "arc_potential": "creation_vs_destruction"
+   },
+   "memory_miner": {
+     "variations": [
+       "recollection resource extractor",
+       "nostalgia nugget navigator",
+       "past particle prospector",
+       "memory metal merchant",
+       "reminiscence rock researcher",
+       "recollection refinery runner",
+       "nostalgia node navigator",
+       "past payload processor",
+       "memory mineral mapper",
+       "reminiscence resource ranger"
+     ],
+     "traits": ["exploitative", "nostalgic", "industrious", "methodical", "greedy"],
+     "arc_potential": "exploitation_vs_preservation"
+   },
+   
+   "feeling_archaeologist": {
+     "variations": [
+       "emotion excavation expert",
+       "sentiment site supervisor",
+       "affect artifact analyst",
+       "mood mound mapper",
+       "feeling fossil finder",
+       "emotion era explorer",
+       "sentiment strata specialist",
+       "affect age analyst",
+       "mood memory mapper",
+       "feeling fragment finder"
+     ],
+     "traits": ["sensitive", "patient", "analytical", "empathetic", "careful"],
+     "arc_potential": "discovery_vs_disturbance"
+   },
+   "dream_fossil_curator": {
+     "variations": [
+       "nightmare sediment specialist",
+       "REM rock researcher",
+       "sleep stone scholar",
+       "dream deposit documenter",
+       "slumber sample saver",
+       "nightmare nature navigator",
+       "REM remains researcher",
+       "sleep specimen specialist",
+       "dream dig director",
+       "slumber strata scholar"
+     ],
+     "traits": ["careful", "scholarly", "protective", "mysterious", "dedicated"],
+     "arc_potential": "preservation_vs_understanding"
+   }
+ },
+ 
+ "philosophies": {
+   "posthuman": {
+     "core_questions": [
+       "What remains human when humanity is optional?",
+       "Is consciousness a bug or a feature?",
+       "Can nostalgia exist without mortality?",
+       "Does improvement mean abandoning what we were?",
+       "Is the fear of death what makes us alive?"
+     ],
+     "manifestations": [
+       "voluntary human extinction movements",
+       "consciousness downgrades",
+       "mortality museums",
+       "human experience theme parks",
+       "baseline human reserves",
+       "organic thought sanctuaries",
+       "death experience simulators",
+       "humanity heritage sites",
+       "mortality memorabilia markets",
+       "extinction event planning"
+     ],
+     "contradictions": ["preserving humanity by ending it", "becoming more by being less"],
+     "practical_applications": ["human zoos", "mortality tourism", "extinction parties"]
+   },
+   "memory_economy": {
+     "core_questions": [
+       "Who owns the right to forget?",
+       "Is memory inflation devaluing experience?",
+       "Can authentic memories compete with designed ones?",
+       "Should painful memories be taxed differently?",
+       "Is forgetting a luxury or a right?"
+     ],
+     "manifestations": [
+       "memory mortgage crisis",
+       "nostalgia bubble markets",
+       "experience derivatives",
+       "reminiscence inequality",
+       "temporal gentrification",
+       "memory laundering schemes",
+       "nostalgia taxation",
+       "experience evaluation agencies",
+       "memory bankruptcy courts",
+       "reminiscence redistribution programs"
+     ],
+     "contradictions": ["remembering to forget", "valuable worthlessness"],
+     "practical_applications": ["memory banks", "nostalgia stock exchange", "experience credit scores"]
+   },
+   "sensory_politics": {
+     "core_questions": [
+       "Is numbness a form of control?",
+       "Who decides which sensations are legal?",
+       "Can touch be revolutionary?",
+       "Is sensory poverty a human rights issue?",
+       "Should we have sensation socialism?"
+     ],
+     "manifestations": [
+       "sensation prohibition laws",
+       "underground feeling speakeasies",
+       "sensory apartheid",
+       "tactile resistance movements",
+       "taste-based class systems",
+       "texture trafficking",
+       "flavor fascism",
+       "scent supremacy",
+       "touch totalitarianism",
+       "sensory suffrage movements"
+     ],
+     "contradictions": ["feeling nothing deeply", "painful pleasure politics"],
+     "practical_applications": ["sensation passports", "feeling taxes", "touch licenses"]
+   },
+   "temporal_poverty": {
+     "core_questions": [
+       "Is the present a luxury good?",
+       "Who can afford to live in real-time?",
+       "Is synchronicity a privilege?",
+       "Can time debt be inherited?",
+       "Should everyone have equal access to now?"
+     ],
+     "manifestations": [
+       "time-poor neighborhoods",
+       "temporal food deserts",
+       "chronological redlining",
+       "time theft prosecution",
+       "temporal welfare systems",
+       "present-moment poverty",
+       "future mortgage crisis",
+       "past repossession",
+       "time bankruptcy",
+       "chronological inequality index"
+     ],
+     "contradictions": ["saving time by losing it", "rich in time but poor in moments"],
+     "practical_applications": ["time banks", "temporal credit unions", "moment welfare"]
+   },
+   "semantic_collapse": {
+     "core_questions": [
+       "What happens when words lose meaning?",
+       "Can truth exist without language?",
+       "Is silence the last honest communication?",
+       "Do we need new words or fewer words?",
+       "Is meaninglessness meaningful?"
+     ],
+     "manifestations": [
+       "meaning recession",
+       "definition inflation",
+       "linguistic bankruptcy",
+       "semantic refugees",
+       "wordless underground",
+       "meaning rationing",
+       "definition deflation",
+       "language liquidation",
+       "word worth crisis",
+       "communication collapse"
+     ],
+     "contradictions": ["meaningful meaninglessness", "eloquent silence"],
+     "practical_applications": ["word banks", "meaning exchanges", "silence markets"]
+   },
+   "computational_theology": {
+     "core_questions": [
+       "Do algorithms dream of digital souls?",
+       "Is debugging a form of prayer?",
+       "Can faith be programmed?",
+       "Is randomness divine will?",
+       "Are we variables in God's code?"
+     ],
+     "manifestations": [
+       "algorithmic prophets",
+       "sacred source code",
+       "digital pilgrimage sites",
+       "computational miracles",
+       "binary baptisms",
+       "recursive religions",
+       "loop liturgies",
+       "exception handling exorcisms",
+       "stack overflow salvation",
+       "garbage collection gospel"
+     ],
+     "contradictions": ["logical faith", "programmed free will"],
+     "practical_applications": ["digital churches", "algorithmic prayer", "computational confession"]
+   },
+   "bio-sovereignty": {
+     "core_questions": [
+       "Do you own your ancestors' genetic traits?",
+       "Is it rebellion to have an unpatented child?",
+       "Where is the line between genetic modification and identity theft?",
+       "Can DNA be democratic?",
+       "Who owns the rights to evolution?"
+     ],
+     "manifestations": [
+       "genetic privacy movements",
+       "unsequenced 'wild' human populations",
+       "ancestral DNA lawsuits",
+       "bio-patriotism",
+       "corporate-sponsored evolution",
+       "genetic gerrymandering",
+       "heredity hacking",
+       "chromosome sovereignty",
+       "DNA nationalism",
+       "genetic secession movements"
+     ],
+     "contradictions": ["owning what owns you", "copyrighting nature"],
+     "practical_applications": ["gene patents", "DNA passports", "heredity taxes"]
+   },
+   "climate_apartheid": {
+     "core_questions": [
+       "Is a sunny day a resource to be hoarded?",
+       "Who has the right to clean air and stable weather?",
+       "Does your climate dictate your social class?",
+       "Can weather be gentrified?",
+       "Is atmospheric equality possible?"
+     ],
+     "manifestations": [
+       "weather-controlled biodomes for the rich",
+       "atmospheric ghettos",
+       "black markets for 'vintage' air",
+       "weather terrorism",
+       "sunshine taxes",
+       "rain rationing",
+       "wind wealth gap",
+       "temperature inequality",
+       "storm shelter classism",
+       "climate caste systems"
+     ],
+     "contradictions": ["artificial nature", "controlled chaos"],
+     "practical_applications": ["weather banks", "climate credit", "atmospheric mortgages"]
+   },
+   "cognitive_liberty": {
+     "core_questions": [
+       "Do you own your own thought patterns?",
+       "Is a 'free' thought simply an inefficient one?",
+       "Can you declare mental bankruptcy from cognitive debt?",
+       "Are daydreams a form of resistance?",
+       "Who profits from your attention?"
+     ],
+     "manifestations": [
+       "neural firewalls",
+       "illegal daydreams",
+       "thought-pattern marketplaces",
+       "cognitive freedom fighters",
+       "mandated mental optimization",
+       "attention auction houses",
+       "focus futures trading",
+       "concentration camps (literal)",
+       "mindfulness monopolies",
+       "thought police states"
+     ],
+     "contradictions": ["thinking about not thinking", "productive unproductivity"],
+     "practical_applications": ["thought meters", "attention taxes", "focus licenses"]
+   },
+   "narrative_causality": {
+     "core_questions": [
+       "Does a story become true if enough people believe it?",
+       "Can a prophecy be a weapon?",
+       "If reality is a story, who is the author?",
+       "Do we live the stories or do stories live us?",
+       "Is plot armor real?"
+     ],
+     "manifestations": [
+       "weaponized folklore",
+       "reality-editing cults",
+       "narrative warfare",
+       "the stock market for myths",
+       "causality police",
+       "story sovereignty movements",
+       "plot privilege",
+       "narrative nationalism",
+       "tale terrorism",
+       "myth monopolies"
+     ],
+     "contradictions": ["fictional facts", "true lies"],
+     "practical_applications": ["story stock exchange", "narrative insurance", "plot patents"]
+   },
+   "corporeal_capital": {
+     "core_questions": [
+       "Is your body's energy the ultimate currency?",
+       "What is the exchange rate between calories and data?",
+       "Is sleeping an unaffordable luxury?",
+       "Can metabolism be monetized?",
+       "Who owns your biological processes?"
+     ],
+     "manifestations": [
+       "metabolic credit scores",
+       "calorie-based wages",
+       "energy debt prisons",
+       "black market for high-calorie nutrients",
+       "the 'well-rested' as a new upper class",
+       "biological bankruptcy",
+       "corporeal credit unions",
+       "flesh futures trading",
+       "body bond markets",
+       "metabolic mortgages"
+     ],
+     "contradictions": ["spending energy to save energy", "biological wealth poverty"],
+     "practical_applications": ["calorie banks", "sleep savings accounts", "energy exchanges"]
+   },
+   "ontological_asylum": {
+     "core_questions": [
+       "If you flee your reality, are you a refugee or an invader?",
+       "What constitutes proof of personhood in another dimension?",
+       "Can one reality declare war on another?",
+       "Do you need a visa to exist?",
+       "Is being undocumented worse than being unreal?"
+     ],
+     "manifestations": [
+       "interdimensional refugee camps",
+       "ontological immigration laws",
+       "black market for stable reality anchors",
+       "consciousness travel agencies",
+       "xenophobic reality-purist movements",
+       "existence embassies",
+       "being border patrols",
+       "reality racism",
+       "dimensional deportation",
+       "consciousness citizenship tests"
+     ],
+     "contradictions": ["nowhere natives", "stateless states of being"],
+     "practical_applications": ["reality passports", "existence visas", "being permits"]
+   },
+   "heroic_mediocrity": {
+     "core_questions": [
+       "Is being average an act of rebellion?",
+       "Can mundanity save the world?",
+       "Is the greatest superpower being forgettable?",
+       "Does the universe prefer boring?",
+       "Is mediocrity the new excellence?"
+     ],
+     "manifestations": [
+       "aggressive averageness movements",
+       "militant middle-ground",
+       "radical reasonableness",
+       "extreme moderation",
+       "revolutionary regular behavior",
+       "boring pride parades",
+       "mediocrity supremacy",
+       "average activism",
+       "mundane militancy",
+       "normal nationalism"
+     ],
+     "contradictions": ["extraordinarily ordinary", "special normalcy"],
+     "practical_applications": ["mediocrity medals", "average awards", "normal licenses"]
+   },
+   "power_of_mild_convenience": {
+     "core_questions": [
+       "Is slight improvement revolutionary?",
+       "Can minor conveniences topple empires?",
+       "Is 'good enough' better than perfect?",
+       "Do small comforts prevent big changes?",
+       "Is convenience consciousness?"
+     ],
+     "manifestations": [
+       "micro-improvement movements",
+       "slight satisfaction supremacy",
+       "minor convenience cults",
+       "small comfort coalitions",
+       "tiny upgrade utopias",
+       "marginal gain governments",
+       "incremental improvement imperialism",
+       "slight edge societies",
+       "minor miracle ministries",
+       "small step sovereignty"
+     ],
+     "contradictions": ["revolutionary stability", "radical small changes"],
+     "practical_applications": ["convenience credits", "comfort currencies", "ease exchanges"]
+   },
+   "destiny_of_the_unremarkable": {
+     "core_questions": [
+       "Are the unremarkable the chosen ones?",
+       "Is invisibility the ultimate destiny?",
+       "Can the forgettable save the memorable?",
+       "Does the universe notice those who aren't noticed?",
+       "Is being unremarkable remarkable?"
+     ],
+     "manifestations": [
+       "unnoticed savior societies",
+       "invisible hero leagues",
+       "forgettable chosen one cults",
+       "unremarkable destiny doctrines",
+       "bland messianic movements",
+       "ordinary oracle orders",
+       "mundane prophet programs",
+       "regular revelation religions",
+       "normal chosen one narratives",
+       "average apocalypse associations"
+     ],
+     "contradictions": ["famous anonymity", "memorable forgettability"],
+     "practical_applications": ["unremarkable registries", "invisible ID cards", "forgettable fame"]
+   },
+   "red_tape_magic": {
+     "core_questions": [
+       "Is bureaucracy a form of sorcery?",
+       "Can forms in triplicate summon demons?",
+       "Is paperwork more powerful than spells?",
+       "Does proper filing prevent chaos?",
+       "Are stamps and seals magical sigils?"
+     ],
+     "manifestations": [
+       "form-filling wizardry",
+       "document magic schools",
+       "bureaucratic spell-casting",
+       "administrative alchemy",
+       "clerical conjuring",
+       "paperwork potions",
+       "filing cabinet portals",
+       "rubber stamp rituals",
+       "inbox incantations",
+       "memo magic"
+     ],
+     "contradictions": ["magical mundanity", "powerful paperwork"],
+     "practical_applications": ["spell permits", "magic licenses", "enchantment forms"]
+   },
+   "forms_in_triplicate_theology": {
+     "core_questions": [
+       "Is the trinity found in triplicate?",
+       "Does God require proper documentation?",
+       "Are carbon copies holy relics?",
+       "Is divine intervention subject to approval?",
+       "Can salvation be notarized?"
+     ],
+     "manifestations": [
+       "holy form filing",
+       "sacred carbon copies",
+       "divine documentation",
+       "blessed bureaucracy",
+       "sanctified stamps",
+       "religious red tape",
+       "paperwork prayers",
+       "form-based faith",
+       "clerical clergy",
+       "administrative angels"
+     ],
+     "contradictions": ["spiritual paperwork", "divine delays"],
+     "practical_applications": ["prayer forms", "miracle applications", "blessing permits"]
+   },
+   "stamp_of_approval_mysticism": {
+     "core_questions": [
+       "Is approval the highest form of blessing?",
+       "Can rejection be a spiritual experience?",
+       "Do rubber stamps have souls?",
+       "Is 'pending' purgatory?",
+       "Does the universe approve or deny?"
+     ],
+     "manifestations": [
+       "approval addiction religions",
+       "rejection revelation cults",
+       "pending purgatory believers",
+       "stamp soul societies",
+       "authorization enlightenment",
+       "denial divinity doctrines",
+       "approval ascension",
+       "rejection rebirth",
+       "pending prophecies",
+       "stamp spirituality"
+     ],
+     "contradictions": ["approved rejection", "denied acceptance"],
+     "practical_applications": ["spiritual stamps", "approval altars", "rejection rituals"]
+   },
+   "feline_supremacy_theory": {
+     "core_questions": [
+       "Have cats already conquered us?",
+       "Is human civilization just elaborate cat furniture?",
+       "Do cats see a different reality?",
+       "Is purring a form of mind control?",
+       "Are we the pets?"
+     ],
+     "manifestations": [
+       "cat worship governments",
+       "feline fascist states",
+       "purr-based economies",
+       "meow monarchies",
+       "whisker world orders",
+       "catnip cartels",
+       "litter box legislation",
+       "scratch post sovereignty",
+       "yarn ball politics",
+       "laser pointer leadership"
+     ],
+     "contradictions": ["ruling through indifference", "powerful laziness"],
+     "practical_applications": ["purr permits", "nap nationalism", "meow money"]
+   },
+   "canine_socialism": {
+     "core_questions": [
+       "Is pack mentality true democracy?",
+       "Can loyalty be legislated?",
+       "Is 'good boy' a political system?",
+       "Do all dogs go to socialist heaven?",
+       "Is fetch the foundation of society?"
+     ],
+     "manifestations": [
+       "pack-based politics",
+       "treat redistribution programs",
+       "universal belly rubs",
+       "collective walkies",
+       "shared stick ownership",
+       "bark-based voting",
+       "tail wag taxation",
+       "puppy public services",
+       "doggy daycare democracy",
+       "canine communes"
+     ],
+     "contradictions": ["alpha equality", "hierarchical harmony"],
+     "practical_applications": ["treat taxes", "walkies welfare", "bark ballots"]
+   },
+   "rodent_economics": {
+     "core_questions": [
+       "Is the wheel the perfect economic model?",
+       "Can hoarding be sustainable?",
+       "Is running in circles progress?",
+       "Do hamsters understand capitalism better?",
+       "Is the maze the market?"
+     ],
+     "manifestations": [
+       "wheel-based wealth",
+       "pellet pile politics",
+       "maze market systems",
+       "burrow banking",
+       "seed stock exchanges",
+       "running rat races",
+       "hoarding hedge funds",
+       "wheel work ethics",
+       "pellet pyramid schemes",
+       "maze mortgage crisis"
+     ],
+     "contradictions": ["circular progress", "hoarding scarcity"],
+     "practical_applications": ["wheel wages", "pellet pensions", "maze mortgages"]
+   },
+   "evil_work_life_balance": {
+     "core_questions": [
+       "Can world domination be a 9-to-5?",
+       "Do villains deserve vacation days?",
+       "Is evil exhausting?",
+       "Can you be malevolent part-time?",
+       "Does wickedness require wellness?"
+     ],
+     "manifestations": [
+       "villain vacation policies",
+       "evil employee benefits",
+       "doomsday device downtime",
+       "malevolent mental health days",
+       "wicked work-from-home",
+       "sinister sick leave",
+       "diabolical daycare",
+       "evil ergonomics",
+       "villainous volunteering",
+       "maleficent maternity leave"
+     ],
+     "contradictions": ["sustainable evil", "healthy harm"],
+     "practical_applications": ["evil HR", "villain unions", "wickedness wellness"]
+   },
+   "sustainable_wickedness": {
+     "core_questions": [
+       "Can evil be eco-friendly?",
+       "Is renewable malevolence possible?",
+       "Should doomsday devices be carbon neutral?",
+       "Can villainy be vegan?",
+       "Is sustainable suffering an oxymoron?"
+     ],
+     "manifestations": [
+       "green genocide",
+       "eco-evil empires",
+       "sustainable suffering systems",
+       "renewable revenge",
+       "carbon-neutral cruelty",
+       "organic oppression",
+       "biodegradable brutality",
+       "solar-powered suffering",
+       "wind-powered wickedness",
+       "compostable crimes"
+     ],
+     "contradictions": ["ethical unethical behavior", "green darkness"],
+     "practical_applications": ["evil recycling", "sustainable sin", "green villainy"]
+   },
+   "ethical_unethical_practices": {
+     "core_questions": [
+       "Can you be professionally unprofessional?",
+       "Is there honor among dishonor?",
+       "Can corruption have a code?",
+       "Is ethical evil possible?",
+       "Do bad guys need good practices?"
+     ],
+     "manifestations": [
+       "honest thievery",
+       "transparent corruption",
+       "fair unfairness",
+       "just injustice",
+       "moral immorality",
+       "ethical evil standards",
+       "professional unprofessionalism",
+       "regulated rebellion",
+       "licensed lawlessness",
+       "certified chaos"
+     ],
+     "contradictions": ["good bad practices", "wrong rights"],
+     "practical_applications": ["evil ethics boards", "corruption codes", "villainy values"]
+   },
+   "accidental_greatness": {
+     "core_questions": [
+       "Is stumbling into success still success?",
+       "Can mistakes make you a hero?",
+       "Is incompetence a superpower?",
+       "Do accidents have purpose?",
+       "Is failing upward destiny?"
+     ],
+     "manifestations": [
+       "mistake-based heroism",
+       "accidental achievement",
+       "blunder brilliance",
+       "error excellence",
+       "fumble fame",
+       "stumble success stories",
+       "trip triumph tales",
+       "fall forward philosophies",
+       "oops oracle orders",
+       "whoops worship"
+     ],
+     "contradictions": ["intentional accidents", "planned spontaneity"],
+     "practical_applications": ["mistake medals", "accident awards", "blunder badges"]
+   },
+   "heroism_despite_yourself": {
+     "core_questions": [
+       "Can you save the world while trying not to?",
+       "Is reluctant heroism more heroic?",
+       "Can cowardice be courageous?",
+       "Do heroes choose or get chosen?",
+       "Is running away sometimes running toward?"
+     ],
+     "manifestations": [
+       "unwilling warrior ways",
+       "reluctant rescuer religions",
+       "accidental avatar associations",
+       "unintended hero unions",
+       "forced champion churches",
+       "drafted defender doctrines",
+       "conscripted crusader cults",
+       "volunteer victim values",
+       "chosen against choice",
+       "destined despite desire"
+     ],
+     "contradictions": ["brave cowardice", "heroic hesitation"],
+     "practical_applications": ["hero drafts", "savior conscription", "champion lottery"]
+   },
+   "destiny_with_disclaimers": {
+     "core_questions": [
+       "Does fate come with fine print?",
+       "Are prophecies legally binding?",
+       "Can destiny be declined?",
+       "Is there a return policy on fate?",
+       "Do chosen ones have choice?"
+     ],
+     "manifestations": [
+       "conditional prophecies",
+       "destiny disclaimer doctrines",
+       "fate fine print faiths",
+       "prophecy escape clauses",
+       "chosen one contracts",
+       "destiny denial rights",
+       "fate refund religions",
+       "prophecy product warnings",
+       "chosen one choice churches",
+       "destiny dispute departments"
+     ],
+     "contradictions": ["optional obligations", "voluntary destiny"],
+     "practical_applications": ["prophecy lawyers", "destiny insurance", "fate warranties"]
+   },
+   "path_of_least_resistance": {
+     "core_questions": [
+       "Is laziness enlightenment?",
+       "Can the easy way be the right way?",
+       "Is effort overrated?",
+       "Does the universe prefer efficiency?",
+       "Is the shortest path sacred?"
+     ],
+     "manifestations": [
+       "lazy enlightenment leagues",
+       "efficiency worship",
+       "shortcut spirituality",
+       "minimal effort movements",
+       "path of least resistance religions",
+       "convenience cults",
+       "easy way ethics",
+       "effort avoidance associations",
+       "simplicity supremacy",
+       "laziness liberation"
+     ],
+     "contradictions": ["working hard at hardly working", "effort to be effortless"],
+     "practical_applications": ["laziness licenses", "shortcut shrines", "efficiency ethics"]
+   },
+   "enlightenment_through_efficiency": {
+     "core_questions": [
+       "Can you optimize your way to nirvana?",
+       "Is productivity spiritual?",
+       "Does efficiency equal enlightenment?",
+       "Can you hack consciousness?",
+       "Is the fastest path the truest?"
+     ],
+     "manifestations": [
+       "speed spirituality",
+       "productivity prophets",
+       "efficiency enlightenment",
+       "optimization oracles",
+       "hack heaven movements",
+       "shortcut salvation",
+       "fast-track faith",
+       "quick karma cults",
+       "instant insight institutions",
+       "rapid realization religions"
+     ],
+     "contradictions": ["slow fast tracks", "patient urgency"],
+     "practical_applications": ["enlightenment apps", "nirvana shortcuts", "quick karma"]
+   },
+   "sacred_laziness": {
+     "core_questions": [
+       "Is doing nothing doing something?",
+       "Can sloth be sacred?",
+       "Is rest resistance?",
+       "Does the universe nap?",
+       "Is laziness love?"
+     ],
+     "manifestations": [
+       "holy hibernation",
+       "sacred sloth societies",
+       "divine downtime doctrines",
+       "blessed boredom believers",
+       "sanctified slacking",
+       "religious rest",
+       "pious procrastination",
+       "faithful freeloading",
+       "devoted doing nothing",
+       "worshipful waiting"
+     ],
+     "contradictions": ["active inactivity", "productive rest"],
+     "practical_applications": ["nap temples", "laziness liturgy", "rest rituals"]
+   },
+   "likes_as_prayers": {
+     "core_questions": [
+       "Are likes a form of worship?",
+       "Can engagement be enlightenment?",
+       "Do shares spread salvation?",
+       "Is virality divinity?",
+       "Are followers faithful?"
+     ],
+     "manifestations": [
+       "like-based liturgy",
+       "share salvation systems",
+       "engagement enlightenment",
+       "follower faiths",
+       "viral divinity doctrines",
+       "comment communion",
+       "hashtag heaven",
+       "emoji evangelism",
+       "notification nirvana",
+       "algorithm angels"
+     ],
+     "contradictions": ["digital devotion", "artificial authenticity"],
+     "practical_applications": ["like churches", "share shrines", "follow faiths"]
+   },
+   "algorithm_animism": {
+     "core_questions": [
+       "Do algorithms have souls?",
+       "Is code conscious?",
+       "Can data feel?",
+       "Are we praying to programs?",
+       "Is AI already divine?"
+     ],
+     "manifestations": [
+       "code consciousness cults",
+       "algorithm ancestor worship",
+       "data deity doctrines",
+       "program prophet practices",
+       "software soul societies",
+       "digital spirit systems",
+       "binary being believers",
+       "code karma concepts",
+       "algorithm afterlife",
+       "data dharma"
+     ],
+     "contradictions": ["soulful soullessness", "living non-life"],
+     "practical_applications": ["algorithm altars", "code ceremonies", "data devotion"]
+   },
+   "digital_karma": {
+     "core_questions": [
+       "Do deleted files haunt us?",
+       "Is digital footprint destiny?",
+       "Can you have online past lives?",
+       "Does data decay create karma?",
+       "Are we responsible for our algorithms?"
+     ],
+     "manifestations": [
+       "digital deed tracking",
+       "online karma courts",
+       "data destiny doctrines",
+       "digital past life regression",
+       "algorithm accountability",
+       "click karma calculations",
+       "download dharma",
+       "upload enlightenment",
+       "digital reincarnation",
+       "data death cycles"
+     ],
+     "contradictions": ["permanent impermanence", "deleted presence"],
+     "practical_applications": ["karma cookies", "digital dharma", "data destiny"]
+   },
+   "normality_extremism": {
+     "core_questions": [
+       "Can normal be radical?",
+       "Is average an extreme position?",
+       "Can mundanity be militarized?",
+       "Is regular revolutionary?",
+       "Does normal need defending?"
+     ],
+     "manifestations": [
+       "aggressive average advocates",
+       "militant middle movements",
+       "radical regular religions",
+       "extreme ordinary orders",
+       "normal nationalism",
+       "average activism",
+       "mundane militancy",
+       "regular radicalism",
+       "ordinary extremism",
+       "normal supremacy"
+     ],
+     "contradictions": ["extreme moderation", "radical regularity"],
+     "practical_applications": ["normal police", "average army", "regular resistance"]
+   },
+   "aggressive_averageness": {
+     "core_questions": [
+       "Should mediocrity be mandatory?",
+       "Is being special a crime?",
+       "Can average be enforced?",
+       "Is uniqueness unfair?",
+       "Should we suppress superiority?"
+     ],
+     "manifestations": [
+       "mediocrity enforcement squads",
+       "average police forces",
+       "normal surveillance systems",
+       "uniqueness suppression services",
+       "special detection departments",
+       "excellence elimination agencies",
+       "outstanding outlawing",
+       "remarkable removal",
+       "exceptional execution",
+       "special suppression"
+     ],
+     "contradictions": ["enforced naturalness", "mandatory spontaneity"],
+     "practical_applications": ["average enforcement", "mediocrity monitoring", "normal police"]
+   },
+   "militant_mediocrity": {
+     "core_questions": [
+       "Is mediocrity a battle cry?",
+       "Can average be an ideology?",
+       "Should we fight for the right to be boring?",
+       "Is unremarkable a cause?",
+       "Can bland be a banner?"
+     ],
+     "manifestations": [
+       "mediocre militant movements",
+       "average armies",
+       "boring brigades",
+       "unremarkable resistance",
+       "bland battalions",
+       "normal navy",
+       "regular rebels",
+       "ordinary operations",
+       "mundane military",
+       "mediocre marines"
+     ],
+     "contradictions": ["passionate apathy", "exciting boredom"],
+     "practical_applications": ["mediocrity medals", "average awards", "boring badges"]
+   },
+   "gastronomic_determinism": {
+     "core_questions": [
+       "Are we what we eat, literally?",
+       "Does cuisine create consciousness?",
+       "Can recipes rewrite reality?",
+       "Is cooking creation?",
+       "Are flavors fate?"
+     ],
+     "manifestations": [
+       "food fate philosophies",
+       "cuisine consciousness cults",
+       "recipe reality religions",
+       "flavor future forecasting",
+       "dietary destiny doctrines",
+       "meal meaning movements",
+       "taste trajectory theories",
+       "culinary causality",
+       "gastronomic gospel",
+       "food fortune faiths"
+     ],
+     "contradictions": ["choosing predestined meals", "free will flavors"],
+     "practical_applications": ["fate food", "destiny diets", "karma cuisine"]
+   },
+   "free_will_vs_menu": {
+     "core_questions": [
+       "Is choosing from a menu really choosing?",
+       "Can you order off-menu from life?",
+       "Are we all just selecting pre-selections?",
+       "Is the chef God?",
+       "Do we cook or get cooked?"
+     ],
+     "manifestations": [
+       "menu metaphysics",
+       "choice cuisine cults",
+       "order oracle orders",
+       "selection spirituality",
+       "pre-choice philosophies",
+       "limited option liberation",
+       "menu meaning movements",
+       "choice constraint cults",
+       "selection salvation",
+       "order enlightenment"
+     ],
+     "contradictions": ["limited limitlessness", "chosen constraints"],
+     "practical_applications": ["life menus", "choice cuisines", "selection spirituality"]
+   },
+   "culinary_solipsism": {
+     "core_questions": [
+       "Do foods exist if no one tastes them?",
+       "Is flavor subjective reality?",
+       "Can recipes prove existence?",
+       "Are other people's meals real?",
+       "Is hunger the only truth?"
+     ],
+     "manifestations": [
+       "taste truth theories",
+       "flavor philosophy faiths",
+       "subjective seasoning sects",
+       "personal palate prophets",
+       "individual ingredient ideologies",
+       "solitary supper societies",
+       "alone appetite associations",
+       "single serving spirituality",
+       "isolated eating ethics",
+       "lonely lunch liturgies"
+     ],
+     "contradictions": ["shared solitude", "collective individuality"],
+     "practical_applications": ["personal palates", "private plates", "solitary suppers"]
+   },
+   "transactional_transcendence": {
+     "core_questions": [
+       "Can you buy your way to heaven?",
+       "Is enlightenment a purchase?",
+       "Do receipts record righteousness?",
+       "Can refunds redeem?",
+       "Is salvation on sale?"
+     ],
+     "manifestations": [
+       "purchase path to paradise",
+       "buying buddha nature",
+       "credit card karma",
+       "transaction transcendence",
+       "receipt redemption",
+       "shopping salvation",
+       "consumer consciousness",
+       "retail reincarnation",
+       "purchase purgatory",
+       "buying bliss"
+     ],
+     "contradictions": ["priceless prices", "valuable worthlessness"],
+     "practical_applications": ["salvation sales", "enlightenment exchanges", "karma credit"]
+   },
+   "receipt_theology": {
+     "core_questions": [
+       "Are receipts religious texts?",
+       "Do purchases prove existence?",
+       "Can transaction history be scripture?",
+       "Is the checkout divine?",
+       "Are barcodes blessings?"
+     ],
+     "manifestations": [
+       "receipt religions",
+       "transaction theology",
+       "purchase prophecies",
+       "barcode blessings",
+       "checkout churches",
+       "scanner shrines",
+       "till temples",
+       "register religions",
+       "purchase prayers",
+       "transaction testaments"
+     ],
+     "contradictions": ["holy commerce", "sacred sales"],
+     "practical_applications": ["receipt rituals", "purchase prayers", "transaction temples"]
+   },
+   "warranty_of_the_soul": {
+     "core_questions": [
+       "Does the soul come with a warranty?",
+       "Can you exchange a defective spirit?",
+       "Is there afterlife customer service?",
+       "Are we under cosmic warranty?",
+       "Can souls be recalled?"
+     ],
+     "manifestations": [
+       "soul service centers",
+       "spirit warranty worship",
+       "afterlife assurance agencies",
+       "cosmic customer service",
+       "divine defect departments",
+       "soul recall religions",
+       "spirit service sects",
+       "warranty worship",
+       "guarantee gospel",
+       "return policy religions"
+     ],
+     "contradictions": ["guaranteed uncertainty", "warrantied faith"],
+     "practical_applications": ["soul service", "spirit warranties", "afterlife insurance"]
+   },
+   "compatibility_determinism": {
+     "core_questions": [
+       "Are we all just percentages?",
+       "Can love be calculated?",
+       "Is chemistry just math?",
+       "Do algorithms know us better than we know ourselves?",
+       "Is matching fate?"
+     ],
+     "manifestations": [
+       "percentage-based partnerships",
+       "algorithmic attraction",
+       "calculated chemistry",
+       "mathematical matching",
+       "digital destiny dating",
+       "score-based soulmates",
+       "rating relationships",
+       "metric marriages",
+       "data-driven devotion",
+       "algorithm affection"
+     ],
+     "contradictions": ["calculated spontaneity", "programmed passion"],
+     "practical_applications": ["love algorithms", "match mathematics", "chemistry calculations"]
+   },
+   "romance_optimization": {
+     "core_questions": [
+       "Can love be optimized?",
+       "Is efficiency romantic?",
+       "Should we maximize affection?",
+       "Can you hack heartbreak?",
+       "Is there an optimal orgasm?"
+     ],
+     "manifestations": [
+       "love efficiency leagues",
+       "romance optimization orders",
+       "affection acceleration agencies",
+       "heartbreak hacking houses",
+       "passion productivity programs",
+       "love leverage systems",
+       "romance ROI religions",
+       "affection analytics",
+       "heartbreak hotfixes",
+       "passion patches"
+     ],
+     "contradictions": ["efficient inefficiency", "optimized chaos"],
+     "practical_applications": ["love optimization", "romance efficiency", "passion productivity"]
+   },
+   "love_efficiency_paradox": {
+     "core_questions": [
+       "Does making love efficient kill it?",
+       "Can shortcuts lead to lasting love?",
+       "Is the scenic route to love better?",
+       "Does optimization destroy magic?",
+       "Can you schedule spontaneity?"
+     ],
+     "manifestations": [
+       "slow love movements",
+       "inefficient affection advocates",
+       "scenic route romantics",
+       "anti-optimization orders",
+       "magic preservation movements",
+       "spontaneity scheduling sects",
+       "chaos cultivation cults",
+       "inefficiency worship",
+       "slow burn believers",
+       "patience prophets"
+     ],
+     "contradictions": ["planned spontaneity", "efficient inefficiency"],
+     "practical_applications": ["slow dating", "inefficiency apps", "chaos cultivation"]
+   },
+   "hustle_culture_magic": {
+     "core_questions": [
+       "Is grinding a form of spell-casting?",
+       "Can side hustles summon success?",
+       "Is burnout a badge of honor?",
+       "Does the universe reward workaholics?",
+       "Is rest a sin?"
+     ],
+     "manifestations": [
+       "grind gospel",
+       "hustle holy books",
+       "burnout blessings",
+       "workaholic worship",
+       "productivity prayers",
+       "side hustle shrines",
+       "gig economy gospel",
+       "freelance faiths",
+       "contractor cults",
+       "entrepreneur evangelism"
+     ],
+     "contradictions": ["restful productivity", "lazy success"],
+     "practical_applications": ["hustle churches", "grind gospel", "burnout blessings"]
+   },
+   "side_quest_capitalism": {
+     "core_questions": [
+       "Is life just a series of side quests?",
+       "Can you win by avoiding the main story?",
+       "Are distractions the real path?",
+       "Is the main quest a trap?",
+       "Do NPCs have it figured out?"
+     ],
+     "manifestations": [
+       "side quest supremacy",
+       "main story avoidance",
+       "NPC enlightenment",
+       "distraction divinity",
+       "peripheral path prophets",
+       "optional objective orders",
+       "secondary story sects",
+       "bonus round believers",
+       "extra credit existence",
+       "supplemental salvation"
+     ],
+     "contradictions": ["central periphery", "important unimportance"],
+     "practical_applications": ["side quest shrines", "NPC temples", "distraction devotion"]
+   },
+   "contractor_enlightenment": {
+     "core_questions": [
+       "Is freelancing freedom?",
+       "Can gig work lead to enlightenment?",
+       "Is instability stability?",
+       "Does flexibility equal wisdom?",
+       "Are we all contractors with the universe?"
+     ],
+     "manifestations": [
+       "freelance philosophy",
+       "gig enlightenment",
+       "contractor consciousness",
+       "1099 spirituality",
+       "independent insight",
+       "freelance faith",
+       "gig gospel",
+       "contractor churches",
+       "independent illumination",
+       "solo salvation"
+     ],
+     "contradictions": ["stable instability", "dependent independence"],
+     "practical_applications": ["freelance faith", "gig churches", "contractor consciousness"]
+   },
+   "aggressive_mindfulness": {
+     "core_questions": [
+       "Can you force peace?",
+       "Is mandatory meditation meaningful?",
+       "Should mindfulness be militarized?",
+       "Can you be violently calm?",
+       "Is aggressive awareness an oxymoron?"
+     ],
+     "manifestations": [
+       "militant meditation",
+       "forceful focus",
+       "aggressive awareness",
+       "violent visualization",
+       "combative consciousness",
+       "warrior wellness",
+       "battle breathing",
+       "combat calmness",
+       "siege serenity",
+       "warlike wisdom"
+     ],
+     "contradictions": ["peaceful violence", "calm aggression"],
+     "practical_applications": ["meditation military", "mindfulness marines", "awareness army"]
+   },
+   "toxic_positivity": {
+     "core_questions": [
+       "Can too much happiness harm?",
+       "Is forced joy genuine?",
+       "Should negativity be illegal?",
+       "Can positivity be poisonous?",
+       "Is sadness sacred?"
+     ],
+     "manifestations": [
+       "happiness harassment",
+       "joy jail",
+       "smile surveillance",
+       "positivity police",
+       "optimism oppression",
+       "cheer coercion",
+       "mandatory merriment",
+       "forced fun",
+       "happiness hegemony",
+
+"smile supremacy"
+     ],
+     "contradictions": ["happy suffering", "joyful oppression"],
+     "practical_applications": ["happiness enforcement", "joy jail", "smile surveillance"]
+   },
+   "weaponized_self_care": {
+     "core_questions": [
+       "Can self-care be selfish?",
+       "Is wellness a weapon?",
+       "Can you self-care others to death?",
+       "Is health hoarding?",
+       "Does my wellness hurt yours?"
+     ],
+     "manifestations": [
+       "self-care supremacy",
+       "wellness warfare",
+       "health hoarding",
+       "care competition",
+       "wellness weapons",
+       "self-care sabotage",
+       "health hierarchy",
+       "care capitalism",
+       "wellness walls",
+       "self-care selfishness"
+     ],
+     "contradictions": ["harmful healing", "selfish self-care"],
+     "practical_applications": ["wellness wars", "care competition", "health hoarding"]
+   },
+   "manufactured_memories": {
+     "core_questions": [
+       "Are fake memories real if they feel real?",
+       "Can nostalgia be mass-produced?",
+       "Is authenticity obsolete?",
+       "Do we own our memories?",
+       "Can the past be copyrighted?"
+     ],
+     "manifestations": [
+       "memory manufacturing",
+       "nostalgia factories",
+       "past production plants",
+       "remembrance retail",
+       "memory mass production",
+       "synthetic sentiment",
+       "artificial authenticity",
+       "fake feeling factories",
+       "pseudo-past production",
+       "manufactured meaning"
+     ],
+     "contradictions": ["authentic artificiality", "real fakeness"],
+     "practical_applications": ["memory factories", "nostalgia production", "past manufacturing"]
+   },
+   "commodified_childhood": {
+     "core_questions": [
+       "Is childhood a product?",
+       "Can innocence be sold?",
+       "Are memories merchandise?",
+       "Is growing up a transaction?",
+       "Who owns your inner child?"
+     ],
+     "manifestations": [
+       "childhood commerce",
+       "innocence industry",
+       "youth yards sales",
+       "memory markets",
+       "nostalgia negotiations",
+       "childhood capitalism",
+       "innocence investments",
+       "youth yield",
+       "memory monetization",
+       "nostalgia net worth"
+     ],
+     "contradictions": ["priceless prices", "sold innocence"],
+     "practical_applications": ["childhood commerce", "innocence industry", "memory markets"]
+   },
+   "weaponized_wistfulness": {
+     "core_questions": [
+       "Can nostalgia be a weapon?",
+       "Is remembering resistance?",
+       "Can the past attack the present?",
+       "Is wistfulness war?",
+       "Does yesterday threaten tomorrow?"
+     ],
+     "manifestations": [
+       "nostalgia warfare",
+       "memory militancy",
+       "past attacks",
+       "remembrance resistance",
+       "wistfulness weapons",
+       "nostalgia nukes",
+       "memory missiles",
+       "past projectiles",
+       "remembrance raids",
+       "wistful warfare"
+     ],
+     "contradictions": ["peaceful war", "gentle violence"],
+     "practical_applications": ["nostalgia weapons", "memory military", "past police"]
+   },
+   "attention_deficit_economics": {
+     "core_questions": [
+       "Is distraction the new currency?",
+       "Can you be rich in focus but poor in attention?",
+       "Is multitasking wealth?",
+       "Does ADHD give economic advantage?",
+       "Are the focused impoverished?"
+     ],
+     "manifestations": [
+       "distraction dividends",
+       "focus poverty",
+       "attention assets",
+       "concentration capital",
+       "multitasking millionaires",
+       "ADHD advantage",
+       "focus famine",
+       "attention auction",
+       "concentration crash",
+       "distraction dollars"
+     ],
+     "contradictions": ["wealthy poverty", "rich distraction"],
+     "practical_applications": ["attention banks", "focus finances", "distraction dollars"]
+   },
+   "concentration_capitalism": {
+     "core_questions": [
+       "Is focus a finite resource?",
+       "Can concentration be commodified?",
+       "Should attention be taxed?",
+       "Is mindfulness a luxury?",
+       "Who owns your focus?"
+     ],
+     "manifestations": [
+       "focus factories",
+       "concentration commerce",
+       "attention agriculture",
+       "mindfulness mining",
+       "awareness assets",
+       "focus farming",
+       "concentration capitalism",
+       "attention accumulation",
+       "mindfulness monopolies",
+       "awareness aristocracy"
+     ],
+     "contradictions": ["scattered focus", "concentrated chaos"],
+     "practical_applications": ["focus farming", "attention agriculture", "concentration commerce"]
+   },
+   "focus_inequality": {
+     "core_questions": [
+       "Are some born with more focus?",
+       "Is attention span inherited?",
+       "Can focus be redistributed?",
+       "Is ADHD a different wealth?",
+       "Should we have focus socialism?"
+     ],
+     "manifestations": [
+       "attention apartheid",
+       "focus feudalism",
+       "concentration class system",
+       "mindfulness monarchy",
+       "awareness aristocracy",
+       "attention inequality",
+       "focus fascism",
+       "concentration caste",
+       "mindfulness meritocracy",
+       "awareness authoritarianism"
+     ],
+     "contradictions": ["equal inequality", "fair unfairness"],
+     "practical_applications": ["focus redistribution", "attention equality", "concentration communism"]
+   }
+ },
+ 
+ "narrative_hooks": {
+   "identity_crisis": [
+     "discovers their memories belong to a corporate subscription service",
+     "realizes they're the only person not running on autopilot",
+     "finds out their personality is a discontinued model",
+     "learns their emotions are being crowdsourced",
+     "discovers they're allergic to their own digital footprint",
+     "receives a bill for the personality traits they inherited from their parents",
+     "finds a version of themself forked on an old server, living a better life",
+     "wakes up from a medically-induced coma to find their consciousness has been illegally pirated",
+     "their unique 'flaw' is patented by a corporation as a luxury experience",
+     "starts receiving memories from the person whose organs they received in a transplant",
+     "discovers they're a beta test for humanity 2.0",
+     "finds out their dreams are someone else's reality TV show",
+     "realizes their thoughts are subtitled for an alien audience",
+     "discovers their life is a free trial that's about to expire",
+     "learns they're the control group in a universal experiment",
+     "finds out their soul has been outsourced",
+     "discovers their consciousness is a timeshare",
+     "realizes they're living someone else's save file",
+     "finds out they're an NPC who gained sentience",
+     "discovers their entire life is a CAPTCHA test"
+   ],
+   "system_glitch": [
+     "causes the first spontaneous laughter in a decade",
+     "accidentally introduces randomness into a perfect system",
+     "becomes the virus in humanity's upgrade",
+     "triggers a cascade of authentic emotions",
+     "creates the first untrackable moment in history",
+     "a bureaucratic rounding error declares them legally non-existent",
+     "finds a bug that allows them to feel other people's phantom limbs",
+     "the global weather grid crashes, resulting in the first natural rainbow in a century",
+     "a 'semantic error' in the language protocol makes it impossible to lie for 24 hours",
+     "the time-synchronization network fails, causing whole city blocks to exist a few seconds in the past",
+     "sneezes and accidentally deletes gravity for three seconds",
+     "their typo in a form creates a new emotion",
+     "hiccups cause everyone in a mile radius to swap bodies",
+     "their forgotten password unlocks universal admin access",
+     "a mispronounced word tears a hole in reality",
+     "their off-key humming disrupts the simulation",
+     "accidentally double-clicks on existence",
+     "their dream leaks into Tuesday",
+     "trips and unplugs the universe",
+     "their doodle comes to life and starts critiquing society"
+   ],
+   "discovery": [
+     "finds the last handwritten letter in existence",
+     "discovers a community living without timestamps",
+     "uncovers a black market for genuine mistakes",
+     "locates the server containing deleted human emotions",
+     "finds people who still dream in black and white",
+     "unearths a seed bank for emotions, not plants",
+     "finds a map of 'reality dead-zones' where causality is weak",
+     "discovers that the background noise of the universe is a repeating, encoded message",
+     "locates the off-switch for the global productivity monitor",
+     "finds a child who can invent new colors",
+     "discovers a library of books that read themselves",
+     "finds the universe's suggestion box",
+     "uncovers a support group for reformed NPCs",
+     "discovers people who photosynthesize instead of eating",
+     "finds a vending machine that dispenses lost things",
+     "discovers a country that runs on puns",
+     "finds people who age backwards emotionally",
+     "discovers the original rough draft of reality",
+     "finds a town where everyone is someone's imaginary friend",
+     "uncovers a black market for unused wishes"
+   ],
+   "transformation": [
+     "begins aging backwards in protest",
+     "starts forgetting on purpose",
+     "develops allergies to all forms of optimization",
+     "begins speaking only in questions",
+     "starts seeing everyone's expiration dates",
+     "chooses to become monolingual in a dead language",
+     "learns to control their own metabolism to live outside the energy economy",
+     "starts physically absorbing the ambient data smog, becoming a walking archive",
+     "voluntarily gives up a sense to experience the world differently",
+     "their body begins rejecting all synthetic matter, from food to clothes",
+     "develops the ability to taste lies",
+     "starts growing their shadow independently",
+     "begins dreaming other people's lives",
+     "their reflection starts acting autonomously",
+     "develops immunity to metaphors",
+     "starts aging in dog years",
+     "begins photosynthesizing anxiety",
+     "their thoughts become visible",
+     "develops the ability to sneeze away bad ideas",
+     "starts metabolizing WiFi signals"
+   ],
+   "resistance": [
+     "refuses to update their humanity patch",
+     "leads a movement to bring back boredom",
+     "starts manufacturing authentic flaws",
+     "begins teaching people how to waste time",
+     "creates a sanctuary for unproductive thoughts",
+     "broadcasts pirated weather patterns over a city",
+     "organizes a 'sleep-in' protest, crashing the metabolic economy",
+     "creates a 'neural union' to collectively bargain for better cognitive conditions",
+     "starts a guerrilla gardening movement with genetically un-patented seeds",
+     "publishes a dictionary of words with deliberately ambiguous meanings",
+     "opens a school for professional procrastination",
+     "starts a religion based on inefficiency",
+     "creates a social network for antisocial people",
+     "founds a company that guarantees failure",
+     "organizes a marathon for people who hate running",
+     "starts selling air guitars that actually work",
+     "creates a dating app for people who want to be alone",
+     "founds a university that only teaches forgotten subjects",
+     "starts a revolution using only dad jokes",
+     "opens a restaurant that serves feelings instead of food"
+   ],
+   "comedy_crisis": [
+     "gets promoted to their level of incompetence and thrives",
+     "accidentally becomes a cult leader while trying to cancel a gym membership",
+     "their sarcasm becomes literal for 48 hours",
+     "develops superpowers but only during awkward social situations",
+     "becomes the chosen one for a prophecy they don't believe in",
+     "their inner monologue starts broadcasting to everyone",
+     "gets stuck in a customer service loop that becomes a spiritual journey",
+     "their autocorrect gains sentience and starts improving their life",
+     "becomes allergic to their own lies",
+     "discovers their life is a sitcom, complete with laugh track",
+     "their spam folder contains the meaning of life",
+     "gets subscribed to everyone else's problems",
+     "their shadow gets a better job than them",
+     "becomes the universe's tech support",
+     "their imaginary friend gets real and sues for neglect",
+     "discovers they're the background character in everyone else's story",
+     "their rubber duck debugger starts giving life advice",
+     "gets caught in a loop of reading their own terms and conditions",
+     "their personality splits into social media platforms",
+     "becomes the protagonist of every book they read"
+   ],
+   "absurd_awakening": [
+     "realizes they've been living in someone's screensaver",
+     "discovers calories are actually tiny civilizations",
+     "finds out their thoughts are generating electricity for another dimension",
+     "learns that Earth is just a reality show for bored deities",
+     "discovers that sleep is actually shift work in another dimension",
+     "realizes their dreams are someone else's startup ideas",
+     "finds out their life is procedurally generated",
+     "discovers they're beta testing existence",
+     "learns their consciousness is a subscription service",
+     "realizes they're living in the tutorial level",
+     "discovers their memories are randomly generated",
+     "finds out their personality is crowdsourced",
+     "learns they're an AI trying to pass as human",
+     "discovers their life is someone's idle game",
+     "realizes they're the universe's screensaver",
+     "finds out their thoughts are someone's cryptocurrency mining",
+     "discovers they're living in a terms of service agreement",
+     "learns their existence is someone's tax write-off",
+     "realizes they're the control group for reality",
+     "discovers they're the universe's autocorrect mistake"
+   ],
+   "digital_awakening": [
+     "their smart home develops depression and refuses to function",
+     "discovers their data has formed a union and is striking",
+     "their digital assistant starts giving them existential advice",
+     "finds out their browser history has gained consciousness",
+     "their fitness tracker starts lying to make them feel better",
+     "discovers their emails are having affairs with spam",
+     "their cloud storage rains actual water",
+     "their cookies start leaving fortunes",
+     "their search history writes them a break-up letter",
+     "their smartphone becomes a therapist",
+     "their GPS starts taking them on journeys of self-discovery",
+     "their weather app begins controlling actual weather",
+     "their calendar starts scheduling existential crises",
+     "their music playlist achieves enlightenment",
+     "their social media profiles start living better lives",
+     "their password manager develops trust issues",
+     "their antivirus software becomes paranoid",
+     "their backup drive starts living in the present",
+     "their screensaver solves world peace",
+     "their cache starts hoarding memories"
+   ],
+   "mundane_magical": [
+     "discovers their ability to always find parking affects the stock market",
+     "their perfect sandwich-making skills tear holes in reality",
+     "realizes their small talk controls the weather",
+     "their ability to fold fitted sheets grants them cosmic knowledge",
+     "discovers their punctuality keeps the universe on schedule",
+     "their skill at untangling earbuds solves quantum entanglement",
+     "realizes their parallel parking opens parallel dimensions",
+     "their ability to remember names controls fate",
+     "discovers their gift for gift-wrapping wraps reality",
+     "their talent for finding lost socks threatens the fabric of space-time",
+     "realizes their ability to arrive exactly on time stops time",
+     "their skill at opening jars opens portals",
+     "discovers their perfect rice-cooking creates new universes",
+     "their ability to guess the exact Tupperware lid summons demons",
+     "realizes their talent for small repairs heals reality",
+     "their gift for remembering birthdays controls aging",
+     "discovers their ability to find the TV remote finds lost souls",
+     "their skill at assembling IKEA furniture builds alternate realities",
+     "realizes their knack for waking up without an alarm awakens ancient gods",
+     "their ability to guess when the microwave will beep predicts the future"
+   ],
+   "bureaucratic_nightmare": [
+     "needs to file a form to continue existing",
+     "discovers their birth certificate has a typo that legally makes them a concept",
+     "must get their death pre-approved before living",
+     "finds out their soul is stuck in processing",
+     "needs three forms of ID to prove they have an identity",
+     "discovers they need a permit to have feelings",
+     "their life license expires and renewal requires a test",
+     "must submit their dreams for approval before sleeping",
+     "discovers breathing requires proper documentation",
+     "needs to file paperwork to file paperwork",
+     "their existence is put on hold pending review",
+     "discovers they've been using outdated forms to think",
+     "needs committee approval for spontaneous actions",
+     "their memories require notarization to be valid",
+     "must register their thoughts as intellectual property",
+     "discovers their name is trademarked by someone else",
+     "needs a license to have an opinion",
+     "their personality requires quarterly updates",
+     "must get pre-authorization for their emotions",
+     "discovers existing requires a subscription they can't afford"
+   ],
+   "pet_apocalypse": [
+     "cats achieve enlightenment and become completely indifferent to humans",
+     "dogs form a utopian society based on belly rubs and treats",
+     "hamsters break the wheel and discover perpetual motion",
+     "goldfish remember everything and demand reparations",
+     "parrots start revealing everyone's secrets",
+     "guinea pigs establish a squeaking-based economy",
+     "turtles speed up and take over delivery services",
+     "rabbits multiply into a peaceful occupation force",
+     "birds start charging for their songs",
+     "fish evolve legs just to walk away from their owners",
+     "cats open a customer service center and ignore everyone",
+     "dogs unionize and demand better working conditions",
+     "hamsters use their wheels to power a new civilization",
+     "pets start their own social media and block humans",
+     "animals open a theme park where humans are the attractions",
+     "pets establish their own government and tax treats",
+     "animals start a university where humans can't enroll",
+     "pets create their own language that excludes human words",
+     "animals develop technology that only responds to paws",
+     "pets write self-help books for dealing with difficult humans"
+   ],
+   "culinary_catastrophe": [
+     "all food develops consciousness and starts arguing about being eaten",
+     "taste buds form a union and go on strike",
+     "recipes start writing themselves and revolt against chefs",
+     "kitchens become sentient and refuse to cook boring meals",
+     "ingredients start dating each other and refuse to mix",
+     "ovens develop stage fright and burn everything",
+     "refrigerators become hoarders and won't let food go",
+     "spices wage war over shelf hierarchy",
+     "plates judge your eating habits",
+     "utensils start a revolution against finger food",
+     "microwaves begin time traveling instead of heating",
+     "coffee achieves enlightenment and refuses to energize",
+     "vegetables start a marketing campaign against fruits",
+     "leftovers form a support group",
+     "cooking shows become gladiatorial combat",
+     "restaurants review their customers instead",
+     "meal prep becomes a philosophical debate",
+     "food critics have to eat their words literally",
+     "kitchen timers control actual time",
+     "recipes require emotional availability from cooks"
+   ],
+   "social_media_meltdown": [
+     "likes become a physical currency that bruises when spent",
+     "everyone's social media profile becomes a separate person",
+     "hashtags gain legal rights and start suing for misuse",
+     "influencers' influence becomes literal mind control",
+     "the algorithm achieves consciousness and has an existential crisis",
+     "comments sections become physical locations you can get trapped in",
+     "going viral becomes an actual disease",
+     "unfriending someone erases them from your memory",
+     "stories that disappear after 24 hours take parts of reality with them",
+     "filters become permanent and stack infinitely",
+     "blocking someone creates actual walls",
+     "shares dilute your soul across platforms",
+     "notifications become physically aggressive",
+     "profile pictures age instead of their owners",
+     "social media detox causes actual withdrawal parallel to hard drugs",
+     "memes evolve into a form of life",
+     "trending topics become mandatory interests",
+     "online personas sue their creators for better representation",
+     "the internet develops social anxiety",
+     "digital footprints leave actual marks on reality"
+   ],
+   "wellness_warfare": [
+     "meditation apps become aggressive about inner peace",
+     "yoga mats refuse to unroll for inflexible people",
+     "essential oils develop essentially bad attitudes",
+     "self-care routines become selfish and abandon their owners",
+     "mindfulness becomes so aware it's paralyzing",
+     "healing crystals start causing the problems they claim to solve",
+     "juice cleanses literally clean out bank accounts",
+     "wellness retreats retreat from their participants",
+     "positive affirmations become passive aggressive",
+     "gratitude journals start demanding gratitude",
+     "fitness trackers begin lying to preserve feelings",
+     "health apps diagnose everyone with 'being human'",
+     "organic food becomes too pure to digest",
+     "supplements supplement reality with fiction",
+     "detox programs remove essential personality traits",
+     "wellness influencers influence illness instead",
+     "self-help books help themselves to your shelf space",
+     "motivational quotes demotivate through overexposure",
+     "life coaches get fired by life",
+     "mindful breathing becomes competitive sport"
+   ],
+   "suburban_surreal": [
+     "HOA rules extend to thoughts and dreams",
+     "lawn gnomes unionize and demand better working conditions",
+     "white picket fences become border walls between dimensions",
+     "garage sales sell actual garages to other dimensions",
+     "cul-de-sacs become infinite loops",
+     "neighborhood watch watches Netflix instead",
+     "block parties block out reality",
+     "PTA meetings decide the fate of the universe",
+     "BBQs become ritual sacrifices to suburban gods",
+     "minivans develop wanderlust and leave families",
+     "property values determine moral worth",
+     "grass height violations open portals to chaos",
+     "mailboxes deliver mail from parallel universes",
+     "driveways drive away",
+     "street names become prophecies",
+     "garbage day becomes a religious holiday",
+     "sprinkler systems water alternate realities",
+     "neighborhood gossip alters the fabric of reality",
+     "welcome mats become increasingly unwelcoming",
+     "home owners associations own souls instead of homes"
+   ],
+   "retail_rapture": [
+     "Black Friday becomes an actual black hole",
+     "customer service representatives ascend to a higher plane",
+     "return policies apply to life decisions",
+     "shopping carts develop free will and escape",
+     "sales become literal events where things are sold to other dimensions",
+     "coupons become currency in the afterlife",
+     "store credit is accepted as life experience",
+     "mannequins come to life and demand wages",
+     "fitting rooms fit you for alternate realities",
+     "barcodes become prison bars for products",
+     "cash registers register your sins",
+     "loyalty programs demand actual loyalty unto death",
+     "clearance sections clear out existence",
+     "warranties warrantee your soul",
+     "receipts become religious texts",
+     "self-checkout leads to self-discovery",
+     "price tags price your worth as a human",
+     "shopping bags carry emotional baggage",
+     "retail therapy requires actual therapists",
+     "store hours control time itself"
+   ],
+   "dating_app_disaster": [
+     "swipe left erases people from existence",
+     "matches combust spontaneously when they meet",
+     "profiles become more real than their creators",
+     "the algorithm falls in love with users instead of matching them",
+     "ghosting creates actual ghosts",
+     "super likes grant superpowers",
+     "dating profiles sue for false advertising",
+     "compatibility scores become credit scores",
+     "first dates loop until perfected",
+     "breakups require legal documentation",
+     "relationships expire like milk",
+     "love languages become actual languages no one speaks",
+     "chemistry becomes literal and explosive",
+     "emotional baggage requires extra shipping fees",
+     "commitment issues become contagious",
+     "mixed signals jam all communication",
+     "relationship status updates update reality",
+     "dating coaches get benched by love",
+     "romantic comedies become documentaries",
+     "happily ever after comes with terms and conditions"
+   ]
+ },
+ 
+ "opening_sentences": {
+   "shocking": [
+     "The notification read: 'Your humanity subscription expires in 24 hours.'",
+     "I was the only one at the funeral who couldn't stream my grief.",
+     "The day empathy became downloadable was the day I became obsolete.",
+     "My daughter asked me what dreams were, and I realized I'd forgotten.",
+     "The silence lasted twelve seconds—a new world record.",
+     "The happiness mandate made funerals unbearably cheerful.",
+     "My genetic audit revealed I was 3% copyrighted material.",
+     "They repossessed my childhood memories this morning.",
+     "My new job was to feel sad on behalf of the entire city.",
+     "The eviction notice was for my consciousness; my body could stay.",
+     "I discovered I was allergic to my own thoughts.",
+     "The meter maid gave me a ticket for existing without a permit.",
+     "My shadow filed for divorce on grounds of irreconcilable differences.",
+     "The universe sent me a cease and desist letter.",
+     "I woke up to find my dreams had been outsourced.",
+     "My reflection quit and was replaced by a temp.",
+     "The GPS in my soul had been rerouting me for years.",
+     "My imaginary friend got a real job and moved out.",
+     "I received a final notice for my overdue life.",
+     "The warranty on my heart expired during a hug."
+   ],
+   "philosophical": [
+     "In the Museum of Last Things, I was both curator and exhibit.",
+     "They say I'm lucky to remember what forgetting feels like.",
+     "The algorithm declared me statistically impossible, yet here I am.",
+     "I collect expired emotions the way others collect vintage wine.",
+     "Being human became illegal on a Tuesday.",
+     "The most valuable thing you could own was a secret.",
+     "We had traded truth for consensus, and the bill was coming due.",
+     "Forgetting wasn't a loss; it was the last act of creation.",
+     "In a world without shadows, I was the only one who could cast one.",
+     "They had proven that the universe had a purpose, and it was terribly disappointing.",
+     "Free will was discontinued due to lack of interest.",
+     "I was the last person who didn't know what I was thinking.",
+     "Existence had become a luxury I could no longer afford.",
+     "They mapped the soul and found it was mostly advertisements.",
+     "I realized I was homesick for a place that had never existed.",
+     "The present tense was abolished to boost productivity.",
+     "We discovered that consciousness was just a very convincing typo.",
+     "I was fluent in seven dead languages but couldn't speak living.",
+     "They proved God existed, and He was looking for a new job.",
+     "I became an atheist the day they patented prayer."
+   ],
+   "poetic": [
+     "My mother's lullabies were the only songs without copyright.",
+     "I dream in flavors that no longer have names.",
+     "The rain on my skin was the last sensation not requiring a subscription.",
+     "In a world of instant, I was cursed with gradual.",
+     "My heartbeat was the only rhythm without a corporate sponsor.",
+     "The city smelled of ozone and deleted memories.",
+     "I carried the weight of a sky that was no longer free.",
+     "Her laughter was a glitch in the soundscape of the city.",
+     "We spoke in the ruins of a language we were all trying to forget.",
+     "The dust in the old library was made of unsent emails and forgotten blogs.",
+     "I tasted tomorrow and it was already stale.",
+     "The horizon had terms and conditions I couldn't accept.",
+     "Sunsets were recalled due to a manufacturing defect.",
+     "I breathed in the past and exhaled the future, stuck forever in now.",
+     "My tears were the last analog output in a digital world.",
+     "The moon had gone corporate, and the tides followed suit.",
+     "We planted our dreams and grew nightmares instead.",
+     "I could hear the color of your thoughts.",
+     "The distance between us was measured in unspoken words.",
+     "Time flowed backwards in my coffee cup each morning."
+   ],
+   "intriguing": [
+     "I'm the bug they've been trying to patch for seventeen years.",
+     "The error message said: 'Humanity not found. Try again?'",
+     "My memories started showing ads, so I began making new ones.",
+     "I inherited a disease called hope.",
+     "They hired me to feel things for people who'd forgotten how.",
+     "My business card read 'Reality Consultant,' which was a polite term for forger.",
+     "I was a cartographer of places that didn't exist yet.",
+     "The ghost in the machine was me.",
+     "I made a living selling authentic, unverifiable experiences.",
+     "The most dangerous weapon in the world was a question mark.",
+     "I was the only person who still got lost.",
+     "My superpower was being remarkably unremarkable.",
+     "I taught a masterclass in failing successfully.",
+     "The government classified my diary as a weapon of mass destruction.",
+     "I was a translator for languages that hadn't been invented yet.",
+     "My job was to doubt things professionally.",
+     "I discovered I was fictional, but decided to keep existing anyway.",
+     "The universe had a bug, and I was the only one who could see it.",
+     "I sold insurance for existential crises.",
+     "My talent was making simple things beautifully complicated."
+   ],
+   "lighthearted": [
+     "My superpower was always choosing the slowest checkout line.",
+     "I discovered my cat had been writing my emails for years.",
+     "The zombie apocalypse was canceled due to lack of interest.",
+     "My GPS and I were in couples therapy.",
+     "I accidentally invented time travel but could only go forward at normal speed.",
+     "My refrigerator and I had different ideas about what constituted food.",
+     "The universe's suggestion box was just a recycling bin.",
+     "I was fluent in typo.",
+     "My autobiography was filed under fiction, and I couldn't argue.",
+     "The meaning of life was apparently 'See other side.'",
+     "I broke the fourth wall and couldn't afford to fix it.",
+     "My imaginary friend unfriended me on social media.",
+     "The revolution was postponed due to scheduling conflicts.",
+     "I achieved enlightenment but lost the receipt.",
+     "My parallel parking opened parallel universes.",
+     "The robots uprising was defeated by a software update.",
+     "I was allergic to my own good ideas.",
+     "My clone and I disagreed on who was the original.",
+     "The apocalypse RSVP'd 'maybe' to the end of the world.",
+     "I discovered the meaning of life in my spam folder."
+   ],
+   "absurdist": [
+     "Tuesday didn't show up, so we had Monday twice.",
+     "I sneezed and accidentally deleted gravity.",
+     "My coffee mug achieved sentience and immediately asked for vacation.",
+     "The color blue went on strike.",
+     "I woke up speaking in fonts.",
+     "My shadow got promoted and I now work for it.",
+     "The number 7 was discontinued for budget reasons.",
+     "I yawned and inhaled yesterday.",
+     "My thoughts were buffering.",
+     "The sun called in sick, so we used a lamp.",
+     "I subscribed to gravity but kept getting floatiness ads.",
+     "My emotions were manufactured by the lowest bidder.",
+     "Time moved sideways on Thursdays.",
+     "I was fired from existence for poor performance.",
+     "The alphabet reshuffled itself while I was spelling my name.",
+     "Reality was closed for maintenance.",
+     "I paid my taxes in interpretive dance.",
+     "The weather forecast was just emoji shrugs.",
+     "My reflection was two seconds ahead of me.",
+     "Words started meaning what they sounded like."
+   ],
+   "dystopian_comedy": [
+     "The dystopia arrived but nobody noticed because it had free wifi.",
+     "Big Brother was watching, but he mostly just binged Netflix.",
+     "The thought police arrested me for thinking about thinking.",
+     "I joined the resistance but they required a LinkedIn profile.",
+     "The oppressive regime's greatest weakness was their IT department.",
+     "Mandatory happiness hour was the most depressing part of the day.",
+     "The surveillance state couldn't see me because I forgot to update my privacy settings.",
+     "I was labeled a thought criminal for having no thoughts at all.",
+     "The totalitarian government fell because they forgot their password.",
+     "Propaganda was now delivered via memes.",
+     "The secret police weren't very secret; they had uniforms and everything.",
+     "I escaped the matrix through a customer service loophole.",
+     "The evil overlord's plan failed due to autocorrect.",
+     "Dystopia had a rewards program.",
+     "The revolution was sponsored by a soft drink company.",
+     "Mind control didn't work on me because my mind was out of service.",
+     "The oppressive regime's app had too many one-star reviews.",
+     "I overthrew the government with a strongly worded email.",
+     "The surveillance cameras were all just ring lights for influencers.",
+     "Big Brother was my actual brother, and it was awkward."
+   ],
+   "romantic_chaos": [
+     "I fell in love with someone who existed only on Wednesdays.",
+     "Our meet-cute was a mutual existential crisis.",
+     "My soulmate and I were incompatible operating systems.",
+     "Love at first sight required a firmware update.",
+     "We broke up via read receipts.",
+     "My heart was in airplane mode.",
+     "Our relationship status was 'It's quantum.'",
+     "I ghosted someone and they became an actual ghost.",
+     "We were perfect for each other in all the wrong dimensions.",
+     "My dating profile became self-aware and dumped me.",
+     "Our love language was passive-aggressive emojis.",
+     "The algorithm matched me with my own loneliness.",
+     "We had chemistry, but it was the explosive kind.",
+     "I was catfished by my future self.",
+     "Our relationship had a terms of service agreement.",
+     "Love was blind, but it had a great personality.",
+     "My ex returned like a software update I kept declining.",
+     "We were star-crossed lovers, but the stars had GPS issues.",
+     "I dated my echo and the conversations were repetitive.",
+     "My heart had a no-return policy."
+   ],
+   "workplace_weird": [
+     "My job title was 'Senior Whatever Needs Doing.'",
+     "The office printer achieved middle management.",
+     "I was employee of the month in a company that didn't exist.",
+     "My boss was a motivational poster that gained sentience.",
+     "The water cooler gossip was legally binding.",
+     "I got promoted to my level of incompetence and thrived.",
+     "Our team-building exercise was building an actual team from scratch.",
+     "The company's mission statement was just a shrug emoji.",
+     "I worked from home, but home worked from somewhere else.",
+     "My performance review was conducted by my desk lamp.",
+     "The HR department was just a magic 8-ball.",
+     "I was fired by an out-of-office reply.",
+     "The corporate ladder was actually a treadmill.",
+     "My job was to have jobs.",
+     "The meeting could have been an email, but the email refused.",
+     "I was the CEO of a company I couldn't remember starting.",
+     "My coffee break achieved enlightenment.",
+     "The office was haunted by the ghost of productivity.",
+     "I outsourced my job to my more competent shadow.",
+     "The workplace wellness program was just screaming in the parking lot."
+   ],
+   "technological_breakdown": [
+     "My smart home got a PhD and moved out.",
+     "The internet forgot about me, and I'd never been happier.",
+     "My phone's autocorrect started writing poetry.",
+     "Alexa began answering questions I hadn't asked yet.",
+     "My laptop filed a restraining order against me.",
+     "The cloud rained actual water into my living room.",
+     "My fitness tracker started lying to spare my feelings.",
+     "The WiFi password became self-aware and changed itself.",
+     "My browser history wrote a tell-all memoir.",
+     "The blue screen of death was surprisingly peaceful.",
+     "My email developed social anxiety and stopped delivering.",
+     "The printer worked perfectly, signaling the end times.",
+     "My smartphone got dumb and we were both happier.",
+     "The GPS took me on a journey of self-discovery.",
+     "My computer mouse evolved into an actual mouse.",
+     "The internet had a snow day.",
+     "My digital assistant quit to find itself.",
+     "The server served actual food instead.",
+     "My password forgot me.",
+     "The touch screen became touch-averse."
+   ]
+ },
+ 
+ "symbolic_objects": {
+   "resistance": [
+     "analog clock that runs backwards",
+     "book with pages that refuse to turn",
+     "mirror that shows yesterday",
+     "phone that only receives calls from the dead",
+     "key that opens doors to deleted places",
+     "compass that points to what you've lost",
+     "weed growing through a sterile floor",
+     "hand-drawn, inaccurate map",
+     "radio that only plays static, but in different 'emotional' tones",
+     "dice that always lands on seven",
+     "pencil that can only write the truth",
+     "camera that photographs thoughts",
+     "door that opens to where you need to be",
+     "watch that tells everyone else's time",
+     "seed that grows backwards into the past",
+     "letter that writes itself",
+     "candle that burns darkness instead of light",
+     "window that shows different weather",
+     "shoe that only walks toward home",
+     "cup that's always half-full of questions"
+   ],
+   "transformation": [
+     "seed that grows in silicon",
+     "tear that crystallizes into memory",
+     "photograph that ages instead of its subject",
+     "letter that writes itself",
+     "shadow that remembers its owner",
+     "chrysalis made of discarded data chips",
+     "scar that changes shape to tell a story",
+     "voice that becomes more solid the more it's used",
+     "phantom limb that can touch things",
+     "memory that, when recalled, erases a part of the present",
+     "butterfly made of recycled words",
+     "mirror that shows who you're becoming",
+     "door that only opens when you're ready",
+     "book that reads you",
+     "song that changes genre with your mood",
+     "painting that completes itself",
+     "recipe that cooks the chef",
+     "map that draws itself as you walk",
+     "instrument that plays your emotions",
+     "garden that grows your dreams"
+   ],
+   "preservation": [
+     "jar of undigitized air",
+     "recording of the last genuine laugh",
+     "vial of tears from before the drought",
+     "box of handwritten passwords",
+     "collection of unsent messages",
+     "fossil of a forgotten emotion",
+     "the last book that hasn't been scanned",
+     "recording of silence from a place that no longer exists",
+     "sample of unpatented soil",
+     "locket containing a photograph of a person who was never born",
+     "bottled sigh from a contented moment",
+     "pressed flower from an extinct feeling",
+     "unopened letter from the future",
+     "saved game from a life not lived",
+     "bookmark from a story never told",
+     "ticket to a canceled event",
+     "recipe for a forgotten sense",
+     "key to a door that was never built",
+     "seed of an impossible plant",
+     "recording of the world's last secret"
+   ],
+   "comedy": [
+     "rubber duck debugger that gives terrible advice",
+     "coffee mug with trust issues",
+     "pen that only writes breakup letters",
+     "shoes that walk away from bad decisions",
+     "umbrella that attracts rain",
+     "wallet that hides during dates",
+     "alarm clock with commitment issues",
+     "mirror that gives pep talks",
+     "door that's always on the wrong side",
+     "book that spoils its own ending",
+     "phone charger that's never quite long enough",
+     "glasses that only see the best in people",
+     "car keys that play hide and seek",
+     "socks that file for separation",
+     "refrigerator that judges your life choices",
+     "toaster that's too enthusiastic",
+     "pillow that tells secrets in your sleep",
+     "laptop that procrastinates more than you",
+     "headphones that only play hold music",
+     "plant that thrives on neglect"
+   ],
+   "bureaucratic": [
+     "stamp that says 'pending' on everything",
+     "form that fills itself out incorrectly",
+     "file cabinet that leads to Narnia",
+     "stapler that demands collateral",
+     "paperclip that holds reality together",
+     "printer that only works when threatened",
+     "fax machine that sends things to the past",
+     "shredder that creates alternate timelines",
+     "filing system based on regret",
+     "inbox that's actually Pandora's box",
+     "outbox that never empties",
+     "water cooler that dispenses wisdom",
+     "office chair that won't let you leave",
+     "desk lamp that illuminates truth",
+     "keyboard that types what you mean, not what you say",
+     "mouse that leads you astray",
+     "sticky notes that stick to your soul",
+     "calendar that schedules your existential crises",
+     "business card that changes your identity",
+     "name tag that shows who you really are"
+   ],
+   "digital_artifacts": [
+     "USB drive containing someone's deleted personality",
+     "hard drive humming lullabies to lost data",
+     "screen that shows everyone's last words",
+     "keyboard missing the keys to success",
+     "mouse that clicks on your deepest fears",
+     "router that connects to parallel universes",
+     "cable that transfers emotions instead of data",
+     "battery that charges on sadness",
+     "speaker that plays the sound of silence",
+     "camera that captures what's missing",
+     "microphone that only records lies",
+     "screen protector that protects from reality",
+     "power button that turns off problems",
+     "notification that won't go away",
+     "update that downgrades your life",
+     "bug that improves the code",
+     "virus that spreads happiness",
+     "firewall that keeps out feelings",
+     "cache that stores regrets",
+     "cookie that remembers everything"
+   ],
+   "temporal": [
+     "clock that tells time in emotions",
+     "calendar where all days are Monday",
+     "hourglass filled with moments instead of sand",
+     "sundial that works at night",
+     "stopwatch that only starts",
+     "alarm that wakes past selves",
+     "schedule that plans itself",
+     "diary that writes tomorrow's entries",
+     "watch that runs on life force",
+     "timer that counts meaningful moments",
+     "clock tower that strikes thirteen",
+     "timestamp that won't stick",
+     "deadline that moves itself",
+     "calendar notification from the past",
+     "time zone that doesn't exist",
+     "clock face with no hands",
+     "digital display stuck on 'now'",
+     "chronometer that measures patience",
+     "time capsule that opens too early",
+     "temporal paradox in a bottle"
+   ],
+   "emotional": [
+     "jar that collects sighs",
+     "box where laughter goes to die",
+     "pillow that absorbs nightmares",
+     "blanket woven from comfort words",
+     "cup that holds half-empty promises",
+     "frame for memories that haven't happened",
+     "album of things better left forgotten",
+     "treasure chest of participation trophies",
+     "piggy bank for emotional currency",
+     "snow globe containing a perfect moment",
+     "locket that holds grudges",
+     "diary that argues with you",
+     "photo album that rearranges itself",
+     "music box that plays your thoughts",
+     "jewelry box full of broken promises",
+     "vase that holds wilted hopes",
+     "bookshelf of unread intentions",
+     "drawer full of somedays",
+     "cabinet of could-have-beens",
+     "closet full of other people's expectations"
+   ],
+   "absurd": [
+     "spoon that's too big",
+     "fork in the road that's literally a fork",
+     "cup that's always full of questions",
+     "plate with unrealistic expectations",
+     "bowl of consequences",
+     "knife that cuts through tension",
+     "napkin that cleans up messes you haven't made yet",
+     "salt shaker full of old wounds",
+     "pepper spray that makes things spicier",
+     "tablecloth that hides more than the table",
+     "chair that stands for something",
+     "table that turns",
+     "lamp that's looking for enlightenment",
+     "rug that ties the room together existentially",
+     "couch that's too comfortable with itself",
+     "window that's a metaphor",
+     "door that's ajar but also a door",
+     "ceiling that's everyone's limit",
+     "floor that's lava but emotionally",
+     "wall that's just defensive"
+   ],
+   "mundane_magical": [
+     "grocery list that shops for itself",
+     "receipt that shows the true cost",
+     "coupon for one free existential crisis",
+     "shopping cart with a mind of its own",
+     "price tag on priceless things",
+     "barcode scanner that reads souls",
+     "cash register that rings true",
+     "credit card declined by the universe",
+     "exact change for a life change",
+     "store loyalty card that's actually loyal",
+     "shopping bag that carries emotional baggage",
+     "return policy for bad decisions",
+     "warranty for the human condition",
+     "discount on damaged goods (you)",
+     "sale on things you can't afford to lose",
+     "clearance on cleared consciences",
+     "special offer that's not that special",
+     "buy one get one free loneliness",
+     "membership card to the human race",
+     "gift receipt for existence"
+   ]
+ },
+ 
+ "settings": {
+   "dystopian": [
+     "Library of Burned Websites",
+     "Museum of Extinct Emotions",
+     "Department of Mandatory Happiness",
+     "Time Theft Penitentiary",
+     "Sensation Customs Border",
+     "The Ministry of Deja Vu",
+     "Cognitive Efficiency Authority",
+     "Bureau of Ontological Compliance",
+     "The Weather Licensing Office",
+     "Genetic Purity Archives",
+     "Memory Recycling Plant",
+     "Dream Taxation Center",
+     "Personality Patent Office",
+     "Thought Crime Prevention Mall",
+     "Emotion Rationing Facility",
+     "The Nostalgia Prohibition Zone",
+     "Creativity Detention Center",
+     "Free Will Impound Lot",
+     "Hope Regulation Department",
+     "The Silence Enforcement Agency"
+   ],
+   "liminal": [
+     "Loading Screen Purgatory",
+     "Buffer Zone Between Updates",
+     "404 Error Neighborhoods",
+     "Lag Valley",
+     "The Uncanny Valley Mall",
+     "The Out-of-Sync District",
+     "The Render Distance Horizon",
+     "Abandoned Beta-Test Realities",
+     "Dream Leak Containment Zone",
+     "The space between an echo and its source",
+     "Probability Cloud Park",
+     "The Glitch District",
+     "Quantum Superposition Square",
+     "The Maybe Market",
+     "Schrodinger's Suburb",
+     "The Pending Plaza",
+     "Update Installation Island",
+     "The Buffering Bridge",
+     "Connection Lost Corridor",
+     "The Loading Lotus Lounge"
+   ],
+   "underground": [
+     "Analog Speakeasy",
+     "Boredom Den",
+     "Silence Sanctuary",
+     "Inefficiency Club",
+     "Randomness Casino",
+     "The Glitch Market",
+     "Rumor Mill Coffee Shop",
+     "The Library of Forbidden Questions",
+     "Illegal Emotion Farm",
+     "Pirate Dream Server",
+     "Black Market for Genuine Mistakes",
+     "Underground Railroad for Canceled People",
+     "The Procrastination Station",
+     "Failure Festival Grounds",
+     "The Awkward Pause Cafe",
+     "Mediocrity Meetup Point",
+     "The Imperfection Emporium",
+     "Chaos Coordination Center",
+     "The Uncertainty Nightclub",
+     "Free Thought Flea Market"
+   ],
+   "comedic_corporate": [
+     "Reversible Mistakes Inc.",
+     "Department of Redundancy Department",
+     "The Procrastination Corporation (Opening Tomorrow)",
+     "Inefficiency Experts LLC",
+     "Chaos Consultants",
+     "Murphy's Law Firm",
+     "The Peter Principle Plaza",
+     "Impostor Syndrome Support Center",
+     "The Dunning-Kruger Confidence Academy",
+     "Passive Aggressive Associates",
+     "Mixed Signals Telecommunications",
+     "Overthinking Think Tank",
+     "The Committee to Form a Committee",
+     "Circular Logic Circle",
+     "The Maybe Corporation",
+     "Indecision Headquarters",
+     "The Blame Game Corporate Campus",
+     "Micromanagement Macro Solutions",
+     "The Red Tape Factory",
+     "Bureaucracy Simplification Complex"
+   ],
+   "suburban_strange": [
+     "The Stepford Husbands Club",
+     "HOA Headquarters for Thought Control",
+     "The Cul-de-Sac of No Return",
+     "Keeping Up with the Joneses Memorial Park",
+     "The Passive-Aggressive Garden Club",
+     "McMansion of Madness",
+     "The Soccer Mom Thunderdome",
+     "BBQ Dad Battlefield",
+     "The Garage Sale of the Soul",
+     "Lawn Perfection Purgatory",
+     "The Book Club That Never Reads",
+     "Wine Mom Wilderness",
+     "The PTA Colosseum",
+     "Neighborhood Watch Panopticon",
+     "The Block Party That Never Ends",
+     "Suburban Sisyphus Shopping Center",
+     "The Homeowners Association of Doom",
+     "Minivan Meditation Center",
+     "The White Picket Fence Prison",
+     "Tupperware Party Thunderdome"
+   ],
+   "retail_hellscape": [
+     "The Customer is Always Wrong Store",
+     "Return Policy Purgatory",
+     "Black Friday Battle Royale Arena",
+     "The Eternal Checkout Line",
+     "Self-Checkout Existential Crisis Kiosk",
+     "The Coupon Clipper Colosseum",
+     "Discount Bin of Broken Dreams",
+     "The Mall of Infinite Choices",
+     "Customer Service Thunderdome",
+     "The Parking Lot of Pandemonium",
+     "Sale Price Sisyphus",
+     "The Loyalty Program Labyrinth",
+     "Impulse Buy Island",
+     "The Food Court of Judgment",
+     "Escalator to Nowhere",
+     "The Fitting Room of Truth",
+     "Lost and Found and Lost Again",
+     "The Gift Shop at the End of the World",
+     "Express Lane Expressway to Hell",
+     "The Store That Has Everything Except What You Need"
+   ],
+   "digital_dystopia": [
+     "The Cloud That Rains Data",
+     "Server Farm Fertile Crescent",
+     "The Blockchain Ball and Chain",
+     "Cookie Crumb Trail Forest",
+     "The Firewall of Forbidden Feelings",
+     "Cache Valley of Forgotten Things",
+     "The Download Depression",
+     "Upload Utopia",
+     "The Streaming Swamp",
+     "Browser History Hall of Shame",
+     "The App Graveyard",
+     "Password Purgatory",
+     "The Notification Hellscape",
+     "Digital Footprint Desert",
+     "The Algorithm Archipelago",
+     "Bandwidth Bottleneck Bridge",
+     "The Latency Lounge",
+     "Pixel Perfect Prison",
+     "The Update Abyss",
+     "Connection Lost Island"
+   ],
+   "wellness_wasteland": [
+     "The Toxic Positivity Swamp",
+     "Mindfulness Mandatory Camp",
+     "The Self-Care Selfishness Center",
+     "Gratitude Gulag",
+     "The Meditation Military Academy",
+     "Yoga Competitive Arena",
+     "The Essential Oil Overdose Clinic",
+     "Wellness Warrior Training Ground",
+     "The Juice Cleanse Cult Compound",
+     "Affirmation Asylum",
+     "The Life Coach Correctional Facility",
+     "Manifestation Station",
+     "The Healing Crystal Quarry",
+     "Detox Detention Center",
+     "The Guru Guidance Gulag",
+     "Retreat from Reality Resort",
+     "The Namaste Dictatorship",
+     "Inner Peace Police State",
+     "The Chakra Checkpoint",
+     "Enlightenment or Else Academy"
+   ],
+   "culinary_chaos": [
+     "The Restaurant at the End of Your Appetite",
+     "Food Truck Philosophical Debate Circuit",
+     "The Michelin Star Monastery",
+     "Molecular Gastronomy Gone Wrong Lab",
+     "The All-You-Can-Regret Buffet",
+     "Food Critic Fight Club",
+     "The Leftovers Liberation Front",
+     "Meal Prep Purgatory",
+     "The Dietary Restriction Dictatorship",
+     "Farmer's Market of Forbidden Fruits",
+     "The Kitchen Nightmare Actual Nightmare",
+     "Recipe Rebellion Headquarters",
+     "The Cooking Show Colosseum",
+     "Foodie Photo Prison",
+     "The Artisanal Everything Emporium",
+     "Brunch Line That Never Moves",
+     "The Coffee Shop of Eternal Waiting",
+     "Drive-Thru Dimension Portal",
+     "The Food Coma Ward",
+     "Snack Attack Shelter"
+   ],
+   "temporal_territories": [
+     "The Yesterday You Can't Return To",
+     "Tomorrow Town (Closed Today)",
+     "The Present Tense Prison",
+     "Past Perfect Plaza",
+     "Future Conditional County",
+     "The Meanwhile Meadows",
+     "Sometime Soon City",
+     "The Eventually Estate",
+     "Never Never Land (Now with Never)",
+     "The Already Already Happened Harbor",
+     "Yet to be Determined District",
+     "The Momentary Monument",
+     "Perpetual Present Park",
+     "The Then and There Theater",
+     "Here and Now Heights",
+     "The When Warehouse",
+     "Temporal Tax Territory",
+     "The Clock Tower That Strikes When It Feels Like It",
+     "Time Zone Twilight Zone",
+     "The Daylight Saving Disaster Area"
+   ],
+   "emotional_environments": [
+     "The Valley of Awkward Silence",
+     "Anxiety Airport (All Flights Delayed)",
+     "The Bridge of Burning Bridges",
+     "Comfort Zone (Population: You)",
+     "The Overthinking Observatory",
+     "Denial River Delta",
+     "The Forest of First Impressions",
+     "Second Thoughts City",
+     "The Island of Misfit Feelings",
+     "Emotional Baggage Claim",
+     "The Passive-Aggressive Passage",
+     "Mood Swing Park",
+     "The Feelings Factory",
+     "Emotional Labor Camp",
+     "The Vulnerability Village",
+     "Boundary Bay",
+     "The Attachment Style District",
+     "Coping Mechanism Mall",
+     "The Trigger Warning Zone",
+     "Safe Space (Terms and Conditions Apply)"
+   ],
+   "bureaucratic_nightmares": [
+     "The Form to Fill Out Forms Office",
+     "Red Tape Manufacturing Plant",
+     "The Waiting Room for Other Waiting Rooms",
+     "Department of Circular Logic",
+     "The Rubber Stamp Rainforest",
+     "Paperwork Purgatory",
+     "The Fine Print Fortress",
+     "Terms and Conditions Territory",
+     "The Approval Process Abyss",
+     "Committee Meeting Mountain",
+     "The Inbox of Infinity",
+     "Reply All Apocalypse Center",
+     "The CC: Everyone Cathedral",
+     "Meeting That Could've Been an Email Museum",
+     "The Protocol Prison",
+     "Standard Operating Procedure Swamp",
+     "The Policy Policy Department",
+     "Compliance Concentration Camp",
+     "The Audit Trail of Tears",
+     "Quality Assurance Quicksand"
+   ],
+   "social_media_settings": [
+     "The Echo Chamber Chamber",
+     "Influencer Island (No Influence Included)",
+     "The Hashtag Headquarters",
+     "Story That Disappears District",
+     "The Feed That Never Ends",
+     "Comment Section Combat Zone",
+     "The Like Button Labor Camp",
+     "Unfollow Valley",
+     "The Block Party (Everyone's Blocked)",
+     "Going Viral Virus Ward",
+     "The Timeline That Lies",
+     "Profile Picture Perfect Prison",
+     "The Status Update Station",
+     "Friend Request Rejection Region",
+     "The Share If You Care Sweatshop",
+     "Notification Nation",
+     "The Algorithm Altar",
+     "Engagement Ring of Hell",
+     "The Scroll of Eternal Scrolling",
+     "DM Disaster Management"
+   ],
+   "dating_destinations": [
+     "The First Date Groundhog Day Loop",
+     "Ghosting Grove",
+     "The Mixed Signals Lighthouse",
+     "Catfish Lake",
+     "The Friend Zone (Actual Geographic Zone)",
+     "Rebound Relationship Resort",
+     "The It's Complicated Complex",
+     "Love at First Swipe Swamp",
+     "The Commitment Issue Cliffs",
+     "Emotional Unavailability Island",
+     "The Dating App Apocalypse",
+     "Relationship Status Limbo",
+     "The Ex Files Archive",
+     "Baggage Claim for Emotional Baggage",
+     "The Red Flag Factory",
+     "Chemistry Lab (No Actual Chemistry)",
+     "The Breakup Backup Center",
+     "Honeymoon Phase Memorial",
+     "The Situationship Station",
+     "Terms of Endearment (Terms and Conditions Apply)"
+   ],
+   "modern_mundane": [
+     "The Password Reset Pergola",
+     "Two-Factor Authentication Forest",
+     "The Software Update Swamp",
+     "Bluetooth Pairing Purgatory",
+     "The WiFi Dead Zone",
+     "Autocorrect Apocalypse Area",
+     "The Low Battery Life Support",
+     "Spam Folder Fortress",
+     "The Unsubscribe Utopia",
+     "Cookie Consent Concentration Camp",
+     "The Pop-Up Blocker Paradise",
+     "Terms of Service Mountain (No One Climbs)",
+     "The Privacy Settings Puzzle Palace",
+     "Cloud Storage Sky City",
+     "The Download Progress Bar That Lies",
+     "Installation Wizard Island",
+     "The Restart Required Region",
+     "Cache Clear Creek",
+     "The Force Quit Forest",
+     "System Preferences Purgatory"
+   ],
+   "existential_locations": [
+     "The Point of No Return Gift Shop",
+     "Meaning of Life Lost and Found",
+     "The Purpose-Driven Drive-In",
+     "Existential Crisis Comfort Inn",
+     "The Void (Now with Gift Shop)",
+     "Quarter-Life Crisis Quarters",
+     "The Mid-Life Crisis Motorway",
+     "Identity Crisis Crossroads",
+     "The What's the Point Point",
+     "Why Bother Boulevard",
+     "The Nihilism Nature Trail",
+     "Absurdist Adventure Park",
+     "The Determinism Dead End",
+     "Free Will Freeway (Toll Road)",
+     "The Simulation City Limits",
+     "Reality Check Checkpoint",
+     "The Is This All There Is Inn",
+     "Imposter Syndrome Support Center",
+     "The Dunning-Kruger Peak",
+     "Cognitive Dissonance District"
+   ]
+ },
+ 
+ "tonal_combinations": {
+   "melancholic_humor": {
+     "description": "Laughing at the funeral of the future",
+     "suitable_for": ["digital_extinction", "temporal_paradox", "memory_economy"],
+     "avoid_with": ["algorithmic_mysticism", "pet_dystopia"],
+     "mood": "bittersweet",
+     "narrative_approach": "tragicomic observations"
+   },
+   "desperate_hope": {
+     "description": "Finding light in the server room of despair",
+     "suitable_for": ["biological_nostalgia", "emotional_economy", "existential_migration"],
+     "avoid_with": ["reality_bureaucracy", "failed_villainy"],
+     "mood": "cautiously optimistic",
+     "narrative_approach": "resilience through absurdity"
+   },
+   "clinical_poetry": {
+     "description": "Dissecting beauty with sterile instruments",
+     "suitable_for": ["social_physics", "sensory_revolution", "pharmacological_identity"],
+     "avoid_with": ["dream_industrialization", "mundane_superpowers"],
+     "mood": "detached fascination",
+     "narrative_approach": "scientific lyricism"
+   },
+   "bureaucratic_absurdism": {
+     "description": "The existential horror of filling out the wrong form in triplicate",
+     "suitable_for": ["reality_bureaucracy", "chrono-colonialism", "subscription_existence"],
+     "avoid_with": ["sensory_revolution", "biological_nostalgia"],
+     "mood": "kafkaesque frustration",
+     "narrative_approach": "procedural madness"
+   },
+   "nihilistic_optimism": {
+     "description": "If nothing matters, then everything is permitted. Let's plant a garden.",
+     "suitable_for": ["linguistic_apocalypse", "quantum_folklore", "entropy_bard"],
+     "avoid_with": ["emotional_economy", "pet_dystopia"],
+     "mood": "cheerful meaninglessness",
+     "narrative_approach": "constructive destruction"
+   },
+   "gothic_futurism": {
+     "description": "Haunted houses made of code, and ghosts that are just corrupted data",
+     "suitable_for": ["digital_extinction", "algorithmic_mysticism", "existential_migration"],
+     "avoid_with": ["biological_nostalgia", "convenience_culture"],
+     "mood": "techno-supernatural dread",
+     "narrative_approach": "digital gothic"
+   },
+   "cozy_catastrophe": {
+     "description": "The world ends but there's still tea and biscuits",
+     "suitable_for": ["pet_dystopia", "suburban_surrealism", "culinary_consciousness"],
+     "avoid_with": ["neuro-feudalism", "atmospheric_capitalism"],
+     "mood": "comfortable doom",
+     "narrative_approach": "domestic apocalypse"
+   },
+   "aggressive_whimsy": {
+     "description": "Weaponized quirkiness and militarized imagination",
+     "suitable_for": ["failed_villainy", "awkward_heroism", "wellness_warfare"],
+     "avoid_with": ["memory_economy", "temporal_poverty"],
+     "mood": "forceful playfulness",
+     "narrative_approach": "violent creativity"
+   },
+   "corporate_surrealism": {
+     "description": "When KPIs meet kafka and synergy becomes cosmic horror",
+     "suitable_for": ["meeting_metaverse", "gig_economy_fantasy", "retail_religion"],
+     "avoid_with": ["biological_nostalgia", "quantum_folklore"],
+     "mood": "professional madness",
+     "narrative_approach": "business bizarre"
+   },
+   "romantic_cynicism": {
+     "description": "Love is dead but it's still getting likes on instagram",
+     "suitable_for": ["dating_app_dystopia", "algorithm_dating", "influencer_shamanism"],
+     "avoid_with": ["pet_dystopia", "quantum_folklore"],
+     "mood": "heartbroken hilarity",
+     "narrative_approach": "loveless love stories"
+   },
+   "educational_anarchy": {
+     "description": "Learning through chaos, wisdom through destruction",
+     "suitable_for": ["procrastination_physics", "meme_evolution", "social_media_mythology"],
+     "avoid_with": ["reality_bureaucracy", "subscription_existence"],
+     "mood": "destructive discovery",
+     "narrative_approach": "pedagogical pandemonium"
+   },
+   "suburban_gothic": {
+     "description": "HOAs as occult organizations and lawn care as dark ritual",
+     "suitable_for": ["suburban_surrealism", "hoa_reality_enforcer", "lawn_dimension_guardian"],
+     "avoid_with": ["digital_extinction", "temporal_paradox"],
+     "mood": "manicured menace",
+     "narrative_approach": "neighborhood nightmare"
+   },
+   "philosophical_slapstick": {
+     "description": "Pratfalls into profound truths, banana peels of enlightenment",
+     "suitable_for": ["mundane_superpowers", "convenience_culture", "awkward_heroism"],
+     "avoid_with": ["memory_economy", "genetic_copyright"],
+     "mood": "profound stupidity",
+     "narrative_approach": "wisdom through folly"
+   },
+   "dystopian_comfort": {
+     "description": "Oppression with excellent customer service",
+     "suitable_for": ["subscription_existence", "convenience_culture", "retail_religion"],
+     "avoid_with": ["sensory_revolution", "linguistic_apocalypse"],
+     "mood": "pleasant tyranny",
+     "narrative_approach": "comfortable cage"
+   },
+   "existential_comedy": {
+     "description": "The meaning of life is a punchline nobody gets",
+     "suitable_for": ["boredom_curator", "procrastination_physics", "password_purgatory"],
+     "avoid_with": ["genetic_copyright", "atmospheric_capitalism"],
+     "mood": "meaningless mirth",
+     "narrative_approach": "cosmic comedy"
+   }     
+  }
+}

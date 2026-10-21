@@ -1,0 +1,6 @@
+Void Apply format:
+<<<<<<< ORIGINAL
+old code (exact match)
+=======
+new code
+>>>>>>> UPDATED

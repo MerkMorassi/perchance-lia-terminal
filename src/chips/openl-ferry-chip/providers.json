@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "note": "The API KEYRING registry. Each entry tells keys.js (a) where a key of that provider goes on an outgoing request - a header or a query parameter, its name, an optional scheme, and any static headers the provider demands - and (b) how to probe the key so the KEYRING panel can answer 'is this key alive?' without any integration code existing yet. `browser` records what a browser fetch from THIS generator's origin actually did (measured 2026-09-17, dummy keys): direct = the provider answered the browser (401/400 = a real HTTP answer, so CORS is open); proxy = the fetch was refused by CORS and a relay (root.superFetch, the super-fetch-plugin) is needed. Integration code should read `mode`: when it is 'proxy', call keyring.request() and it will route through the relay by itself. Nothing here is a secret; keys live only in this device's IndexedDB (kv lia_settings / api_keys).",
+  "providers": [
+    {
+      "id": "elevenlabs",
+      "label": "ElevenLabs",
+      "group": "VOICE",
+      "docs": "https://elevenlabs.io/docs/api-reference/text-to-speech",
+      "auth": { "place": "header", "name": "xi-api-key" },
+      "hint": "starts with sk_",
+      "test": { "method": "GET", "url": "https://api.elevenlabs.io/v1/user" },
+      "testNote": "the account check needs a key created with the 'user read' permission, and listing voices needs 'voices read'. A key without them still SPEAKS (text_to_speech is a separate permission) - that is why the shipped voice palette exists.",
+      "browser": "direct",
+      "mode": "direct",
+      "use": "her spoken voice (text-to-speech), speech-to-text, and the conversational agents"
+    },
+    {
+      "id": "huggingface",
+      "label": "Hugging Face",
+      "group": "MODELS",
+      "docs": "https://huggingface.co/docs/api-inference",
+      "auth": { "place": "header", "name": "Authorization", "scheme": "Bearer" },
+      "hint": "starts with hf_",
+      "test": { "method": "GET", "url": "https://huggingface.co/api/whoami-v2" },
+      "browser": "direct",
+      "mode": "direct",
+      "use": "inference API: any hosted text, vision, or embedding model - Whisper for his microphone"
+    },
+    {
+      "id": "openai",
+      "label": "OpenAI",
+      "group": "MODELS",
+      "docs": "https://platform.openai.com/docs/api-reference",
+      "auth": { "place": "header", "name": "Authorization", "scheme": "Bearer" },
+      "hint": "starts with sk-",
+      "test": { "method": "GET", "url": "https://api.openai.com/v1/models" },
+      "browser": "direct",
+      "mode": "direct",
+      "use": "chat, embeddings, transcription, and speech"
+    },
+    {
+      "id": "anthropic",
+      "label": "Anthropic",
+      "group": "MODELS",
+      "docs": "https://docs.anthropic.com/en/api/getting-started",
+      "auth": {
+        "place": "header",
+        "name": "x-api-key",
+        "extra": { "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" }
+      },
+      "hint": "starts with sk-ant-",
+      "test": { "method": "GET", "url": "https://api.anthropic.com/v1/models" },
+      "browser": "direct",
+      "mode": "direct",
+      "use": "Claude models - the browser call only works with the dangerous-direct-browser-access header, which is already declared above"
+    },
+    {
+      "id": "google",
+      "label": "Google AI (Gemini)",
+      "group": "MODELS",
+      "docs": "https://ai.google.dev/gemini-api/docs",
+      "auth": { "place": "query", "name": "key" },
+      "hint": "starts with AIza",
+      "test": { "method": "GET", "url": "https://generativelanguage.googleapis.com/v1beta/models" },
+      "browser": "direct",
+      "mode": "direct",
+      "use": "Gemini text, vision, and the gemini-embedding models the LOREPACK FACTORY mints with. This key rides in the URL, so treat any request log as a secret"
+    },
+    {
+      "id": "google-drive",
+      "label": "Google Drive (OAuth)",
+      "group": "CLOUD",
+      "docs": "https://developers.google.com/drive/api/guides/about-sdk",
+      "auth": { "place": "header", "name": "Authorization", "scheme": "Bearer" },
+      "hint": "OAuth tokens - connected from the SYNC panel, never pasted",
+      "test": { "method": "GET", "url": "https://www.googleapis.com/drive/v3/about?fields=user" },
+      "browser": "direct",
+      "mode": "direct",
+      "use": "private cloud sync of the archive (SYNC send/receive). Scope is drive.file: only the one file the terminal creates itself"
+    },
+    {
+      "id": "stability",
+      "label": "Stability AI",
+      "group": "IMAGE",
+      "docs": "https://platform.stability.ai/docs/api-reference",
+      "auth": { "place": "header", "name": "Authorization", "scheme": "Bearer" },
+      "hint": "starts with sk-",
+      "test": { "method": "GET", "url": "https://api.stability.ai/v1/user/account" },
+      "browser": "direct",
+      "mode": "direct",
+      "use": "image generation and upscaling, as an alternative to the built-in forge"
+    },
+    {
+      "id": "replicate",
+      "label": "Replicate",
+      "group": "MODELS",
+      "docs": "https://replicate.com/docs/reference/http",
+      "auth": { "place": "header", "name": "Authorization", "scheme": "Bearer" },
+      "hint": "starts with r8_",
+      "test": { "method": "GET", "url": "https://api.replicate.com/v1/account" },
+      "browser": "proxy",
+      "mode": "proxy",
+      "use": "hosted models of every kind. Replicate refuses browser-origin calls, so requests go through the relay (super-fetch-plugin)"
+    },
+    {
+      "id": "modelslab",
+      "label": "Models Lab",
+      "group": "IMAGE",
+      "docs": "https://docs.modelslab.com/",
+      "auth": { "place": "query", "name": "key" },
+      "hint": "",
+      "test": null,
+      "browser": "direct",
+      "mode": "direct",
+      "use": "image and video generation. No probe is wired (its account endpoint answers before it reads a key), so the panel will hold this key without checking it"
+    },
+    {
+      "id": "groq",
+      "label": "Groq",
+      "group": "MODELS",
+      "docs": "https://console.groq.com/docs/api-reference",
+      "auth": { "place": "header", "name": "Authorization", "scheme": "Bearer" },
+      "hint": "starts with gsk_",
+      "test": { "method": "GET", "url": "https://api.groq.com/openai/v1/models" },
+      "browser": "direct",
+      "mode": "direct",
+      "use": "Groq chat (OpenAI-compatible API) - the /groq lane, her fastest brain"
+    },
+    {
+      "id": "gatekeeper",
+      "label": "PRIAPOS Authority (GateKeeper)",
+      "group": "ACCESS",
+      "docs": "https://github.com/MerkMorassi/GATEKEEPER-MVP-1.4",
+      "auth": { "place": "header", "name": "X-API-Key" },
+      "hint": "the Authority's API key (READ_ONLY is enough for the door)",
+      "test": null,
+      "browser": "",
+      "mode": "direct",
+      "use": "PRIAPOS, the first door: the key the INSPECT road sends as X-API-Key when a gk_ pass is presented. The module tries a direct browser call first and the relay itself if the Authority refuses the origin. No probe is wired (the Authority's URL is his own server, set with /gatekeeper authority) - /gatekeeper keytest proves the key instead"
+    },
+    {
+      "id": "openl",
+      "label": "OpenL (RapidAPI)",
+      "group": "MODELS",
+      "docs": "https://rapidapi.com/lvwzhen/api/openl-translate",
+      "auth": { "place": "header", "name": "X-RapidAPI-Key", "extra": { "X-RapidAPI-Host": "openl-translate.p.rapidapi.com" } },
+      "hint": "RapidAPI key (X-RapidAPI-Key) - pasted in the panel, never in the input line",
+      "test": { "method": "GET", "url": "https://openl-translate.p.rapidapi.com/translate/languages" },
+      "browser": "",
+      "mode": "direct",
+      "use": "the dead-languages road: OpenL AI translation (171 languages, Ancient Greek as grc) via RapidAPI - the first road /xlate tries when this key is held, MyMemory when it is not"
+    }
+  ]
+}

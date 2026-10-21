@@ -1,0 +1,41 @@
+<div id="mythos-workspace" style="max-width:850px; margin:0 auto; font-family:'Courier New', Courier, monospace; background:#f3f4f6; padding:20px; box-sizing:border-box;">
+  <!-- Formatter & Native Perchance AI Ribbon Interface -->
+  <div id="mythos-toolbar" style="background:#ffffff; padding:8px; border:1px solid #d1d5db; display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:15px; font-size:12px;">
+    <button type="button" id="mythos-btn-scene" style="background:#f3f4f6; border:1px solid #d1d5db; padding:4px 8px; cursor:pointer;" title="Scene Heading">🎬 SCENE</button>
+    <button type="button" id="mythos-btn-action" style="background:#f3f4f6; border:1px solid #d1d5db; padding:4px 8px; cursor:pointer;" title="Action block">🏃 ACTION</button>
+    <button type="button" id="mythos-btn-character" style="background:#f3f4f6; border:1px solid #d1d5db; padding:4px 8px; cursor:pointer;" title="Character Name">👤 CHAR</button>
+    <button type="button" id="mythos-btn-dialogue" style="background:#f3f4f6; border:1px solid #d1d5db; padding:4px 8px; cursor:pointer;" title="Dialogue block">💬 DIAL</button>
+    <div style="width:1px; height:20px; background:#d1d5db; margin:0 2px;"></div>
+    <button type="button" id="mythos-btn-native-ai" style="background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; padding:4px 8px; font-weight:bold; cursor:pointer;" title="Autocomplete via native Perchance ai-text plugin">🤖 PERCHANCE AI LINE</button>
+    <button type="button" id="mythos-save" style="background:#10b981; color:#ffffff; border:none; padding:4px 12px; font-weight:bold; cursor:pointer; margin-left:auto;" title="Save locally and sync over Tailscale">✍️ SAVE (💻+S)</button>
+    <button type="button" id="mythos-purge" style="background:#ef4444; color:#ffffff; border:none; padding:4px 12px; font-weight:bold; cursor:pointer;" title="Purge storage ledger">🗑️ PURGE</button>
+  </div>
+
+  <div style="display:flex; gap:15px; flex-wrap:wrap;">
+    <!-- Warner Bros Standard Typography Layout Frame -->
+    <div style="background:#ffffff; border:1px solid #d1d5db; padding:1.0in 1.0in 1.0in 1.5in; min-height:11in; box-sizing:border-box; box-shadow:0 2px 4px rgba(0,0,0,0.05); flex:1; min-width:500px;">
+      <div id="mythos-editable" contenteditable="true" style="outline:none; font-size:12pt; line-height:1.2; color:#000000; min-height:9in; white-space:pre-wrap;">
+        <p data-type="scene">INT. ABANDONED TERMINAL REALM - NIGHT</p>
+        <p data-type="action">A script writer activates the append-only logs layer. Event entries begin to stream instantly to the database ledger.</p>
+      </div>
+    </div>
+    <!-- Append-Only Audit Stream Panel -->
+    <div style="width:230px; background:#ffffff; border:1px solid #d1d5db; padding:12px; font-size:11px; display:flex; flex-direction:column; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+      <div style="font-weight:bold; border-bottom:1px solid #e5e7eb; padding-bottom:6px; margin-bottom:8px;">🗒️ WORKSPACE CHRONICLE</div>
+      <div id="mythos-chronicle-stream" style="flex:1; overflow-y:auto; max-height:8in; display:flex; flex-direction:column; gap:6px; word-break:break-all;"></div>
+    </div>
+  </div>
+
+  <!-- Execution Diagnostic Footer Bar -->
+  <div style="display:flex; justify-content:space-between; padding:8px 12px; font-size:11px; color:#4b5563; font-family:monospace; background:#ffffff; border:1px solid #d1d5db; margin-top:10px;">
+    <span id="mythos-status">🔍 Status: Systems check</span>
+    <span id="mythos-metrics">🗒️ Metrics: 0 chars</span>
+  </div>
+</div>
+
+<style>
+  #mythos-editable p { margin: 0 0 12pt 0; padding: 0; width: 6.0in; text-transform: none; }
+  #mythos-editable p[data-type="scene"] { text-transform: uppercase; font-weight: bold; margin-top: 24pt; }
+  #mythos-editable p[data-type="character"] { margin-left: 2.5in; width: 3.5in; text-transform: uppercase; margin-bottom: 0; }
+  #mythos-editable p[data-type="dialogue"] { margin-left: 1.5in; width: 3.0in; margin-bottom: 12pt; }
+</style>

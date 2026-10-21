@@ -1,0 +1,181 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <memory>
+#include <sstream>
+#include <iomanip>
+
+class NumMarkXArray {
+public:
+    NumMarkXArray(int size) : size(size) {
+        data.resize(size * size * size);
+    }
+
+    // Convert 3D indices to 1D index
+    int to1DIndex(int i, int j, int k) const {
+        return i * size * size + j * size + k;
+    }
+
+    // NumMark-X Encoding: Convert plaintext to concatenated 3-digit ASCII codes
+    std::string encodeNumMarkX(const std::string& plaintext) const {
+        std::stringstream encoded;
+        for (char c : plaintext) {
+            // Convert to 3-digit ASCII with leading zeros
+            encoded << std::setfill('0') << std::setw(3) 
+                   << static_cast<int>(static_cast<unsigned char>(c));
+        }
+        return encoded.str();
+    }
+
+    // NumMark-X Decoding: Convert ASCII codes back to human-readable text
+    std::string decodeNumMarkX(const std::string& asciiCodes) const {
+        std::string decoded;
+        
+        // Validate: length must be divisible by 3
+        if (asciiCodes.length() % 3 != 0) {
+            return ""; // Return empty response for malformed input
+        }
+        
+        // Process in chunks of exactly 3 digits
+        for (size_t i = 0; i < asciiCodes.length(); i += 3) {
+            std::string asciiStr = asciiCodes.substr(i, 3);
+            
+            // Validate: must be exactly 3 digits
+            if (asciiStr.length() != 3) {
+                return ""; // Return empty for malformed segment
+            }
+            
+            // Validate: all characters must be digits
+            for (char digit : asciiStr) {
+                if (!std::isdigit(digit)) {
+                    return ""; // Return empty for non-digit characters
+                }
+            }
+            
+            try {
+                int asciiValue = std::stoi(asciiStr);
+                if (asciiValue >= 0 && asciiValue <= 255) {
+                    decoded += static_cast<char>(asciiValue);
+                } else {
+                    return ""; // Invalid ASCII range
+                }
+            } catch (const std::exception&) {
+                return ""; // Return empty for conversion errors
+            }
+        }
+        return decoded;
+    }
+
+    // Add data using NumMark-X encoding
+    void addData(int i, int j, int k, const std::string& plaintext) {
+        if (isValidIndex(i, j, k)) {
+            int index = to1DIndex(i, j, k);
+            std::string encoded = encodeNumMarkX(plaintext);
+            data[index] = encoded;
+            std::cout << "NumMark-X Encoded: \"" << plaintext << "\" -> \"" << encoded << "\"" << std::endl;
+        } else {
+            std::cerr << "Invalid index (" << i << ", " << j << ", " << k << ")\n";
+        }
+    }
+
+    // Retrieve and decode data using NumMark-X
+    std::string getData(int i, int j, int k) const {
+        if (isValidIndex(i, j, k)) {
+            int index = to1DIndex(i, j, k);
+            std::string encoded = data[index];
+            if (encoded.empty()) {
+                return "";
+            }
+            std::string decoded = decodeNumMarkX(encoded);
+            std::cout << "NumMark-X Decoded: \"" << encoded << "\" -> \"" << decoded << "\"" << std::endl;
+            return decoded;
+        } else {
+            std::cerr << "Invalid index (" << i << ", " << j << ", " << k << ")\n";
+            return "";
+        }
+    }
+
+    // Get raw NumMark-X encoded data
+    std::string getRawNumMarkX(int i, int j, int k) const {
+        if (isValidIndex(i, j, k)) {
+            int index = to1DIndex(i, j, k);
+            return data[index];
+        }
+        return "";
+    }
+
+    // Command-line style encode function
+    void cmdEncode(const std::string& plaintext) const {
+        std::string encoded = encodeNumMarkX(plaintext);
+        std::cout << "/Encode " << plaintext << std::endl;
+        std::cout << "Output: " << encoded << std::endl;
+    }
+
+    // Command-line style decode function
+    void cmdDecode(const std::string& asciiCodes) const {
+        std::string decoded = decodeNumMarkX(asciiCodes);
+        std::cout << "/Decode " << asciiCodes << std::endl;
+        if (decoded.empty()) {
+            std::cout << "Output: [Empty - Malformed Input]" << std::endl;
+        } else {
+            std::cout << "Output: " << decoded << std::endl;
+        }
+    }
+
+private:
+    int size;
+    std::vector<std::string> data;
+
+    // Check if indices are within bounds
+    bool isValidIndex(int i, int j, int k) const {
+        return i >= 0 && i < size && 
+               j >= 0 && j < size && 
+               k >= 0 && k < size;
+    }
+};
+
+int main() {
+    // Create a 3D array using NumMark-X encoding
+    auto db = std::make_unique<NumMarkXArray>(10);
+
+    std::cout << "=== NumMark-X 3D Array Implementation ===\n" << std::endl;
+
+    // Test NumMark-X specification example
+    std::cout << "--- NumMark-X Specification Test ---" << std::endl;
+    db->cmdEncode("Hello, World!");
+    db->cmdDecode("072101108108111044032087111114108100033");
+    
+    std::cout << "\n--- 3D Array Storage Test ---" << std::endl;
+    db->addData(0, 0, 0, "Hello, World!");
+    std::cout << "Retrieved: " << db->getData(0, 0, 0) << std::endl;
+
+    std::cout << "\n--- Various Character Tests ---" << std::endl;
+    db->addData(1, 1, 1, "NumMark-X");
+    db->addData(2, 2, 2, "123!@#");
+    db->addData(3, 3, 3, "Special chars: áéíóú");
+    
+    std::cout << "Position (1,1,1): " << db->getData(1, 1, 1) << std::endl;
+    std::cout << "Position (2,2,2): " << db->getData(2, 2, 2) << std::endl;
+    std::cout << "Position (3,3,3): " << db->getData(3, 3, 3) << std::endl;
+
+    std::cout << "\n--- Raw NumMark-X Encoded Data ---" << std::endl;
+    std::cout << "Raw at (0,0,0): " << db->getRawNumMarkX(0, 0, 0) << std::endl;
+    std::cout << "Raw at (1,1,1): " << db->getRawNumMarkX(1, 1, 1) << std::endl;
+
+    std::cout << "\n--- Error Handling Tests ---" << std::endl;
+    // Test malformed inputs
+    db->cmdDecode("07210110811"); // Not divisible by 3
+    db->cmdDecode("07a101108");   // Contains non-digit
+    db->cmdDecode("999101108");   // Valid format but high ASCII
+    
+    std::cout << "\n--- Overwrite Test ---" << std::endl;
+    db->addData(4, 4, 4, "Original");
+    std::cout << "First: " << db->getData(4, 4, 4) << std::endl;
+    db->addData(4, 4, 4, "Updated");
+    std::cout << "Updated: " << db->getData(4, 4, 4) << std::endl;
+
+    std::cout << "\n--- Empty Data Test ---" << std::endl;
+    std::cout << "Empty position (5,5,5): '" << db->getData(5, 5, 5) << "'" << std::endl;
+
+    return 0;
+}

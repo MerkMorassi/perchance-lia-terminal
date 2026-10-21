@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FLOOR TEST</title>
+<meta name="color-scheme" content="dark">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#000;color:#00ff00;text-align:left;font:14px/1.55 "Courier New",Courier,monospace;padding:22px}
+h1{margin:0 0 4px;font-size:20px;letter-spacing:.08em}
+.sub{color:#008800;font-size:12px;letter-spacing:.18em;margin-bottom:14px}
+.card{border:1px solid #005500;border-radius:12px;background:#001100;padding:12px 14px;margin-bottom:12px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+button{border:1px solid #005500;background:#001100;color:#00ff00;font:inherit;font-size:13px;font-weight:700;padding:8px 13px;border-radius:9px;cursor:pointer}
+button:hover{border-color:#00aa00;background:#002200}
+button.on{background:#00ff00;color:#000;border-color:#00ff00}
+.lamp{display:inline-block;font-weight:700;letter-spacing:.1em;padding:4px 12px;border-radius:999px;border:1px solid #005500}
+.lamp.BARBELO{color:#000;background:#00ff00;border-color:#00ff00}
+.lamp.MAYA{color:#000;background:#ffb020;border-color:#ffb020}
+.lamp.OPERATOR{color:#000;background:#40c8ff;border-color:#40c8ff}
+.lamp.STANDBY{color:#00aa00}
+.gate{font-size:12px;border:1px solid #005500;border-radius:8px;padding:3px 9px;color:#008800}
+.gate.live{color:#000;background:#00ff00;border-color:#00ff00}
+.meter{height:8px;border:1px solid #005500;border-radius:999px;background:#000;overflow:hidden;flex:1;min-width:120px}
+.meter i{display:block;height:100%;width:0;background:#00ff00}
+input[type=range]{accent-color:#00ff00}
+#log{white-space:pre-wrap;word-break:break-word;font-size:12.5px;color:#00aa00;min-height:120px;max-height:300px;overflow:auto}
+#log .bad{color:#ff5555}
+#log .good{color:#00ff00}
+.note{color:#008800;font-size:12px}
+</style>
+</head>
+<body>
+<h1>TRICOMM FLOOR TEST</h1>
+<div class="sub">STANDALONE // ORIGINAL APP UNTOUCHED</div>
+<div class="card">
+<div class="row">
+<span class="lamp STANDBY" id="lamp">STANDBY</span>
+<span class="gate" id="micGate">MIC DEAD</span>
+<span class="gate" id="mayaGate">MAYA SILENT</span>
+</div>
+<div class="row">
+<button id="goBtn" type="button">GO LIVE</button>
+<button id="standBtn" type="button">STAND DOWN</button>
+<button id="nextBtn" type="button">NEXT TURN</button>
+<button id="fastBtn" type="button" title="recreate the machine with short timeouts so caps can be proven in seconds">FAST TIMEOUTS: OFF</button>
+<button id="selfBtn" type="button">RUN SELF-TEST</button>
+</div>
+<div class="row"><span id="tState" class="note">LIVE: NO // TIMEOUTS 4000 / 2500 / 45000 / 120000</span></div>
+</div>
+<div class="card">
+<div class="row"><b>FAKE SIGNALS</b><span class="note">NO MIC, NO TTS, NO NETWORK IN HERE</span></div>
+<div class="row">
+<button id="barbBtn" type="button">BARBELO SPEAKING: OFF</button>
+<span class="note">HER VOICE vs QUIET</span>
+</div>
+<div class="row">
+<span>MAYA LEVEL</span>
+<input id="mayaLvl" type="range" min="0" max="100" value="0" style="flex:1">
+<button id="mayaBurst" type="button">TALK BURST</button>
+<div class="meter"><i id="mayaFill"></i></div>
+</div>
+<div class="row">
+<button id="ansBtn" type="button">OPERATOR: SHE ANSWERED</button>
+<button id="youMuteBtn" type="button">YOU MUTE: OFF</button>
+<button id="mayaMuteBtn" type="button">MAYA MUTE: OFF</button>
+<button id="monBtn" type="button">MONITOR: ON</button>
+</div>
+</div>
+<div class="card">
+<div class="row"><b>LOG</b><button id="clearBtn" type="button">CLEAR</button></div>
+<div id="log"></div>
+</div>
+<script src="js/floor-machine.js"></script>
+<script>
+(function () {
+"use strict";
+var FAST = { barbQuiet: 800, mayaEnd: 500, mayaCap: 3000, opCap: 5000 };
+var NORMAL = { barbQuiet: 4000, mayaEnd: 2500, mayaCap: 45000, opCap: 120000 };
+var fast = false;
+var M = window.FloorMachine.create(NORMAL);
+var barb = false;
+var mayaLevel = 0;
+function $(id) { return document.getElementById(id); }
+function log(t, cls) {
+var box = $("log");
+var d = document.createElement("div");
+if (cls) d.className = cls;
+d.textContent = t;
+box.appendChild(d);
+box.scrollTop = box.scrollHeight;
+}
+function timeoutLine() {
+var T = M.timeouts;
+return "TIMEOUTS " + T.barbQuiet + " / " + T.mayaEnd + " / " + T.mayaCap + " / " + T.opCap;
+}
+function paint() {
+var lamp = $("lamp");
+lamp.textContent = M.state.floor;
+lamp.className = "lamp " + M.state.floor;
+var mg = $("micGate");
+var ml = M.micLive();
+mg.textContent = ml ? "MIC LIVE" : "MIC DEAD";
+mg.className = "gate" + (ml ? " live" : "");
+var yg = $("mayaGate");
+var yl = M.mayaAudible();
+yg.textContent = yl ? "MAYA AUDIBLE" : "MAYA SILENT";
+yg.className = "gate" + (yl ? " live" : "");
+$("tState").textContent = "LIVE: " + (M.state.live ? "YES" : "NO") + " // " + timeoutLine();
+$("mayaFill").style.width = Math.max(0, Math.min(100, mayaLevel * 100)) + "%";
+}
+function sig() {
+return { barb: barb ? "HER VOICE" : "QUIET", maya: mayaLevel, answered: false };
+}
+setInterval(function () {
+if (!M.state.live) { paint(); return; }
+var before = M.state.floor;
+M.tick(Date.now(), sig());
+if (M.state.floor !== before) log("PASS: " + before + " -> " + M.state.floor);
+paint();
+}, 250);
+$("goBtn").addEventListener("click", function () {
+M.go(Date.now());
+log("LIVE. Floor: " + M.state.floor);
+paint();
+});
+$("standBtn").addEventListener("click", function () {
+M.stand();
+log("Stood down.");
+paint();
+});
+$("nextBtn").addEventListener("click", function () {
+if (!M.state.live) { log("Not live.", "bad"); return; }
+M.next(Date.now());
+log("Taken. Floor: " + M.state.floor);
+paint();
+});
+$("fastBtn").addEventListener("click", function () {
+fast = !fast;
+var live = M.state.live;
+var mutes = { y: M.state.youMute, m: M.state.mayaMute, mon: M.state.mayaMon };
+M = window.FloorMachine.create(fast ? FAST : NORMAL);
+M.state.youMute = mutes.y;
+M.state.mayaMute = mutes.m;
+M.state.mayaMon = mutes.mon;
+if (live) M.go(Date.now());
+$("fastBtn").textContent = "FAST TIMEOUTS: " + (fast ? "ON" : "OFF");
+$("fastBtn").className = fast ? "on" : "";
+log(timeoutLine());
+paint();
+});
+$("barbBtn").addEventListener("click", function () {
+barb = !barb;
+$("barbBtn").textContent = "BARBELO SPEAKING: " + (barb ? "ON" : "OFF");
+$("barbBtn").className = barb ? "on" : "";
+});
+$("mayaLvl").addEventListener("input", function () {
+mayaLevel = Number($("mayaLvl").value) / 100;
+paint();
+});
+$("mayaBurst").addEventListener("click", function () {
+mayaLevel = 0.2;
+$("mayaLvl").value = 20;
+paint();
+setTimeout(function () {
+mayaLevel = 0;
+$("mayaLvl").value = 0;
+paint();
+}, 900);
+});
+$("ansBtn").addEventListener("click", function () {
+if (!M.state.live) { log("Not live.", "bad"); return; }
+if (M.state.floor !== "OPERATOR") { log("She can only answer on YOUR turn.", "bad"); return; }
+M.tick(Date.now(), { barb: "QUIET", maya: 0, answered: true });
+log("Her answer took the turn. Floor: " + M.state.floor);
+paint();
+});
+$("youMuteBtn").addEventListener("click", function () {
+M.state.youMute = !M.state.youMute;
+$("youMuteBtn").textContent = "YOU MUTE: " + (M.state.youMute ? "ON" : "OFF");
+paint();
+});
+$("mayaMuteBtn").addEventListener("click", function () {
+M.state.mayaMute = !M.state.mayaMute;
+$("mayaMuteBtn").textContent = "MAYA MUTE: " + (M.state.mayaMute ? "ON" : "OFF");
+paint();
+});
+$("monBtn").addEventListener("click", function () {
+M.state.mayaMon = !M.state.mayaMon;
+$("monBtn").textContent = "MONITOR: " + (M.state.mayaMon ? "ON" : "OFF");
+paint();
+});
+$("clearBtn").addEventListener("click", function () { $("log").innerHTML = ""; });
+function check(name, cond) {
+log((cond ? "PASS: " : "FAIL: ") + name, cond ? "good" : "bad");
+return !!cond;
+}
+$("selfBtn").addEventListener("click", function () {
+var t = window.FloorMachine.create(FAST);
+var now = Date.now();
+var ok = true;
+t.go(now);
+ok = check("opens on BARBELO", t.state.floor === "BARBELO") && ok;
+ok = check("mic dead on Barbelo turn", t.micLive() === false) && ok;
+ok = check("maya silent on Barbelo turn", t.mayaAudible() === false) && ok;
+now += 100;
+t.tick(now, { barb: "HER VOICE", maya: 0 });
+now += 100;
+t.tick(now, { barb: "QUIET", maya: 0 });
+ok = check("her voice ending passes to MAYA", t.state.floor === "MAYA") && ok;
+ok = check("maya audible on her turn", t.mayaAudible() === true) && ok;
+ok = check("mic still dead on Maya turn", t.micLive() === false) && ok;
+now += 100;
+t.tick(now, { barb: "QUIET", maya: 0.5 });
+t.state.lastVoice = now;
+now += FAST.mayaEnd + 100;
+t.tick(now, { barb: "QUIET", maya: 0 });
+ok = check("maya quiet passes to OPERATOR", t.state.floor === "OPERATOR") && ok;
+ok = check("mic live on your turn", t.micLive() === true) && ok;
+ok = check("maya silent on your turn", t.mayaAudible() === false) && ok;
+t.state.youMute = true;
+ok = check("your mute kills the mic even on your turn", t.micLive() === false) && ok;
+t.state.youMute = false;
+now += 100;
+t.tick(now, { barb: "QUIET", maya: 0, answered: true });
+ok = check("her answer ends your turn to BARBELO", t.state.floor === "BARBELO") && ok;
+var t2 = window.FloorMachine.create(FAST);
+t2.go(now);
+t2.state.floorSince = now - FAST.barbQuiet - 10;
+t2.tick(now, { barb: "QUIET", maya: 0 });
+ok = check("barbelo silence times out to MAYA", t2.state.floor === "MAYA") && ok;
+log(ok ? "SELF-TEST: ALL GREEN" : "SELF-TEST: SOMETHING FAILED", ok ? "good" : "bad");
+paint();
+});
+paint();
+log("Floor test ready. GO LIVE, flip the fake signals, watch the lamp. RUN SELF-TEST proves the rotation in under 3 seconds.");
+})();
+</script>
+</body>
+</html>

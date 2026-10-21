@@ -1,0 +1,12 @@
+VIDEO:
+Camera Movement: Analyze camera movement: tracking shots, push-ins, pans, establishing shots.
+Lens & Settings: probable lens, aperture, camera model, ISO, shutter angle.
+Scene Breakdown: lighting ratios, blocking, color grading palette.
+Narrative: mood, tone, storytelling techniques.
+Reverse Engineer: generative video prompt replicating the sequence.
+IMAGE:
+Lighting: key ratios, color temperature, grading style.
+Lens & Settings: lens, aperture, depth of field, camera settings.
+Composition: framing, rule of thirds, visual balance.
+Visual Style: mood, tone, photographic aesthetic.
+Reverse Engineer: generative image prompt replicating the shot.

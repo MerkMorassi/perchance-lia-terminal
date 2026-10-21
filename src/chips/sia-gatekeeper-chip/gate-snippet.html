@@ -1,0 +1,67 @@
+<!-- MYTHOS GATE - static markup. Paste near the TOP of <body>, before your app.
+     FAIL-CLOSED: this overlay is VISIBLE by default. If the script below never
+     loads, the visitor sees the wall and never the app. Do NOT add `hidden`. -->
+<div id="gateKeeper" role="dialog" aria-modal="true" aria-labelledby="gateKeeperTitle">
+  <div class="gatePanel">
+    <div class="gateHead">SIA</div>
+    <div class="gateRule">GUARDIAN OF THE GARDEN</div>
+    <p class="gateText">
+      This realm belongs to a household, and at its threshold stands a guardian.
+      Present the TOKEN and you pass: type it in. A device that has never been
+      given one enrols on the first it is shown - that is how a second device
+      joins. Every device after that must match it.
+    </p>
+    <div class="gateSigil" id="gateSigil" hidden></div>
+    <label class="gateTokenRow" for="gateToken">
+      <span>TOKEN</span>
+      <input id="gateToken" type="text" spellcheck="false" autocomplete="off" placeholder="XXXX-XXXX-XXXX-XXXX">
+    </label>
+    <div class="gateRow">
+      <button id="gatePassBtn" class="gateKey" type="button" disabled>PASS</button>
+      <button id="gateMintBtn" class="gateKey" type="button">MINT A SIGIL</button>
+      <button id="gateCopyBtn" class="gateKey" type="button">COPY</button>
+      <button id="gateLeaveBtn" class="gateKey" type="button">LEAVE</button>
+    </div>
+    <div class="gateMsg" id="gateMsg" aria-live="polite"></div>
+    <div class="gateNote">
+      ONLY THE SHA-256 MARK OF THE SIGIL IS KEPT ON THIS DEVICE AND IT IS
+      NEVER SENT ANYWHERE. THE FULL TOKEN IS SHOWN ONCE, AT MINTING.
+    </div>
+  </div>
+</div>
+<style>
+#gateKeeper { position: fixed; inset: 0; z-index: 2100; background: #060806;
+  display: flex; align-items: center; justify-content: center; padding: 20px; }
+#gateKeeper[hidden] { display: none; }
+.gatePanel { max-width: 560px; width: 100%; background: #0b0e0b; color: #d6e2d6;
+  border: 1px solid #1f3a24; border-radius: 12px; padding: 28px; text-align: center;
+  font-family: Georgia, serif; }
+.gateHead { font-size: 26px; letter-spacing: 6px; color: #7fd08a; }
+.gateRule { font-size: 12px; letter-spacing: 3px; opacity: .7; margin: 6px 0 14px; }
+.gateText { font-size: 15px; line-height: 1.55; opacity: .9; }
+.gateSigil { font-family: monospace; font-size: 22px; letter-spacing: 2px; color: #a5f3ae;
+  background: #061206; border: 1px dashed #2c5a33; border-radius: 8px; padding: 12px; margin: 12px 0; }
+.gateTokenRow { display: flex; gap: 10px; align-items: center; justify-content: center; margin: 14px 0; }
+.gateTokenRow span { font-size: 12px; letter-spacing: 2px; opacity: .7; }
+#gateToken { flex: 1; max-width: 300px; background: #060906; color: #e8f3e8;
+  border: 1px solid #2c5a33; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 16px; }
+.gateRow { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 10px 0; }
+.gateKey { background: #12260f; color: #c9e8cd; border: 1px solid #2c5a33; border-radius: 8px;
+  padding: 9px 16px; cursor: pointer; font-family: inherit; letter-spacing: 1px; }
+.gateKey:disabled { opacity: .35; cursor: default; }
+.gateMsg { min-height: 22px; font-size: 13px; color: #e8c96a; margin: 8px 0; }
+.gateNote { font-size: 11px; opacity: .55; line-height: 1.5; }
+</style>
+<script src="mythos-gate-standalone.js"></script>
+<script>
+(function () {
+  function kvFolder() {
+    try { if (window.root && window.root.kv && window.root.kv.sia_settings) return window.root.kv.sia_settings; } catch (e) {}
+    return null;
+  }
+  var gate = MythosGate.client({ kvFolder: kvFolder(), slot: "gatekeeper" });
+  window.mythosGate = gate;
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { gate.boot(); });
+  else gate.boot();
+})();
+</script>

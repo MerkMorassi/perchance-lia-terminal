@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "note": "THE SHIPPED INDEX OF THE CHATLOG - the raw record of the conversation this terminal was built in. THE RECORD ITSELF IS NOT HERE AND NEVER WILL BE: a transcript is private (it is full of things said between two people, and of incidental keys, ids and addresses), and everything in src/ is public and ships with the generator. The record lives in THIS BROWSER's kv - lia_settings / chatlog_meta, chatlog_chunk_<n>, chatlog_marks - put there by the CHATLOG panel (src/js/chatlog.js, /chatlog, /help chatlog). WHAT THIS FILE IS FOR: so a later session that has only the source knows the record exists, how big it was, how it was indexed and how to read it back. A later session reads the record with a small script in the page: root.kv.lia_settings.get('chatlog_meta') for the index, then get('chatlog_chunk_<n>') chunk by chunk, or window.chatlog.meta() / listText() / grepText('...') / turnText(n) which do it properly. IT COSTS NOTHING TO READ: nothing in the chatlog is ever sent to the text engine, put in her prompt, or indexed for her recall. THE RULE OF THE FOLDER: src/chatlog/ holds the READER (src/js/chatlog.js), the EXPORT RECIPE (EXTRACT.md), the FORMAT written down field by field (CHATLOG.FORMAT.md, v2.1), the BRIDGE from a transcript to memory (chatlog-to-lorepack.js) and this index - never the transcript. THE FORMAT AND THE BRIDGE ARE HERE SO THE PACKAGE CANNOT BE LOST: they are the same bytes that are handed to another ALIA's room (the `package` block below lists the delivered copies and their URLs), and they live in src/ because a delivered blob with no source is a thing a later session can only read, not fix. THE IMPORT POLICY IS APPEND (kv: lia_settings / chatlog_policy, read by root.chatlog.policy()): an import adds to the record, never over it - the seam between the record and the new file is found, only what is past it is kept, and the join is written into the record. A file that is already in the record changes nothing except the turn index, and a record's own turn index is CARRIED FORWARD when it is appended to. REPLACE is the deliberate opposite, on the panel's own button or /chatlog import --replace. WHERE IT LIVES: kv is PER-ORIGIN and the origin is the GENERATOR'S ID, not its name - which is why the two fields below (origin, originAt) are here. `root.chatlog.origin()` (/chatlog origin) says it in full: a SAVE does not move the record (this generator already exists on the server under this ID, so saving uploads the REST OF THE SOURCE to the same generator), a RENAME does not move it either (the name is the path), and a FORK - a new ID - is a different origin with an empty store, which is the one case this file can detect, because it travels with the code and the record's own kv does not. READ IT FIRST: root.chatlog.brief() (/chatlog brief [N], the panel's BRIEF button) prints the fixed-size HEAD of the record - where it lives, what it weighs, the first turn, the newest N turns, and what was made of it (src/chronicle/) - for two chunk reads however large the record grows. Every line of it is a LABELED FIELD, so two sessions' briefs can be compared line by line.",
+  "record": {
+    "where": "this browser, kv folder lia_settings: chatlog_meta (the index), chatlog_chunk_<n> (the text, in chunks), chatlog_marks (the turn index)",
+    "origin": "60a6e23d828a54dc4c8b315f33c97ba3.perchance.org",
+    "originAt": "2026-09-26",
+    "importedAt": "2026-09-24T16:09:45.530Z",
+    "source": "the text field of lia-chatlog-20260924-0023.json (the transcript recovered from the .json sidecar after a first attempt filed the JSON itself)",
+    "chars": 3680690,
+    "bytes": 3883361,
+    "chunks": 19,
+    "lines": 69304,
+    "turns": 21,
+    "indexed": "lines (role lines found in the transcript)",
+    "labels": [
+      "system",
+      "lia"
+    ],
+    "fingerprint": "e291ad08-3829b2",
+    "head": "How can I create a small lore RAG and upload a .txt file and have the AI be grounded on this uploaded lore?",
+    "tail": "✓ conversation view restored.",
+    "note": "THE WHOLE TRANSCRIPT IS IN, from the session that built the terminal this far: 19,690 messages captured by the console script (9,845 user / 9,845 assistant), imported 2026-09-24. THE TURN INDEX IS THIN ON PURPOSE-FOR-NOW: only 21 turns are numbered, because the transcript was filed from the sidecar's `text` and a bare dump has no role lines for the heuristic to find. IMPORTING lia-chatlog-20260924-0023.json ONCE fills the index with all 19,690 numbered turns - importing it again is now SAFE and cannot duplicate or replace anything: the words are already in the record, so put() recognises the file as already present and rebuilds ONLY the turn index from its `messages` (measured: a 40-message sidecar reindexed a 3.68M-character record to 40 numbered turns with the words byte-identical). An export of the whole conversation can be imported over this record at any time: only what is new is added, and the join is written into the record. The record already existed twice before this one: the .txt first (same fingerprint, e291ad08-3829b2), then the raw .json (7,010,991 chars, filed as JSON - the bug that made sidecar() necessary), then this; and an unrecognised .json is now REFUSED rather than filed. grep, show, export and the panel all work now; only turn NUMBERING waits on that one import.",
+    "policy": "append",
+    "joins": 0
+  },
+  "package": {
+    "what": "THE PACKAGE HANDED TO ANOTHER ALIA'S ROOM: the reader, the format and the bridge, as one delivery. It exists because a chat log only proves useful to a second room if the second room can WRITE the same shapes - so the module is delivered byte-exact (one canonical logic, no translation that can drift), the format is written down field by field, and the bridge turns one export into a LOREPACK document plus a MYTHOS staging file. The SOURCES live in this folder (chatlog.js: src/js/chatlog.js - CHATLOG.FORMAT.md - chatlog-to-lorepack.js); the copies below are the delivered blobs, and they are byte-identical to the sources here.",
+    "version": "2.1",
+    "sources": {
+      "module": "src/js/chatlog.js",
+      "format": "src/chatlog/CHATLOG.FORMAT.md",
+      "bridge": "src/chatlog/chatlog-to-lorepack.js"
+    },
+    "delivered": {
+      "module": "https://user.uploads.dev/file/677e7e6277794679685b56e72810ccb2.js",
+      "format_v2_1": "https://user.uploads.dev/file/d672dcd2fa352899335f9d8d7a42899e.txt",
+      "bridge": "https://user.uploads.dev/file/8d4d6ae77f82b5e7cc26e2387e4aee62.js",
+      "zip_v2_1": "https://user.uploads.dev/file/ab055e8b1ab4494adeeab359fc690f3c.zip",
+      "format_v2_superseded": "https://user.uploads.dev/file/b7e3d708138e28d3b96aa4275d6b3edf.txt",
+      "zip_v2_superseded": "https://user.uploads.dev/file/6961ff5cae51cf68bdefde1ba5afe8f1.zip",
+      "spec_v1": "https://user.uploads.dev/file/fdbf9f6327707619afe0276d0b2b7370.txt",
+      "port_v1": "https://user.uploads.dev/file/94aab937ace827d196d7d12ed428c979.js"
+    },
+    "sizes": {
+      "module": 94910,
+      "format_v2_1": 19645,
+      "bridge": 14923,
+      "zip_v2_1": 43697
+    },
+    "v2_1_what_changed": "ONE THING: B3.1 - WHAT A STAGING RECORD IS, EXACTLY. A room built from v2 emitted `v:1` staging records, because v2 gave the reader-side shape in B3 and the staging shape only by implication; a staging record is v:2, type:'turn', vec:null, and the factory's embedder owns the transition to type:'vector'. Nothing else in the format changed. The module and the bridge are BYTE-IDENTICAL to v2 (94,910 / 14,923), so only the format document and the zip are new in 2.1.",
+    "verified": "the delivered copies were fetched back on 2026-09-30 and compared byte-for-byte with the sources above: 94,910 / 19,645 / 14,923 bytes, and the three zip entries byte-identical to the files they were built from."
+  },
+  "coldCopies": [],
+  "sessions": [
+    {
+      "at": "2026-09-24",
+      "what": "the first export: the conversation that built THE CHATLOG itself, and the long build of the terminal before it - 3.68M characters, 69,304 lines, 19,690 messages, in 19 chunks",
+      "file": "lia-chatlog-20260924-0023.json (+ .txt), exported from https://perchance.org/2hoy6c5u0x#edit by the console script (auto-picked `<aiagentmsgsel >`)",
+      "state": "filed; turn numbering awaiting the .json import"
+    },
+    {
+      "at": "2026-09-26",
+      "what": "THE ORIGIN QUESTION, SETTLED, AND THE BRIEF: whether a SAVE moves the record was checked against the server instead of assumed (the generator already exists under its ID - the served page for its name links to that very subdomain, the API answers with its main.pjs byte-identical to this tree's copy, and 60 of 82 src files are already on the server), so saving uploads the REST OF THE SOURCE to the same generator and the record does not move; the record now stamps the origin it is kept at, the shipped index carries the same claim, /chatlog origin states the verdict and the fix, and a foreign-origin import says so - plus THE BRIEF (/chatlog brief, the panel's BRIEF button): the fixed-size head of the record a session reads first",
+      "file": "src/js/chatlog.js, src/js/config.js, index.html, src/chatlog/manifest.json, src/chatlog/README.md, src/README.md, src/TODO.md",
+      "state": "built and verified against the real 3.68M-character record (brief on the real record, the no-record brief, and the mismatch path by making the shipped claim disagree and putting it back)"
+    }
+  ]
+}

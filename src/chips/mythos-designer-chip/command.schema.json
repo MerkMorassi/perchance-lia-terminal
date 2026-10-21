@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "VOXCONPACK Command Definition Schema",
+  "type": "object",
+  "required": [
+    "id",
+    "command",
+    "class",
+    "purpose",
+    "aliases",
+    "parameters",
+    "authority",
+    "confirmation",
+    "execution",
+    "failure",
+    "escalation",
+    "response_profile"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^VOX\\.[A-Z0-9_]+$"
+    },
+    "command": {
+      "type": "string",
+      "pattern": "^[A-Z0-9_]+$"
+    },
+    "class": {
+      "type": "string",
+      "enum": [
+        "OBSERVE",
+        "NAVIGATE",
+        "CONTROL",
+        "CREATE",
+        "MODIFY",
+        "EXTERNAL_ACTION",
+        "AUTHORIZATION",
+        "SAFETY"
+      ]
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "canonical_forms": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "aliases": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["required", "type"],
+        "properties": {
+          "required": { "type": "boolean" },
+          "type": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "examples": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "authority": {
+      "type": "object",
+      "required": ["system", "required"],
+      "properties": {
+        "system": { "type": "string", "enum": ["AUTHPACK"] },
+        "required": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "confirmation": {
+      "type": "boolean"
+    },
+    "execution": {
+      "type": "string"
+    },
+    "failure": {
+      "type": "string"
+    },
+    "escalation": {
+      "type": "string"
+    },
+    "response_profile": {
+      "type": "string"
+    }
+  }
+}

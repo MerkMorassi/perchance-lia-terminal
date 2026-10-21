@@ -1,0 +1,10 @@
+OPENL KEY FERRY — NO SECRET INSIDE.
+
+The RapidAPI key lives ONLY in this browser (kv lia_settings / api_keys under id 'openl'). It never ships in src/, never exports.
+
+To move it to the other app:
+1. HERE: KEYS panel -> OpenL (RapidAPI) -> SHOW -> copy.
+2. THERE: same KEYS panel -> paste under OpenL -> TEST (GET translate/languages).
+3. Wiring it expects THERE: header X-RapidAPI-Key + X-RapidAPI-Host: openl-translate.p.rapidapi.com, POST https://openl-translate.p.rapidapi.com/translate {text,target_lang}.
+
+This chip carries the wiring (providers.json, xlate.js) so the other side matches — paste the key itself by hand.

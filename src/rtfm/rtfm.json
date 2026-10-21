@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "note": "THE RTFM - the manual, kept as documents. Markdown files in this folder, listed here, shipped with the generator and read in the terminal with /rtfm (src/js/rtfm.js is the reader). These are FOR PATRIKIOS, not for LIA: they are never folded into her memory, never retrieved and never handed to her - the LOREPACK is her recollection, this is the manual for the machine. Everything in this folder is PUBLIC. To add a document: drop the .md file here and list it below (see README.md). `generated: true` means the file is WRITTEN BY THE TERMINAL from another file, not by hand - /rtfm check compares it against a fresh render and says whether the copy has gone stale.",
+  "docs": [
+    {
+      "id": "commands",
+      "file": "commands.md",
+      "title": "THE SLASH COMMANDS",
+      "tags": ["reference", "generated"],
+      "generated": true,
+      "from": "src/commands/commands.json",
+      "desc": "every command the terminal carries out and every one she answers herself, what each is for, and the whole usage line of each - the cheatsheet"
+    },
+    {
+      "id": "turn",
+      "file": "turn.md",
+      "title": "YOUR TURN AND HERS",
+      "tags": ["voice", "how-it-works"],
+      "desc": "how the terminal decides you have finished speaking, why a pause mid-sentence is safe, what she will not do over the top of you, and how to make the wait longer or shorter"
+    },
+    {
+      "id": "manual",
+      "file": "manual.md",
+      "title": "THE USER'S MANUAL",
+      "tags": ["how-it-works", "beginnings"],
+      "desc": "the terminal from your side of the glass - first run, the three decks, talking to her, the creative cluster, keeping things; grows as the machine grows"
+    }
+  ]
+}

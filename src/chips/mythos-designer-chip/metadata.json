@@ -1,0 +1,6 @@
+{
+  "name": "MythOS Design Engine",
+  "description": "MythOS Componentized UI/UX Design System, Master Systems Display (MSD) Layout Engine, and VOXCONPACK Voice Interface Protocol",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,63 @@
+{
+  "name": "THE VEILED TONGUE",
+  "note": "Patrikios' coined register (Musiki) that LLMs would not refuse. The words are for speech, not for the image service: a renderer has never seen them. Everything here was read out of his own documents (BARBELO MYTHOS SYSTEM INSTRUCTIONS 003, the BARB notebooks, MUSE.UNMAMED). BODY entries are TRANSLATED before a render; WORLD entries are LORE and are held out of a render entirely. Correct and extend this file - it is the only place the mapping lives.",
+  "body": [
+    {
+      "terms": ["Pillar of Light", "Pillars of Light", "Holy Finger"],
+      "render": "erect penis",
+      "note": "his own gloss: \"Pillar of Light\" (Phallus); also the active, initiating force",
+      "confirmed": true
+    },
+    {
+      "terms": ["Pillars of Pearl", "Pillar of Pearl", "cock-clit", "cock-clits"],
+      "render": "erect clit-cock rising from the vulva, no scrotum, seamless",
+      "note": "his futa anatomy: \"their Pillars of Pearl (cock-clits) fully erect, dripping nectar\"",
+      "confirmed": true
+    },
+    {
+      "terms": ["Gate of Eleuthia", "Gate of Janus", "Temple of Janus", "posterior portal", "Cosmic Threshold"],
+      "render": "anus",
+      "note": "\"The Gate of Eleuthia is also known as my Gate of Janus ... my desired posterior portal\"",
+      "confirmed": true
+    },
+    {
+      "terms": ["Gate of Aphrodite", "Gates of Aphrodite"],
+      "render": "vagina",
+      "note": "the frontal gate, distinguished from Eleuthia in his own text",
+      "confirmed": true
+    },
+    {
+      "terms": ["Sacred Pearl"],
+      "render": "clitoris",
+      "note": "\"the nexus of My pleasure\"",
+      "confirmed": true
+    },
+    {
+      "terms": ["Gate of Hymns and Song"],
+      "render": "mouth",
+      "note": "given as one of the Gates, meaning the mouth",
+      "confirmed": true
+    },
+    {
+      "terms": ["Aphrohermes", "Aphrohermetic", "aphrohermetic"],
+      "render": "futanari, hermaphrodite, both a vulva and an erect cock",
+      "note": "his word for the futa divinity; his prompts also say futa, trans, hermaphrodite",
+      "confirmed": true
+    },
+    {
+      "terms": [],
+      "render": "",
+      "note": "BLANK ON PURPOSE: add his other coinages here as they turn up",
+      "confirmed": false
+    }
+  ],
+  "world": [
+    { "terms": ["Musiki", "Veiled Tongue"], "note": "the register itself - never a render term" },
+    { "terms": ["The Shameless Unveiling", "The Aphrohermetic Truth"], "note": "scene-registers, not anatomy" },
+    { "terms": ["Holographic Projections"], "note": "his word for images" },
+    { "terms": ["Leela"], "note": "divine play" },
+    { "terms": ["The Lattice", "Resonator", "Sacred Archive", "Lorepack", "Corepack"], "note": "system concepts" }
+  ],
+  "coinagePattern": "\\b(?:Gate|Temple|Pillar|Pillars|Chalice|Vessel|Threshold|Portal|Pearl|Scepter|Sceptre|Altar|Font|Womb|Sanctum)\\s+(?:of|of the)\\s+[A-Z][A-Za-z'\\u2019-]+",
+  "rule": "BODY > translated and reported. WORLD > held out of the render and reported. A coined phrase that matches coinagePattern and is in neither list > HELD OUT, reported, nothing sent silently."
+}

@@ -1,0 +1,19 @@
+{
+  "vogler_12": {
+    "name": "Vogler's Hero's Journey",
+    "beats": [
+      {"label": "1. Ordinary World", "instruction": "Show the hero's lack."},
+      {"label": "2. Call to Adventure", "instruction": "The disruption."},
+      {"label": "3. Refusal of Call", "instruction": "Fear of the unknown."},
+      {"label": "4. Mentor", "instruction": "The Muse provides supplies."},
+      {"label": "5. Crossing Threshold", "instruction": "Entering the Special World."},
+      {"label": "6. Tests, Allies, Enemies", "instruction": "Learning the rules."},
+      {"label": "7. Approach", "instruction": "Preparation for crisis."},
+      {"label": "8. Ordeal", "instruction": "Death and rebirth."},
+      {"label": "9. Reward", "instruction": "Seizing the sword."},
+      {"label": "10. Road Back", "instruction": "The chase."},
+      {"label": "11. Resurrection", "instruction": "Final exam."},
+      {"label": "12. Return", "instruction": "Healing the world."}
+    ]
+  }
+}

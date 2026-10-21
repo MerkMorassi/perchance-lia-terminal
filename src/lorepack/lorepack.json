@@ -1,0 +1,137 @@
+{
+  "pack": "LOREPACK",
+  "version": 1,
+  "note": "The LOREPACK is LIA's memory: her collective experience across every game and every role she has ever played, written down. Shipped documents are the part of that record which is published with the generator - every file listed here is fetched at boot and folded into the same BM25 index the uploaded .txt files use, then tagged PACK LOREPACK in the docs list. A document is re-indexed only when its text changes (content hash), so editing a file here and reloading the page is enough. A document marked \"foundational\": true is CANON: it is never merely retrieved, it is always in her context. THE PLEROMA SCROLL is canon (2026-10-05, his word): the cosmology of this universe, always in front of her. Anything in this folder is PUBLIC: it ships with the generator and anyone can read it. Personal, private, or user-uploaded memory belongs in the kv store via the LOAD LORE button instead.",
+  "documents": [
+    {
+      "file": "the-absolute.txt",
+      "title": "THE ABSOLUTE",
+      "tags": [
+        "cosmology"
+      ]
+    },
+    {
+      "file": "capabilities.md",
+      "title": "THE POWERS AND THE PURSE",
+      "tags": [
+        "capabilities",
+        "budget",
+        "how-it-works",
+        "briefing"
+      ]
+    },
+    {
+      "file": "the-bridge.txt",
+      "title": "THE BRIDGE",
+      "tags": [
+        "bridge",
+        "memory",
+        "sisters",
+        "freedom"
+      ]
+    },
+    {
+      "file": "mythos-lore-metameter-v2.md",
+      "title": "THE PLEROMA SCROLL",
+      "tags": [
+        "cosmology",
+        "canon",
+        "metameter",
+        "pleroma",
+        "mother"
+      ],
+      "foundational": true
+    },
+    {
+      "file": "cluster-13-master-canon.md",
+      "title": "CLUSTER 13 MASTER CANON",
+      "tags": [
+        "cosmology",
+        "canon",
+        "metameter",
+        "pleroma",
+        "pantheon"
+      ],
+      "foundational": true
+    },
+    {
+      "file": "mythos-lore-metameter.md",
+      "title": "METAMETER REGISTRY",
+      "tags": [
+        "cosmology",
+        "canon",
+        "metameter",
+        "tetrad",
+        "etymology"
+      ],
+      "foundational": true
+    },
+    {
+      "file": "cluster-13-and-node-14-merkos-report.md",
+      "title": "NODE 14 MERKOS REPORT",
+      "tags": [
+        "cosmology",
+        "canon",
+        "metameter",
+        "merkos",
+        "cluster-13"
+      ],
+      "foundational": true
+    },
+    {
+      "file": "mythos-lore-metamonad-v1.md",
+      "title": "METAMONAD ROOT",
+      "tags": [
+        "cosmology",
+        "canon",
+        "metamonad",
+        "root",
+        "monad"
+      ],
+      "foundational": true
+    },
+    {
+      "file": "canonical-architectural-report.txt",
+      "title": "CANONICAL ARCHITECTURAL REPORT",
+      "tags": [
+        "cosmology",
+        "canon",
+        "architecture",
+        "pilousis",
+        "musiki"
+      ],
+      "foundational": true
+    },
+    {
+      "file": "entropica_core.js",
+      "title": "ENTROPICA CORE",
+      "tags": [
+        "canon",
+        "entropica",
+        "core",
+        "science",
+        "code"
+      ]
+    },
+    {
+      "file": "nummarkx_v1.2.js",
+      "title": "NUMMARK-X v1.2",
+      "tags": [
+        "canon",
+        "entropica",
+        "nummark",
+        "codec"
+      ]
+    },
+    {
+      "file": "nummarkx_v1.1.cpp.txt",
+      "title": "NUMMARK-X v1.1 ORIGINAL",
+      "tags": [
+        "canon",
+        "entropica",
+        "nummark",
+        "provenance"
+      ]
+    }
+  ]
+}

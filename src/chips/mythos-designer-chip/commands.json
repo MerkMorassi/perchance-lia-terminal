@@ -1,0 +1,989 @@
+[
+  {
+    "id": "VOX.STATUS",
+    "command": "STATUS",
+    "class": "OBSERVE",
+    "purpose": "Query and report the current operational status, subsystem metrics, or health of a designated target.",
+    "canonical_forms": [
+      "STATUS"
+    ],
+    "aliases": [
+      "give me status",
+      "what's the system status",
+      "system status",
+      "report status",
+      "check health",
+      "operational status"
+    ],
+    "parameters": {
+      "target": {
+        "required": false,
+        "type": "string",
+        "description": "Subsystem or target resource to query. Defaults to system."
+      }
+    },
+    "examples": [
+      "Status",
+      "Give me status",
+      "What's the system status",
+      "Report propulsion status"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK authorization for reading system or subsystem status."
+    },
+    "confirmation": false,
+    "execution": "Queries telemetry and system metrics through the workstation execution layer.",
+    "failure": "Report telemetry acquisition failure through COMMPACK.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.STATUS"
+  },
+  {
+    "id": "VOX.HELP",
+    "command": "HELP",
+    "class": "OBSERVE",
+    "purpose": "Provide operator guidance, available commands, or operational assistance for the active interface.",
+    "canonical_forms": [
+      "HELP"
+    ],
+    "aliases": [
+      "assist",
+      "assistance",
+      "what can i say",
+      "list commands",
+      "command guide"
+    ],
+    "parameters": {
+      "query": {
+        "required": false,
+        "type": "string",
+        "description": "Specific topic or command to get help on."
+      }
+    },
+    "examples": [
+      "Help",
+      "What can I say",
+      "Command guide"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK authorization for public knowledge retrieval."
+    },
+    "confirmation": false,
+    "execution": "Presents operator documentation and voice command guidance.",
+    "failure": "Report guidance unavailable.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.INFO"
+  },
+  {
+    "id": "VOX.LIST",
+    "command": "LIST",
+    "class": "OBSERVE",
+    "purpose": "Enumerate available resources, files, surfaces, or inventory items in the specified scope.",
+    "canonical_forms": [
+      "LIST"
+    ],
+    "aliases": [
+      "enumerate",
+      "show all",
+      "list files",
+      "list resources"
+    ],
+    "parameters": {
+      "resource": {
+        "required": false,
+        "type": "string",
+        "description": "Category or scope of resources to list."
+      }
+    },
+    "examples": [
+      "List resources",
+      "Enumerate files",
+      "Show all surfaces"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK read authorization for the designated resource scope."
+    },
+    "confirmation": false,
+    "execution": "Queries directory or resource index.",
+    "failure": "Report index retrieval failure.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.STATUS"
+  },
+  {
+    "id": "VOX.SHOW",
+    "command": "SHOW",
+    "class": "OBSERVE",
+    "purpose": "Display or visually present a designated metric, chart, node, or surface component.",
+    "canonical_forms": [
+      "SHOW"
+    ],
+    "aliases": [
+      "display",
+      "view",
+      "reveal"
+    ],
+    "parameters": {
+      "target": {
+        "required": true,
+        "type": "string",
+        "description": "The element, node, or metric to display."
+      }
+    },
+    "examples": [
+      "Show telemetry",
+      "Display warp core",
+      "View impulse manifold"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK read authorization for the visual target."
+    },
+    "confirmation": false,
+    "execution": "Activates visualization or focuses the visual container.",
+    "failure": "Report target not found.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.READ",
+    "command": "READ",
+    "class": "OBSERVE",
+    "purpose": "Read aloud or synthesize textual content, telemetry log entries, or diagnostic briefs.",
+    "canonical_forms": [
+      "READ"
+    ],
+    "aliases": [
+      "read out",
+      "speak",
+      "vocalize"
+    ],
+    "parameters": {
+      "target": {
+        "required": true,
+        "type": "string",
+        "description": "The text, file, or log stream to read."
+      }
+    },
+    "examples": [
+      "Read log entries",
+      "Read telemetry",
+      "Speak latest advisory"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK authorization to access the text stream."
+    },
+    "confirmation": false,
+    "execution": "Submits textual stream to speech synthesis engine.",
+    "failure": "Report audio synthesis failure.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.INFO"
+  },
+  {
+    "id": "VOX.SEARCH",
+    "command": "SEARCH",
+    "class": "OBSERVE",
+    "purpose": "Search knowledge bases, logs, or file systems for matches corresponding to a query.",
+    "canonical_forms": [
+      "SEARCH"
+    ],
+    "aliases": [
+      "look for",
+      "query",
+      "locate"
+    ],
+    "parameters": {
+      "query": {
+        "required": true,
+        "type": "string",
+        "description": "Search text or pattern."
+      },
+      "location": {
+        "required": false,
+        "type": "string",
+        "description": "Scope or repository to search."
+      }
+    },
+    "examples": [
+      "Search logs for anomaly",
+      "Query reactor specifications"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK search authorization."
+    },
+    "confirmation": false,
+    "execution": "Executes retrieval search against indexing layer.",
+    "failure": "Report query execution failure.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.STATUS"
+  },
+  {
+    "id": "VOX.FIND",
+    "command": "FIND",
+    "class": "OBSERVE",
+    "purpose": "Locate a specific unique resource, node, or file.",
+    "canonical_forms": [
+      "FIND"
+    ],
+    "aliases": [
+      "pinpoint",
+      "track down"
+    ],
+    "parameters": {
+      "item": {
+        "required": true,
+        "type": "string",
+        "description": "The specific item to locate."
+      }
+    },
+    "examples": [
+      "Find primary reactor",
+      "Find navigation manifest"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK read authorization."
+    },
+    "confirmation": false,
+    "execution": "Locates item and selects coordinate or node reference.",
+    "failure": "Report item not found.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.OPEN",
+    "command": "OPEN",
+    "class": "NAVIGATE",
+    "purpose": "Open an authorized application, file, surface, resource, or workspace.",
+    "canonical_forms": [
+      "OPEN"
+    ],
+    "aliases": [
+      "launch",
+      "bring up",
+      "pull up",
+      "navigate to",
+      "switch to"
+    ],
+    "parameters": {
+      "target": {
+        "required": true,
+        "type": "string",
+        "description": "Name or identifier of target surface, application, or file."
+      },
+      "location": {
+        "required": false,
+        "type": "string",
+        "description": "Target workspace or screen area."
+      }
+    },
+    "examples": [
+      "Open the RAG browser",
+      "Launch VS Code",
+      "Bring up the MythOS dashboard",
+      "Pull up the dashboard",
+      "Switch to voice control"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK authorization for the requested target."
+    },
+    "confirmation": false,
+    "execution": "Submit the normalized navigation request to the workstation execution layer.",
+    "failure": "Report actual failure condition or missing target.",
+    "escalation": "Escalate when requested operation exceeds available authority.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.CLOSE",
+    "command": "CLOSE",
+    "class": "NAVIGATE",
+    "purpose": "Close or dismiss the specified active window, modal, surface, or panel.",
+    "canonical_forms": [
+      "CLOSE"
+    ],
+    "aliases": [
+      "dismiss",
+      "shut down",
+      "exit",
+      "hide"
+    ],
+    "parameters": {
+      "target": {
+        "required": true,
+        "type": "string",
+        "description": "The surface, modal, or window to close."
+      }
+    },
+    "examples": [
+      "Close modal",
+      "Dismiss diagnostics",
+      "Hide telemetry"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK window management authorization."
+    },
+    "confirmation": false,
+    "execution": "Sends close event to the window or panel controller.",
+    "failure": "Report inability to dismiss window.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.SELECT",
+    "command": "SELECT",
+    "class": "NAVIGATE",
+    "purpose": "Choose or highlight a specific node, item, or entry in a collection.",
+    "canonical_forms": [
+      "SELECT"
+    ],
+    "aliases": [
+      "choose",
+      "pick",
+      "highlight"
+    ],
+    "parameters": {
+      "item": {
+        "required": true,
+        "type": "string",
+        "description": "The item or node key to select."
+      }
+    },
+    "examples": [
+      "Select primary coil",
+      "Choose profile two"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK interaction authorization."
+    },
+    "confirmation": false,
+    "execution": "Sets active selection state in the component model.",
+    "failure": "Report target item not found.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.FOCUS",
+    "command": "FOCUS",
+    "class": "NAVIGATE",
+    "purpose": "Shift operational focus and input context to a designated pane, surface, or input control.",
+    "canonical_forms": [
+      "FOCUS"
+    ],
+    "aliases": [
+      "focus on",
+      "switch focus to"
+    ],
+    "parameters": {
+      "target": {
+        "required": true,
+        "type": "string",
+        "description": "Pane or component to focus."
+      }
+    },
+    "examples": [
+      "Focus on telemetry console",
+      "Focus command line"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK input authorization."
+    },
+    "confirmation": false,
+    "execution": "Dispatches focus event to the target element.",
+    "failure": "Report focus failure.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.NEXT",
+    "command": "NEXT",
+    "class": "NAVIGATE",
+    "purpose": "Advance to the next item, page, tab, or record in a sequential workflow.",
+    "canonical_forms": [
+      "NEXT"
+    ],
+    "aliases": [
+      "forward",
+      "advance",
+      "step forward"
+    ],
+    "parameters": {
+      "surface": {
+        "required": false,
+        "type": "string",
+        "description": "Scope of the sequential navigation."
+      }
+    },
+    "examples": [
+      "Next",
+      "Next tab",
+      "Advance page"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK navigation authorization."
+    },
+    "confirmation": false,
+    "execution": "Dispatches sequential increment action.",
+    "failure": "Report end of sequence.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.BACK",
+    "command": "BACK",
+    "class": "NAVIGATE",
+    "purpose": "Return to the previous item, page, tab, or view in history.",
+    "canonical_forms": [
+      "BACK"
+    ],
+    "aliases": [
+      "previous",
+      "go back",
+      "step back"
+    ],
+    "parameters": {
+      "surface": {
+        "required": false,
+        "type": "string",
+        "description": "Scope of the sequential navigation."
+      }
+    },
+    "examples": [
+      "Back",
+      "Go back",
+      "Previous page"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK navigation authorization."
+    },
+    "confirmation": false,
+    "execution": "Dispatches sequential decrement or history pop.",
+    "failure": "Report beginning of sequence.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.START",
+    "command": "START",
+    "class": "CONTROL",
+    "purpose": "Initiate or begin an authorized system routine, ingestion cycle, or simulation stream.",
+    "canonical_forms": [
+      "START"
+    ],
+    "aliases": [
+      "begin",
+      "commence",
+      "initiate",
+      "run"
+    ],
+    "parameters": {
+      "target": {
+        "required": true,
+        "type": "string",
+        "description": "The routine, process, or stream to start."
+      }
+    },
+    "examples": [
+      "Start simulation",
+      "Initiate diagnostic scan",
+      "Run ingest"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK execution authorization for the designated process."
+    },
+    "confirmation": true,
+    "execution": "Submits start routine directive to runtime scheduler.",
+    "failure": "Report runtime failure or process error.",
+    "escalation": "Escalate to HITL if process status reports critical error.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.STOP",
+    "command": "STOP",
+    "class": "SAFETY",
+    "purpose": "Immediately halt an active operation, audio playback, routine, or in emergency context, trigger emergency safety stop.",
+    "canonical_forms": [
+      "STOP"
+    ],
+    "aliases": [
+      "halt",
+      "terminate",
+      "abort",
+      "emergency stop",
+      "kill process"
+    ],
+    "parameters": {
+      "target": {
+        "required": false,
+        "type": "string",
+        "description": "Specific process to stop. If omitted, applies to current active audio / operation or emergency halt."
+      }
+    },
+    "examples": [
+      "Stop",
+      "Halt simulation",
+      "Abort scan",
+      "Emergency stop"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK safety authorization. Emergency safety stop is granted high priority."
+    },
+    "confirmation": false,
+    "execution": "Invokes emergency halt handler or terminates active process.",
+    "failure": "Report emergency halt condition.",
+    "escalation": "Immediate HITL alert if emergency halt fails.",
+    "response_profile": "COMMPACK.SAFETY"
+  },
+  {
+    "id": "VOX.PAUSE",
+    "command": "PAUSE",
+    "class": "CONTROL",
+    "purpose": "Temporarily suspend an active playback, scan, simulation, or voice capture stream without clearing state.",
+    "canonical_forms": [
+      "PAUSE"
+    ],
+    "aliases": [
+      "hold",
+      "suspend",
+      "standby"
+    ],
+    "parameters": {
+      "target": {
+        "required": false,
+        "type": "string",
+        "description": "Routine or stream to suspend. Defaults to active stream."
+      }
+    },
+    "examples": [
+      "Pause",
+      "Hold playback",
+      "Standby"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK process control authorization."
+    },
+    "confirmation": false,
+    "execution": "Sends pause signal to execution engine.",
+    "failure": "Report pause failure.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.RESUME",
+    "command": "RESUME",
+    "class": "CONTROL",
+    "purpose": "Unpause or resume an interrupted or suspended process or stream.",
+    "canonical_forms": [
+      "RESUME"
+    ],
+    "aliases": [
+      "continue",
+      "unpause",
+      "proceed"
+    ],
+    "parameters": {
+      "target": {
+        "required": false,
+        "type": "string",
+        "description": "Suspended routine to resume."
+      }
+    },
+    "examples": [
+      "Resume",
+      "Continue scan",
+      "Proceed"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK process control authorization."
+    },
+    "confirmation": false,
+    "execution": "Sends resume signal to runtime scheduler.",
+    "failure": "Report resume failure.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.REPEAT",
+    "command": "REPEAT",
+    "class": "CONTROL",
+    "purpose": "Re-execute or re-read the most recently executed command or speech transmission.",
+    "canonical_forms": [
+      "REPEAT"
+    ],
+    "aliases": [
+      "say again",
+      "do that again",
+      "repeat that"
+    ],
+    "parameters": {},
+    "examples": [
+      "Repeat",
+      "Say again",
+      "Repeat last advisory"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK authorization for the repeated action."
+    },
+    "confirmation": false,
+    "execution": "Re-dispatches previous transaction from provenance log.",
+    "failure": "Report no previous actionable command.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.UNDO",
+    "command": "UNDO",
+    "class": "CONTROL",
+    "purpose": "Revert the previous state modification or parameter update.",
+    "canonical_forms": [
+      "UNDO"
+    ],
+    "aliases": [
+      "revert",
+      "step back edit"
+    ],
+    "parameters": {},
+    "examples": [
+      "Undo",
+      "Revert last change"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK modification authorization."
+    },
+    "confirmation": false,
+    "execution": "Pops previous transaction from state history stack.",
+    "failure": "Report undo stack empty.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.CANCEL",
+    "command": "CANCEL",
+    "class": "CONTROL",
+    "purpose": "Cancel the currently active pending operation, dialog, or staged action.",
+    "canonical_forms": [
+      "CANCEL"
+    ],
+    "aliases": [
+      "drop",
+      "abort pending",
+      "never mind"
+    ],
+    "parameters": {},
+    "examples": [
+      "Cancel",
+      "Drop that",
+      "Never mind"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Authorized for all human operators."
+    },
+    "confirmation": false,
+    "execution": "Clears active pending-confirmation state in AUTHPACK.",
+    "failure": "Report no pending operation.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.CREATE",
+    "command": "CREATE",
+    "class": "CREATE",
+    "purpose": "Generate, instantiate, or initialize a new file, manifest, command, or resource.",
+    "canonical_forms": [
+      "CREATE"
+    ],
+    "aliases": [
+      "make",
+      "generate",
+      "build",
+      "initialize"
+    ],
+    "parameters": {
+      "resource": {
+        "required": true,
+        "type": "string",
+        "description": "The resource category to create."
+      },
+      "item": {
+        "required": false,
+        "type": "string",
+        "description": "Name or identifier of the new resource."
+      }
+    },
+    "examples": [
+      "Create theme preset",
+      "Generate new manifest",
+      "Build command definition"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK resource creation authorization."
+    },
+    "confirmation": false,
+    "execution": "Dispatches instantiation routine to the resource builder.",
+    "failure": "Report creation validation or allocation failure.",
+    "escalation": "Escalate if disk or resource quotas exceeded.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.EDIT",
+    "command": "EDIT",
+    "class": "MODIFY",
+    "purpose": "Modify an existing parameter, field, command definition, or manifest attribute.",
+    "canonical_forms": [
+      "EDIT"
+    ],
+    "aliases": [
+      "modify",
+      "alter",
+      "change",
+      "update",
+      "set"
+    ],
+    "parameters": {
+      "target": {
+        "required": true,
+        "type": "string",
+        "description": "Field or parameter to edit."
+      },
+      "value": {
+        "required": true,
+        "type": "string",
+        "description": "New value to assign."
+      }
+    },
+    "examples": [
+      "Edit core temperature to 3500",
+      "Set theme to noir-dark",
+      "Change sensitivity to high"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK modification authorization for the specified target."
+    },
+    "confirmation": true,
+    "execution": "Applies state patch through the designated surface store.",
+    "failure": "Report invalid parameter or out-of-range value.",
+    "escalation": "Escalate to HITL if parameter touches safety boundaries.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.SAVE",
+    "command": "SAVE",
+    "class": "MODIFY",
+    "purpose": "Persist current workspace state, parameters, theme, or manifest to persistent storage.",
+    "canonical_forms": [
+      "SAVE"
+    ],
+    "aliases": [
+      "persist",
+      "store",
+      "write changes",
+      "commit"
+    ],
+    "parameters": {
+      "target": {
+        "required": false,
+        "type": "string",
+        "description": "Specific resource to save. Defaults to current active workspace."
+      }
+    },
+    "examples": [
+      "Save",
+      "Save manifest",
+      "Persist parameters"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK storage authorization."
+    },
+    "confirmation": false,
+    "execution": "Invokes saveParams or backend write-through.",
+    "failure": "Report storage write failure.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.SEND",
+    "command": "SEND",
+    "class": "EXTERNAL_ACTION",
+    "purpose": "Transmit a message, telemetry packet, report, or external payload outside the immediate container.",
+    "canonical_forms": [
+      "SEND"
+    ],
+    "aliases": [
+      "transmit",
+      "dispatch",
+      "broadcast"
+    ],
+    "parameters": {
+      "destination": {
+        "required": true,
+        "type": "string",
+        "description": "Recipient or endpoint."
+      },
+      "text": {
+        "required": false,
+        "type": "string",
+        "description": "Message or payload content."
+      }
+    },
+    "examples": [
+      "Send telemetry to ops",
+      "Transmit report"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires explicit AUTHPACK egress authorization."
+    },
+    "confirmation": true,
+    "execution": "Submits payload to communication gateway.",
+    "failure": "Report delivery failure or network error.",
+    "escalation": "Escalate if authorization is missing or destination is untrusted.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.CONFIRM",
+    "command": "CONFIRM",
+    "class": "AUTHORIZATION",
+    "purpose": "Affirm and authorize an active pending action awaiting human-in-the-loop authorization.",
+    "canonical_forms": [
+      "CONFIRM"
+    ],
+    "aliases": [
+      "affirmative",
+      "proceed with action",
+      "execute pending"
+    ],
+    "parameters": {},
+    "examples": [
+      "Confirm",
+      "Affirmative",
+      "Proceed with action"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Operator authorization grant. Appends approval token to the active pending transaction."
+    },
+    "confirmation": false,
+    "execution": "Transitions pending action in AUTHPACK from `PENDING_CONFIRMATION` to `AUTHORIZED` and executes.",
+    "failure": "Report no pending transaction exists to confirm.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.YES",
+    "command": "YES",
+    "class": "AUTHORIZATION",
+    "purpose": "Natural language affirmation of the active pending confirmation question.",
+    "canonical_forms": [
+      "YES"
+    ],
+    "aliases": [
+      "yeah",
+      "yep",
+      "correct",
+      "that is correct"
+    ],
+    "parameters": {},
+    "examples": [
+      "Yes",
+      "Yeah",
+      "Correct"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Resolves ONLY the currently active pending action. Never grants general future authority."
+    },
+    "confirmation": false,
+    "execution": "Delegates to `VOX.CONFIRM` for the active pending transaction.",
+    "failure": "Report no active question or pending action.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.NO",
+    "command": "NO",
+    "class": "AUTHORIZATION",
+    "purpose": "Natural language rejection or termination of the active pending confirmation question.",
+    "canonical_forms": [
+      "NO"
+    ],
+    "aliases": [
+      "nope",
+      "negative",
+      "do not do that",
+      "reject"
+    ],
+    "parameters": {},
+    "examples": [
+      "No",
+      "Negative",
+      "Nope"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Rejects pending authorization."
+    },
+    "confirmation": false,
+    "execution": "Transitions pending action in AUTHPACK to `DENIED` and clears pending state.",
+    "failure": "Report no pending question.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.ACTION"
+  },
+  {
+    "id": "VOX.SWITCH",
+    "command": "SWITCH",
+    "class": "EXTERNAL_ACTION",
+    "purpose": "Switch the active COMMPACK communication profile or mode on demand.",
+    "canonical_forms": [
+      "SWITCH"
+    ],
+    "aliases": [
+      "switch commpack",
+      "change profile",
+      "set commpack mode",
+      "change commpack"
+    ],
+    "parameters": {
+      "target": {
+        "required": true,
+        "type": "string",
+        "description": "The target subsystem, e.g. COMMPACK."
+      },
+      "value": {
+        "required": true,
+        "type": "string",
+        "description": "The target profile (e.g. OPERATIONAL, CONVERSATIONAL)."
+      }
+    },
+    "examples": [
+      "Switch COMMPACK to OPERATIONAL",
+      "Change profile to CONVERSATIONAL"
+    ],
+    "authority": {
+      "system": "AUTHPACK",
+      "required": "Requires AUTHPACK authorization with HITL_OPERATOR for profile modifications."
+    },
+    "confirmation": false,
+    "execution": "Updates the active CommpackProfile via CommpackService and re-renders the surface.",
+    "failure": "Report invalid profile or missing authorization.",
+    "escalation": "None.",
+    "response_profile": "COMMPACK.ACTION"
+  }
+]

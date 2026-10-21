@@ -1,0 +1,1492 @@
+    body { 
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+      font-size: 12px;
+      background: #000; 
+      color: #00ff00; 
+      margin: 0; 
+      padding: 0; 
+      display: flex; 
+      flex-direction: column; 
+      height: 100vh; 
+      height: 100dvh; /* iOS: 100vh is the height WITHOUT Safari's toolbars, so a fixed deck at bottom:0
+                         sits behind them on a phone. dvh is the height as it is right now. */
+      box-sizing: border-box; 
+      overflow: hidden;
+    }
+    /* THE DOOR (src/js/agegate.js). THE 18+ QUESTION, and the first thing on the screen: it is
+       plain markup at the very top of index.html, so it is painted before a single src/ file has
+       loaded and it stays up until the box is ticked. z-index 2000 - over the gallery (900), the
+       mini box (950), the manual editor (960) and the full stage (1000) - and the background is
+       OPAQUE, so nothing behind it is readable while it is up. Fixed, so it never moves the layout
+       underneath it; it fails closed (see the fallback at the foot of index.html). */
+    #ageGate { position: fixed; inset: 0; z-index: 2000; background: #000; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; overflow-y: auto; text-align: left; }
+    #ageGate[hidden] { display: none !important; }
+    .ageGatePanel { width: 100%; max-width: 540px; border: 1px solid #00ff00; background: #000; padding: 18px 20px 16px; box-sizing: border-box; }
+    .ageGateHead { font-size: 18px; letter-spacing: 3px; color: #00ff00; text-transform: uppercase; }
+    .ageGateRule { margin-top: 5px; padding-bottom: 10px; border-bottom: 1px solid #003300; font-size: 12px; letter-spacing: 2px; color: #00ff00; text-transform: uppercase; }
+    .ageGateText { margin: 12px 0 0; font-size: 12px; line-height: 1.7; color: #00cc00; }
+    .ageGateCheck { display: flex; align-items: center; gap: 9px; margin: 16px 0 0; font-size: 13px; letter-spacing: 1px; color: #00ff00; text-transform: uppercase; cursor: pointer; }
+    .ageGateCheck input { width: 18px; height: 18px; margin: 0; accent-color: #00ff00; cursor: pointer; }
+    .ageGateRow { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    .ageGateKey { padding: 9px 16px; letter-spacing: 1px; }
+    .ageGateKey:disabled { color: #004400; border-color: #004400; cursor: not-allowed; }
+    .ageGateLeave { border-color: #008800; color: #008800; }
+    .ageGateNote { margin-top: 14px; font-size: 10px; line-height: 1.7; letter-spacing: 0.5px; color: #008800; }
+    /* THE GATEKEEPER (src/js/gatekeeper.js). The first door, so it stands one layer above the age
+       door: z 2100 over 2000, and the panel reuses the age door's own classes - it IS the same
+       furniture, one screen earlier. The sigil line is the shown-once token, big and selectable;
+       the message line carries ACCESS or DENIED where the typed hand can read it. */
+    #gateKeeper { position: fixed; inset: 0; z-index: 2100; background: #000; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; overflow-y: auto; text-align: left; }
+    #gateKeeper[hidden] { display: none !important; }
+    .gateKeeperPanel { border-color: #00ff00; box-shadow: 0 0 24px #002200; }
+    .gateSigil { margin: 16px 0 0; padding: 12px; border: 1px dashed #00ff00; font-size: 20px; letter-spacing: 4px; color: #00ff00; text-align: center; user-select: all; }
+    .gateSigil[hidden] { display: none !important; }
+    .gateTokenRow { display: flex; align-items: center; gap: 10px; margin: 16px 0 0; font-size: 12px; letter-spacing: 2px; color: #00ff00; text-transform: uppercase; }
+    .gateTokenRow span { flex: none; }
+    .gateTokenRow input { flex: 1; min-width: 0; background: #000; border: 1px solid #00aa00; color: #00ff00; font: inherit; letter-spacing: 2px; padding: 9px 10px; text-transform: uppercase; }
+    .gateTokenRow input:focus { outline: none; border-color: #00ff00; box-shadow: 0 0 8px #003300; }
+    .gateMsg { margin-top: 12px; min-height: 18px; font-size: 12px; letter-spacing: 1px; color: #ffb020; text-transform: uppercase; }
+    .gateMsg:empty { display: none; }
+    .gateMono { font-family: inherit; letter-spacing: 1px; color: #00ff00; }
+    .gateQr { display: block; margin: 14px auto 0; max-width: 168px; width: 168px; height: auto; image-rendering: pixelated; border: 1px solid #00aa00; }
+    .gateQr[hidden] { display: none !important; }
+    .gateVideo { display: block; margin: 14px auto 0; width: 100%; max-width: 320px; border: 1px solid #00aa00; background: #001100; }
+    .gateVideo[hidden] { display: none !important; }
+    /* THE WALL (src/js/wall.js). THE SWITCH IS THE `wallOff` CLASS ON <body>, and it ships ON THE BODY
+       TAG in index.html so the wall's off state is the FIRST PAINT - a switch that lived only in a
+       script would flash the placeholder picture on every load. The plugin's div carries no id of its
+       own (it is a fixed full-viewport div at z-index -1000), so the rule keys on the one thing the
+       plugin always writes into its inline style. `display: none` rather than `visibility: hidden` on
+       purpose: an unrendered element has no box, and a background image is only fetched for an
+       element that has one - so OFF also saves the bytes of a picture nobody is looking at. Verified
+       against the live page rather than assumed (README, THE WALL). */
+    body.wallOff div[style*="z-index:-1000"] { display: none; }
+    /* THE PAIR LAMP (src/js/pair.js). It sits in the upper deck's tool row beside SYNC, where the two
+       other roads to the archive live, and it is EMPTY - and therefore invisible - until a room is
+       actually open: an empty flex item draws no box, so nothing has to be hidden or shown by script.
+       While a room IS open it says PAIRED, how many devices are in it, and the first group of the group
+       fingerprint; with somebody else in it, it brightens. It is now a BUTTON, and the thing it opens
+       is the DEVICE SYNC BOARD - which opens NO socket: only MAKE A CODE and REJOIN on that board do,
+       and both are deliberate presses. */
+    #pairBadge {
+      flex: 0 0 auto;
+      align-self: center;
+      padding: 2px 7px;
+      font-size: 10px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      border: 1px solid #1c3a1c;
+      color: #2f6b2f;
+      white-space: nowrap;
+    }
+    #pairBadge:empty { display: none; }
+    #pairBadge.open { color: #22c722; border-color: #22c722; }
+    #pairBadge.here { color: #00ff00; border-color: #00ff00; box-shadow: 0 0 6px rgba(0, 255, 0, .35); }
+    /* THE THREE DECKS (src/js/decks.js). The upper deck is a column of its own - the status line, the
+       tool bar and the viewers hanging from them - so it can be put away as ONE thing; the MAIN STAGE
+       (#output) and the lower deck (#command-deck, fixed to the bottom) are their own elements. A
+       hidden deck leaves a tab in the corner (see .deckTab below) and the page keeps working. */
+    #upperDeck { display: flex; flex-direction: column; flex: 0 0 auto; min-width: 0; }
+    #upperDeck[hidden] { display: none !important; }
+    #command-deck[hidden] { display: none !important; }
+    #stageRow { display: flex; flex: 1 1 auto; min-height: 0; min-width: 0; }
+    .sidePanel { flex: 0 0 clamp(190px, 23vw, 310px); min-height: 0; min-width: 0; overflow-y: auto; background: #000; box-sizing: border-box; display: flex; flex-direction: column; }
+    .sidePanel[hidden] { display: none !important; }
+    #leftPanel { border-right: 1px solid #00ff00; }
+    #rightPanel { border-left: 1px solid #00ff00; }
+    .sideHead { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 8px 10px; border-bottom: 1px solid #003300; }
+    .sideTitle { font-size: 11px; letter-spacing: 2px; color: #00ff00; text-transform: uppercase; }
+    .sideBody { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+    .sideSub { font-size: 10px; letter-spacing: 2px; color: #008800; text-transform: uppercase; }
+    .sideNote { font-size: 10px; letter-spacing: 1px; color: #008800; text-transform: uppercase; }
+    .sideBtnRow { display: flex; flex-wrap: wrap; gap: 6px; }
+    .sideBtnRow button { flex: 1 1 0; }
+    .sideBtnRow button[aria-pressed="true"] { background: #00ff00; color: #000; }
+    .dutyLamp { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; padding: 7px 9px; border: 1px solid #005500; color: #00bb00; }
+    .dutyLamp.on { color: #00ff00; border-color: #00ff00; }
+    .dutyLamp.off { color: #ff3030; border-color: #ff3030; }
+    #status { 
+      font-size: 12px; 
+      padding: 10px 20px;
+      border-bottom: 1px solid #00ff00; 
+      text-transform: uppercase; 
+      text-align: left;
+      background: #000;
+      z-index: 10;
+    }
+    #lorebar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 10px;
+      align-items: center;
+      padding: 8px 20px;
+      border-bottom: 1px solid #003300;
+      background: #000;
+      text-align: left;
+      font-size: 12px;
+      z-index: 10;
+      flex: 0 0 auto;
+    }
+    #lorebar button { padding: 5px 8px; font-size: 12px; white-space: nowrap; flex: 0 0 auto; }
+    #loreStatus { color: #008800; flex: 1 1 auto; min-width: 0; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #loreStatus .short { display: none; }
+    @media (max-width: 640px) {
+      #loreStatus .full { display: none; }
+      #loreStatus .short { display: inline; }
+    }
+    @media (max-width: 560px) {
+      #loreStatus { display: none; }
+    }
+    @media (max-width: 640px) {
+      /* `1fr` is `minmax(auto, 1fr)`, and an `auto` minimum lets one row's min-content widen the
+         whole column - at 390px the document panel measured 614px wide inside a 380px box, so the
+         panel sat clipped (overflow-x is hidden) and the ↓ / ◆ / × buttons on EVERY row were off
+         the right edge and unreachable. A minimum of 0 keeps the track inside its container; the
+         names are set to wrap on their own line just below, so nothing is lost. */
+      #lorepackFiles, #corepackFiles { grid-template-columns: minmax(0, 1fr); }
+      .loreFileRow { flex-wrap: wrap; row-gap: 2px; }
+      .loreFileRow .nm { flex: 1 1 100%; white-space: normal; overflow-wrap: anywhere; }
+      textarea { font-size: 16px; }
+    }
+    .docsBtn { display: inline-flex; align-items: center; gap: 6px; }
+    .docsBtn .caret { display: inline-block; transition: transform 0.15s ease; }
+    .docsBtn[aria-expanded="true"] { background: #00ff00; color: #000; }
+    .docsBtn[aria-expanded="true"] .caret { transform: rotate(180deg); }
+    /* A VIEWER STRETCHES, BUT NEVER OVER THE STAGE. `--viewer-max` is measured (src/js/decks.js
+       "STRETCHING THE STAGE"): the page minus the upper deck's chrome, minus the room the lower deck
+       stands on, minus a floor for the MAIN STAGE. So an open DOCS panel fills the page where it can
+       and does not collide with either control deck - and the conversation keeps its quarter of the
+       page underneath. 68vh is only the fallback for the first paint, before anything is measured. */
+    .lorePanel { border-bottom: 1px solid #003300; background: #000; text-align: left; max-height: var(--viewer-max, 68vh); overflow-y: auto; overflow-x: hidden; flex: 0 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(440px, 1fr)); scrollbar-width: thin; }
+    .lorePanel[hidden] { display: none !important; }
+    .loreFileRow { display: flex; align-items: center; gap: 10px; padding: 6px 20px; font-size: 12px; color: #008800; border-top: 1px solid #001a00; }
+    .loreFileRow .nm { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .loreFileRow .meta { flex: 0 0 auto; color: #006600; text-transform: uppercase; }
+    .loreFileRow .rm { flex: 0 0 auto; padding: 2px 8px; font-size: 12px; line-height: 1.3; }
+    .loreFileRow .rm.on { background: #00ff00; color: #000; border-color: #00ff00; }
+    /* The sort bar at the top of a docs panel. The panel is a multi-column grid, so the bar spans
+       every track and sticks to the top of the scroller - the control that decides the order of
+       her canon should not scroll away from what it is ordering. */
+    .loreSortRow { grid-column: 1 / -1; position: sticky; top: 0; z-index: 1; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 6px 20px; background: #001100; border-bottom: 1px solid #003300; font-size: 11px; }
+    .loreSortRow .lbl { color: #008800; text-transform: uppercase; letter-spacing: 1px; }
+    .loreSortRow button { flex: 0 0 auto; padding: 2px 8px; font-size: 11px; line-height: 1.3; }
+    .loreSortRow button.on { background: #00ff00; color: #000; border-color: #00ff00; }
+    .loreSortRow .cnt { flex: 0 0 auto; margin-left: auto; color: #006600; text-transform: uppercase; white-space: nowrap; }
+    /* THE DOCS PAGER (src/js/lore.js, "ONE PAGE OF DOCUMENTS AT A TIME"). One page of the LOREPACK
+       is drawn at a time, and this bar is the last row of the panel's grid: it is STICKY to the
+       bottom of the panel's own scroll box, so the controls stay in reach without scrolling past a
+       hundred documents to find them. Same black and green as the gallery's pager, and it wraps
+       rather than squeezing anything out of reach on a narrow screen. */
+    .lorePager { grid-column: 1 / -1; position: sticky; bottom: 0; z-index: 2; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 5px 20px; border-top: 1px solid #003300; background: #001100; font-size: 11px; color: #008800; text-transform: uppercase; }
+    .lorePager button { padding: 3px 9px; font-size: 11px; line-height: 1.4; white-space: nowrap; }
+    .lorePager button:disabled { color: #005500; border-color: #003300; cursor: default; }
+    .lorePager .lorePageNow { display: flex; align-items: center; gap: 4px; color: #00cc00; white-space: nowrap; }
+    .lorePager input { width: 54px; background: #000; border: 1px solid #00ff00; color: #00ff00; font-family: inherit; font-size: 11px; padding: 3px 5px; outline: none; border-radius: 0; text-align: center; color-scheme: dark; }
+    .lorePager input:focus { background: #001100; }
+    .lorePager .lorePageRange { color: #00cc00; white-space: nowrap; }
+    .lorePager .loreSpacer { flex: 1 1 auto; }
+    .lorePager .lorePerPage { display: flex; align-items: center; gap: 5px; color: #00cc00; white-space: nowrap; }
+    .lorePager select { background: #000; border: 1px solid #00ff00; color: #00ff00; font-family: inherit; font-size: 11px; padding: 3px 6px; outline: none; border-radius: 0; color-scheme: dark; cursor: pointer; }
+    .lorePager select option { background: #000; color: #00ff00; }
+    /* ---- THE DOX VIEWER (src/js/dms.js) ----------------------------------------
+       The viewer is the same shell as the other DOCS panels (same border, same ceiling) but it is a
+       COLUMN rather than a grid of rows: a search bar and an ops bar that stay put, and a body that
+       scrolls inside them, so a document of twelve thousand lines can be read without the controls
+       ever leaving the screen. */
+    .dmsPanel { display: flex; flex-direction: column; overflow: hidden; }
+    .dmsBar { flex: 0 0 auto; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 6px 20px; background: #001100; border-bottom: 1px solid #003300; font-size: 11px; }
+    .dmsBar .dmsTag { color: #008800; text-transform: uppercase; letter-spacing: 1px; flex: 0 0 auto; }
+    .dmsBar input { flex: 1 1 240px; min-width: 0; background: #000; border: 1px solid #00ff00; color: #00ff00; font-family: inherit; font-size: 12px; padding: 5px 8px; outline: none; border-radius: 0; color-scheme: dark; }
+    .dmsBar input:focus { background: #001100; }
+    .dmsBar input::placeholder { color: #006600; }
+    .dmsBar button { flex: 0 0 auto; padding: 2px 8px; font-size: 11px; line-height: 1.3; }
+    /* FILL THE STAGE (src/js/dms.js setFull). The other buttons in the bar are small and quiet; this
+       one changes how much of the page you are looking at, so it says so - brighter at rest, and
+       inverted while the stage is filled, the same language the deck keys use. */
+    .dmsBar button.dmsFill { color: #00cc00; border-color: #008800; letter-spacing: 0.5px; }
+    .dmsBar button.dmsFill:hover { color: #00ff00; border-color: #00ff00; }
+    .dmsBar button.dmsFill[aria-pressed="true"] { background: #00ff00; color: #000; border-color: #00ff00; }
+    /* FILLING THE STAGE (Patrikios, 2026-09-26: "can stretch and fill the MAIN STAGE, even closing
+       the UPPER and LOWER CONTROL DECK as needed"). `doxFull` is put on the body by src/js/dms.js;
+       src/js/decks.js reads the same class for its geometry (measure() publishes the ceiling, the
+       deck rule keeps the lower deck down), and this is the part that actually moves the furniture:
+       the upper deck's chrome and the conversation step aside, so the panel IS the stage. The deck
+       tabs are deliberately NOT hidden - a deck that is down leaves its way back, and in this mode
+       the lower deck's tab is the way to put the input box back over the viewer. */
+    body.doxFull #status, body.doxFull #lorebar { display: none; }
+    body.doxFull #output { display: none; }
+    /* The panel IS the stage here, so it takes the measured height rather than growing with its
+       content: a reader with ten lines in it should still be a full page. */
+    body.doxFull .dmsPanel { border-bottom: 0; height: var(--viewer-max, 96vh); max-height: var(--viewer-max, 96vh); }
+    .dmsBar select { flex: 0 0 auto; background: #000; border: 1px solid #00ff00; color: #00ff00; font-family: inherit; font-size: 11px; padding: 3px 6px; outline: none; border-radius: 0; color-scheme: dark; cursor: pointer; }
+    .dmsBar select option { background: #000; color: #00ff00; }
+    .dmsOps { flex: 0 0 auto; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 5px 20px; background: #000c00; border-bottom: 1px solid #003300; font-size: 11px; color: #008800; text-transform: uppercase; }
+    .dmsOps .dmsWhere { flex: 1 1 100%; min-width: 0; color: #00aa00; overflow-wrap: anywhere; }
+    /* On a phone the ops row is the tallest chrome in the panel (the line that says what the store
+       is doing wraps to three or four lines above buttons that must stay 34px for a thumb), so the
+       line is clamped rather than allowed to eat the reader. Nothing is lost: the same numbers are
+       on the STATS view, which is one press away. */
+    @media (max-width: 640px) {
+      .dmsOps .dmsWhere { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    }
+    .dmsOps button { flex: 0 0 auto; padding: 2px 8px; font-size: 11px; line-height: 1.3; white-space: nowrap; }
+    /* THE MODE BUTTONS (src/js/dms.js, THE MODES). TEXT, SUMMARY, OUTLINE and GRAPH are four ways of
+       looking at the SAME document, one at a time, and the lit one is the one the body below is - the
+       same inverted-green language the deck keys and FILL THE STAGE use, so the row reads as a
+       choice rather than a list of commands. */
+    .dmsOps button.on { background: #00ff00; color: #000; border-color: #00ff00; }
+    .dmsBody { flex: 1 1 auto; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; scrollbar-width: thin; background: #000; text-align: left; }
+    .dmsBody::-webkit-scrollbar { width: 4px; }
+    .dmsBody::-webkit-scrollbar-thumb { background: #00ff00; }
+    .dmsRow { display: block; padding: 7px 20px; border-top: 1px solid #001a00; font-size: 12px; color: #008800; cursor: pointer; }
+    .dmsRow:hover { background: #001100; }
+    .dmsRow .t { color: #00ff00; }
+    .dmsRow .m { display: inline-block; margin-left: 8px; color: #006600; text-transform: uppercase; font-size: 11px; }
+    .dmsRow .s { display: block; margin-top: 3px; color: #008800; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .dmsRow .badge { display: inline-block; margin-left: 8px; padding: 0 6px; border: 1px solid #005500; font-size: 10px; text-transform: uppercase; color: #00aa00; }
+    .dmsRow .badge.sem { border-color: #00ff00; color: #00ff00; }
+    .dmsRow .badge.both { background: #00ff00; color: #000; border-color: #00ff00; }
+    .dmsNote { padding: 9px 20px; color: #00bb00; font-size: 11px; text-transform: uppercase; white-space: pre-wrap; overflow-wrap: anywhere; }
+    /* A LINE THAT IS STILL WORKING (a summary streaming in, a graph being read): the note pulses, the
+       way the microphone key does, so an operation that takes a while is visibly alive. */
+    .dmsNote.working { animation: pulse 1.4s ease-in-out infinite; }
+    /* THE ASK (src/js/dms.js, THE SUMMARY PAGE): the one question this viewer puts to him in place -
+       SAVE THIS SUMMARY BEFORE LEAVING? - with its answers. It is a bar, not a browser dialog: a
+       native confirm() freezes this whole tab while it is open, and the answer belongs on the page
+       with the words it is about. It sits above the summary so the question and the thing being
+       decided are on the screen together. */
+    .dmsAsk { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 8px 20px 2px; padding: 7px 10px; border: 1px solid #00ff00; background: #002200; font-size: 11px; text-transform: uppercase; }
+    .dmsAsk .q { color: #00ff00; flex: 1 1 200px; }
+    .dmsAsk button { font-size: 11px; padding: 3px 9px; line-height: 1.3; }
+    /* THE SUMMARY PAGE (src/js/dms.js, THE SUMMARY PAGE). The summary is prose, so it is set like the
+       reader's text and not like the viewer's uppercase chrome - and the head keeps the stamp, because
+       when a summary was made is part of what it says. */
+    .dmsSummary { padding: 10px 20px 4px; }
+    .dmsSumHead { color: #008800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 7px; }
+    .dmsSumText { color: #00cc00; font-size: 12px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
+    /* THE GRAPH PAGE (src/js/dms.js, THE GRAPH PAGE). Sources on the left, objects on the right, the
+       relation named between them: the picture is drawn in SVG at a fixed viewBox and scales with the
+       panel, so the names stay legible in a full stage and on a phone (where the LIST under it is the
+       real reading anyway - a diagram is the wrong shape for a phone). */
+    .dmsGraph { padding: 8px 12px 2px; }
+    .dmsGSvg { display: block; width: 100%; height: auto; max-height: 62vh; }
+    .dmsGSvg text { font-family: inherit; }
+    .dmsGEdge { fill: none; stroke: #005500; stroke-width: 1.2; }
+    .dmsGNumDisc { fill: #000; stroke: #005500; stroke-width: 1; }
+    .dmsGNum { fill: #00ff00; font-size: 12px; }
+    .dmsGNode { fill: #00ff00; }
+    .dmsGName { fill: #00ff00; font-size: 15px; }
+    .dmsGraphList { padding: 6px 20px 14px; }
+    .dmsELine { font-size: 12px; line-height: 1.7; color: #00aa00; overflow-wrap: anywhere; }
+    .dmsELine .n { display: inline-block; min-width: 2.2em; color: #006600; }
+    .dmsELine .s { color: #00ff00; }
+    .dmsELine .r { color: #006600; }
+    .dmsELine .o { color: #00ff00; }
+    .dmsELine .m { color: #006600; }
+    .dmsRel { display: inline-block; border: 1px solid #005500; color: #00aa00; padding: 1px 6px; font-size: 11px; text-transform: none; }
+    @media (max-width: 640px) {
+      .dmsGNum { font-size: 11px; }
+      .dmsGName { font-size: 12px; }
+      .dmsGSvg { max-height: none; }
+    }
+    .dmsChips { display: flex; flex-wrap: wrap; gap: 6px; padding: 9px 20px; border-bottom: 1px solid #001a00; }
+    .dmsChips button { padding: 3px 8px; font-size: 11px; }
+    .dmsChips .note { color: #006600; font-size: 11px; text-transform: uppercase; }
+    .dmsFind { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 6px 20px; background: #001100; border-bottom: 1px solid #003300; }
+    .dmsFind input { flex: 1 1 200px; min-width: 0; background: #000; border: 1px solid #00ff00; color: #00ff00; font-family: inherit; font-size: 12px; padding: 5px 8px; outline: none; border-radius: 0; color-scheme: dark; }
+    .dmsFind button { padding: 2px 8px; font-size: 11px; }
+    .dmsFind .cnt { color: #00cc00; text-transform: uppercase; font-size: 11px; white-space: nowrap; }
+    .dmsText { margin: 0; padding: 8px 20px 16px; font-family: inherit; font-size: 12px; line-height: 1.5; color: #00cc00; }
+    .dmsRead { margin: 0; padding: 12px 20px 20px; font-size: 13px; line-height: 1.65; color: #00cc00; max-width: 78ch; overflow-wrap: break-word; }
+    .dmsRead h1, .dmsRead h2, .dmsRead h3, .dmsRead h4, .dmsRead h5, .dmsRead h6 { color: #00ff00; font-weight: normal; line-height: 1.3; margin: 1.1em 0 0.5em; }
+    .dmsRead h1:first-child, .dmsRead h2:first-child, .dmsRead h3:first-child, .dmsRead p:first-child { margin-top: 0; }
+    .dmsRead h1 { font-size: 20px; letter-spacing: .06em; }
+    .dmsRead h2 { font-size: 17px; letter-spacing: .05em; }
+    .dmsRead h3 { font-size: 15px; letter-spacing: .04em; }
+    .dmsRead h4, .dmsRead h5, .dmsRead h6 { font-size: 13px; letter-spacing: .03em; }
+    .dmsRead p { margin: 0 0 0.9em; }
+    .dmsRead ul, .dmsRead ol { margin: 0 0 0.9em 1.4em; padding: 0; }
+    .dmsRead li { margin: 0.25em 0; }
+    .dmsRead li ul, .dmsRead li ol { margin-bottom: 0.25em; }
+    .dmsRead code { background: #002200; padding: 0 4px; color: #00ff00; font-family: inherit; font-size: 12px; }
+    .dmsRead pre { background: #001100; border: 1px solid #003300; padding: 8px 10px; overflow-x: auto; margin: 0 0 0.9em; }
+    .dmsRead pre code { background: none; padding: 0; }
+    .dmsRead blockquote { border-left: 2px solid #00ff00; margin: 0 0 0.9em; padding: 2px 0 2px 12px; color: #00aa00; }
+    .dmsRead blockquote div { margin: 0.25em 0; }
+    .dmsRead a { color: #00ff00; }
+    .dmsRead hr { border: 0; border-top: 1px solid #003300; margin: 1em 0; }
+    .dmsRead strong { color: #00ff00; font-weight: bold; }
+    .dmsLine { white-space: pre-wrap; overflow-wrap: anywhere; min-height: 1.5em; }
+    .dmsLine.hit { background: #002200; outline: 1px solid #005500; outline-offset: -1px; }
+    .dmsText mark, .dmsRow mark { background: #00ff00; color: #000; }
+    .dmsFoot { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 6px 20px; border-top: 1px solid #003300; background: #001100; font-size: 11px; color: #008800; text-transform: uppercase; }
+    .dmsFoot .cnt { color: #00cc00; white-space: nowrap; }
+    .dmsFoot button { padding: 2px 8px; font-size: 11px; }
+    /* THE PAGINATOR DECK (src/js/dms.js, THE PAGINATOR DECK). Patrikios, 2026-09-30: "make the
+       paginator graphic with simple buttons in a control deck at the bottom of the page above the
+       chat block". It is a DECK of its own - the flex child between the scrolling body and the TANDEM
+       talk strip - so it never scrolls and it is the last thing before the input. The GRAPHIC is the
+       row of numbered page chips; the page he is on is inverted the way the ops row's lit mode and the
+       deck keys are, so "where am I" is one glance; a page that is not his is a press. The arrows
+       either side are the moves, a key at an end of the row is DIMMED rather than taken away (the deck
+       must not change shape at the edges), and the count in words sits beside the lot - on one line
+       with the graphic on the stage, on its own line on a phone. */
+    .dmsPager { flex: 0 0 auto; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 5px 20px; background: #001100; border-top: 1px solid #003300; font-size: 11px; color: #008800; text-transform: uppercase; }
+    .dmsPager .dmsPgKeys { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; flex: 0 0 auto; }
+    .dmsPager button { padding: 2px 7px; font-size: 11px; line-height: 1.3; }
+    .dmsPager button.dmsPgChip { min-width: 26px; color: #00cc00; }
+    .dmsPager button.dmsPgChip.on { background: #00ff00; color: #000; border-color: #00ff00; cursor: default; }
+    .dmsPager button:disabled { color: #005500; border-color: #003300; cursor: default; }
+    .dmsPager .dmsPgGap { color: #006600; padding: 0 1px; }
+    .dmsPager .dmsPgInfo { flex: 1 1 auto; min-width: 0; color: #00cc00; overflow-wrap: anywhere; }
+    /* The count's two lengths - the same pair #loreStatus uses, and for the same reason: the sentence
+       is right where there is room for it and the short form is right where there is not. */
+    .dmsPager .dmsPgInfo .short { display: none; }
+    /* THE TANDEM'S TALK STRIP (src/js/dms.js, THE TANDEM). Opening the viewer puts the LOWER DECK
+       down, so this strip is where the conversation lives while a document has the stage: the two
+       presences (HITL, his eye - the terminal's own green; ALIA, her hand - a colder spring green,
+       so a line with two marks on it says which is which at a glance), the newest line of the log,
+       the intercom keys, and one line of input that drives the lower deck's own box. */
+    .dmsTalk { flex: 0 0 auto; display: flex; flex-direction: column; gap: 5px; padding: 6px 20px 8px; background: #001100; border-top: 1px solid #003300; text-align: left; }
+    .dmsTalkRow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 11px; text-transform: uppercase; }
+    .dmsTalkRow .dmsWho { color: #00ff00; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 46%; }
+    .dmsTalkRow .dmsWho.alia { color: #00ffcc; }
+    .dmsTalkRow .dmsAir { color: #008800; letter-spacing: 0.5px; }
+    .dmsTalkRow .dmsAir:not(:empty)::before { content: "\00b7 "; }
+    .dmsTalk button.dmsKey { flex: 0 0 auto; padding: 2px 8px; font-size: 11px; line-height: 1.3; }
+    .dmsTalk button.dmsKey[aria-pressed="true"] { background: #00ff00; color: #000; border-color: #00ff00; }
+    #dmsMicBtn[aria-pressed="true"] { animation: pulse 1.4s ease-in-out infinite; }
+    #dmsTandemBtn[aria-pressed="false"] { color: #006600; border-color: #005500; }
+    .dmsSay { font-size: 11px; line-height: 1.45; color: #00aa00; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 3.1em; overflow: hidden; }
+    .dmsSay.her { color: #00ff00; }
+    .dmsSay.me { color: #66bb66; }
+    .dmsSay.sys { color: #008800; }
+    .dmsSay.quiet { color: #005500; text-transform: uppercase; }
+    .dmsSay.thinking { animation: pulse 1.4s ease-in-out infinite; }
+    .dmsTalkEnter { display: flex; gap: 6px; align-items: center; }
+    .dmsTalkEnter input { flex: 1 1 auto; min-width: 0; background: #000; border: 1px solid #00ff00; color: #00ff00; font-family: inherit; font-size: 12px; padding: 5px 8px; outline: none; border-radius: 0; color-scheme: dark; }
+    .dmsTalkEnter input:focus { background: #001100; }
+    .dmsTalkEnter input::placeholder { color: #006600; }
+    .dmsTalkEnter button { flex: 0 0 auto; padding: 2px 10px; font-size: 11px; }
+    /* A LINE EITHER OF THEM HAS POINTED AT (see bindPoint and the [data-mark] chip). The bar is an
+       inset shadow rather than a border, because these lines are `white-space: pre-wrap` and a real
+       border would push every character on the line one pixel to the right. */
+    .dmsLine.pointed.hitl { background: #002200; box-shadow: inset 3px 0 0 #00ff00; }
+    .dmsLine.pointed.alia { background: #00201c; box-shadow: inset 3px 0 0 #00ffcc; }
+    .dmsLine.pointed.hitl.alia { box-shadow: inset 3px 0 0 #00ff00, inset 6px 0 0 #00ffcc; }
+    .dmsMark { font-size: 10px; letter-spacing: 0.5px; }
+    .dmsMark.hitl { color: #00ff00; }
+    .dmsMark.alia { color: #00ffcc; }
+    .dmsLine[title] { cursor: pointer; }
+    .dmsStatRow { display: flex; align-items: baseline; gap: 10px; padding: 6px 20px; border-top: 1px solid #001a00; font-size: 12px; }
+    .dmsStatRow .t { flex: 0 0 96px; color: #00ff00; }
+    .dmsStatRow .m { flex: 1 1 auto; color: #008800; text-transform: uppercase; font-size: 11px; }
+    @media (max-width: 640px) {
+      .dmsBar, .dmsOps, .dmsNote, .dmsChips, .dmsFind, .dmsFoot, .dmsPager, .dmsStatRow, .dmsTalk { padding-left: 12px; padding-right: 12px; }
+      .dmsText, .dmsRow, .dmsRead { padding-left: 12px; padding-right: 12px; }
+      .dmsSummary, .dmsGraphList { padding-left: 12px; padding-right: 12px; }
+      .dmsAsk { margin-left: 12px; margin-right: 12px; }
+      /* THE PAGINATOR DECK ON A PHONE: the count is the SHORT one, so the chips, the four arrows and
+         the numbers fit on one row of keys rather than two (measured at 390px: the long sentence put
+         the last arrow on a row of its own, 63px of a panel whose body had 35px to spare). */
+      .dmsPager { row-gap: 4px; }
+      .dmsPager .dmsPgInfo .full { display: none; }
+      .dmsPager .dmsPgInfo .short { display: inline; }
+      .dmsBar button, .dmsOps button, .dmsFoot button, .dmsPager button, .dmsFind button, .dmsChips button, .dmsTalk button { min-height: 34px; }
+      .dmsBar input, .dmsFind input, .dmsBar select, .dmsTalkEnter input { min-height: 34px; }
+      /* On a phone the two presences share ONE line (each clipped with an ellipsis) rather than
+         taking a line each: the reader is what the room is for, and a strip that eats a third of the
+         panel to say two names is a strip that has forgotten why it is there. */
+      .dmsTalkRow .dmsWho { max-width: 46%; }
+      .dmsSay { max-height: 3.2em; }
+    }
+    #lorebar.dragover { background: #002200; border-bottom-color: #00ff00; }
+    #output { 
+      flex: 1;
+      min-width: 0;
+      overflow-y: auto; 
+      white-space: pre-wrap; 
+      overflow-wrap: anywhere; /* a long prompt or url must not push the log sideways on a phone */
+      overscroll-behavior: contain; /* the log scrolls, the page does not rubber-band behind it */
+      -webkit-overflow-scrolling: touch;
+      /* THE LOG'S OWN TEXT SIZE. His eyes, at hour three: the conversation is the one thing read
+         for hours, so its size is his to set - the A- / A+ buttons in the deck step it and the
+         choice is kept on this device (kv lia_settings / log_font, window.logSize in main.js).
+         Everything inside the log that carries a size of its own (the stamp, the pencil, the small
+         notes) is sized in em, so it follows the log rather than fighting it. Nothing OUTSIDE the
+         log is touched by this: the deck, the panels, the lorebar and the input box keep their own. */
+      font-size: var(--log-fs, 12px); 
+      line-height: 1.6; 
+      padding: 20px;
+      text-align: left; 
+      /* THE STAGE'S BOTTOM RESERVE. The lower deck is fixed to the bottom of the screen, so the log
+         keeps a margin the height of the deck (plus a breath) or its newest lines sit behind it. The
+         number is measured, not guessed - forge.js's `syncDeckSpace` measures the deck (which grows
+         with the attach strip and any docked panel, and measures zero when the deck is put away) and
+         publishes it as `--stage-reserve`; 180px is only what applies before the first measurement. */
+      margin-bottom: var(--stage-reserve, 180px); 
+    }
+    #command-deck {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      border-top: 1px solid #00ff00;
+      padding: 20px;
+      box-sizing: border-box;
+      z-index: 100;
+    }
+    /* THE DECK KEY - the button inside each deck that puts it away (`UPPER DECK /\u00b4`, `LOWER DECK \/`).
+       Quieter than the buttons around it, because it is about the shell rather than about her. */
+    .deckKey { letter-spacing: 1px; color: #00bb00; border-color: #005500; }
+    .deckKey:hover { color: #00ff00; border-color: #00ff00; }
+    /* THE TAB A HIDDEN DECK LEAVES BEHIND (src/js/decks.js). Fixed to its own corner - top-right for
+       the upper deck, bottom-right for the lower - above the decks (100/101) and below the overlays
+       (gallery 900, mini box 950, stage 1000), so a viewer covers it: a deck that is down is not what
+       you are looking at. It is the way back, and it is always there. */
+    .deckTab {
+      position: fixed;
+      z-index: 200;
+      background: #001100;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      font-family: inherit;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .deckTab:hover { background: #00ff00; color: #000; }
+    .deckTab[hidden] { display: none !important; }
+    .deckTab.tabTop { top: 0; right: 0; border-top: 0; border-right: 0; }
+    .deckTab.tabBottom { bottom: 0; right: 0; border-bottom: 0; border-right: 0; }
+    .deckTab.tabLeft { left: 0; top: 50%; transform: translateY(-50%); border-left: 0; }
+    .deckTab.tabRight { right: 0; top: 50%; transform: translateY(-50%); border-right: 0; }
+    textarea { 
+      width: 100%; 
+      background: #000; 
+      border: 1px solid #00ff00; 
+      color: #00ff00; 
+      padding: 12px; 
+      font-family: inherit; 
+      outline: none; 
+      box-sizing: border-box; 
+      resize: none; 
+      text-align: left; 
+      font-size: 12px;
+    }
+    .controls { 
+      display: flex; 
+      gap: 15px; 
+      margin-top: 10px; 
+      text-align: left; 
+      flex-wrap: wrap;
+    }
+    .controls button { white-space: nowrap; }
+    /* The log's two size buttons are ONE control, so they wrap together instead of splitting
+       across two rows of the deck (A- at the end of one row, A+ alone at the start of the next). */
+    .controls .fontCtl { display: inline-flex; gap: 6px; }
+    .controls button.live, .controls button.live:hover { background: #00ff00; color: #000; animation: pulse 1.4s ease-in-out infinite; }
+    /* The LIVE CHANNEL microphone: icon only, no label. Off is an outline; open is green and
+       pulsing; while she speaks it is solid with the slash drawn - the ears are shut on purpose,
+       so it must not look like it is listening. */
+    .controls button.micBtn { padding: 6px 9px; line-height: 0; display: inline-flex; align-items: center; }
+    .controls button.micBtn svg { display: block; }
+    /* Icon-only deck buttons (the microphone, the paperclip): no label, just the glyph. */
+    .controls button.iconBtn { padding: 6px 9px; line-height: 0; display: inline-flex; align-items: center; }
+    .controls button.iconBtn svg { display: block; }
+    .controls button.micBtn .sl { display: none; }
+    .controls button.micBtn.on, .controls button.micBtn.on:hover { background: #00ff00; color: #000; animation: pulse 1.4s ease-in-out infinite; }
+    .controls button.micBtn.speaking, .controls button.micBtn.speaking:hover { background: #00ff00; color: #000; animation: none; }
+    .controls button.micBtn.speaking .sl { display: inline; }
+    /* THE HOLD: she has heard you and is waiting for you to finish before she takes the turn. The
+       pulse is slower and the green is darker than the bright pulse of an OPEN MICROPHONE, so it reads
+       as "still yours to talk over" rather than "she is listening now". Only ever on the microphone
+       button. */
+    .controls button.micBtn.holding, .controls button.micBtn.holding:hover { background: #009933; color: #000; animation: pulse 2.6s ease-in-out infinite; }
+    /* THE ROOM HEARS YOU: while the meter reads a voice in the room, both microphone keys carry a
+       bright ring - the visible half of "it is about to take what I said", seen WHILE he is still
+       saying it. It is a ring rather than a fill so it composes with every state above instead of
+       replacing one (a held clause on a live channel is still the darker green; it just has a lit
+       edge). Nothing here changes a word of any rule - see src/js/voice.js. */
+    .controls button.micBtn.hearing { box-shadow: 0 0 0 2px #00ff00, 0 0 9px #00ff00; }
+    .controls button.hearing { border-color: #00ff00; }
+    /* THE PENCIL HOLDS SOMETHING. src/js/draft.js keeps an unsent draft ON THIS DEVICE but does NOT put
+       it in the input box on load - a reload (which is what a SAVE is) used to fill the box with
+       yesterday's paragraph. So the ring is the whole advertisement: the words are one press away, and
+       without this there would be nothing on the page that says so. Same ring as the microphone's, for
+       the same reason. */
+    .controls button.iconBtn.has, .controls button.iconBtn.has:hover { box-shadow: 0 0 0 2px #00ff00, 0 0 9px #00ff00; }
+    /* THE INTERCOM: TALK (the one-off microphone), LISTEN (her mouth) and the live microphone are ONE
+       channel with one voice on it at a time. A key that is not his to press is LOCKED - not dimmed to
+       look broken, and not the browser's "wait" cursor, which would read as "loading" rather than
+       "she has the floor". The lock itself is enforced in src/js/voice.js (the click handler refuses,
+       and the button carries aria-disabled); this is only how it looks. */
+    .controls button.air { opacity: 0.4; cursor: not-allowed; }
+    .controls button.air, .controls button.air:hover { background: #000; color: #005500; border-color: #005500; }
+    /* THE AIR LAMP: whose voice is on the line. STANDBY is the resting state - dim, but clearly lit,
+       so "nobody is talking" reads as ready rather than as dead. HER VOICE pulses the full green (the
+       one thing on the line); YOUR VOICE is the darker green the microphone already uses while the
+       ears are open; THINKING pulses slowly; HOLDING is a flat mid-green (your words are waiting). */
+    .controls .airLamp { display: inline-flex; align-items: center; padding: 8px 10px; border: 1px solid #006600; color: #008800; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; white-space: nowrap; }
+    .controls .airLamp.her { background: #00ff00; color: #000; border-color: #00ff00; animation: pulse 1.4s ease-in-out infinite; }
+    .controls .airLamp.you { background: #009933; color: #000; border-color: #009933; animation: pulse 1.4s ease-in-out infinite; }
+    .controls .airLamp.busy { color: #00ff00; border-color: #00ff00; animation: pulse 2.6s ease-in-out infinite; }
+    .controls .airLamp.holding { background: #009933; color: #000; border-color: #009933; }
+    /* VOICE ONLY - the live channel with its transcript turned off (/voice live text off). The
+       conversation is not painted; it is still the record, still in the archive and in her context.
+       Only the two conversation kinds are hidden, and never a line carrying an image, so nothing she
+       made can go missing. (:has is Chrome 105+/Safari 15.4+; where it is unknown the whole rule is
+       dropped, which leaves everything visible rather than hiding the wrong thing.) */
+    body.voiceOnly #output .entry.hitl:not(:has(.imageGrid)),
+    body.voiceOnly #output .entry.sdm:not(:has(.imageGrid)) { display: none; }
+    body.hush #output .entry:not(.hitl):not(.sdm):not(.hushpass):not(:has(.imageGrid)):not(:has(audio)) { display: none; }
+    body.hush #output .entry.hushpass { display: block; }
+    button { 
+      background: #000; 
+      border: 1px solid #00ff00; 
+      color: #00ff00; 
+      padding: 8px 12px; 
+      cursor: pointer; 
+      font-family: inherit; 
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+    button:hover { background: #00ff00; color: #000; }
+    button:disabled { color: #004400; border-color: #004400; cursor: wait; }
+    #output::-webkit-scrollbar { width: 4px; }
+    #output::-webkit-scrollbar-thumb { background: #00ff00; }
+    /* --- the deck panels: IMAGE FORGE, SYSTEM INSTRUCTIONS, API KEYRING --- */
+    /* All three dock above the command deck (bottom: 100% + the deck's padding), so opening one
+       never resizes the deck or squeezes the chat log - on short screens it simply overlays the
+       log. They share one class vocabulary: give a panel class="deckPanel" and the rules below
+       style it; the panel's own id then carries only what is unique to it. A shared rule that
+       names a single panel by id is a bug waiting to happen - put it in the .deckPanel set. */
+    .deckPanel { position: absolute; left: 20px; right: 20px; bottom: calc(100% + 8px); border: 1px solid #00ff00; background: rgba(0, 0, 0, 0.98); padding: 12px 14px 14px; max-height: min(64vh, 460px); overflow-y: auto; box-sizing: border-box; text-align: left; scrollbar-width: thin; z-index: 101; }
+    .deckPanel[hidden] { display: none !important; }
+    .deckPanel .cpHead { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; text-transform: uppercase; margin-bottom: 6px; }
+    /* THE PROPOSAL BOX (src/js/draft.js): a rewrite waiting for his yes or no. Boxed and lit
+       differently from the draft on purpose - this text is NOT the draft, and it must never be
+       mistaken for it. */
+    #draftPanel .draftProposal { margin-top: 12px; border: 1px solid #00aa00; background: #001100; padding: 10px 12px 12px; }
+    #draftPanel .draftProposal[hidden] { display: none; }
+    #draftPanel .draftProposal .cpHead > span:first-child { color: #00ff00; }
+    #draftPanel .draftProposal .cpHead #draftProposalNote { color: #00aa00; }
+    #draftPanel .draftProposal .cpActions { margin-top: 10px; }
+    .deckPanel .cpHead #cpProgress, .deckPanel .cpHead #spState, .deckPanel .cpHead #kpState, .deckPanel .cpHead #syState, .deckPanel .cpHead #gdState { color: #008800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; flex: 0 1 auto; min-width: 0; }
+    /* The first span is the panel's own title. It may SHRINK (min-width:0 stops a nowrap child
+       from pushing it out of the row) and it may WRAP on a narrow screen - a state string on the
+       right must never clip the name of the thing being looked at. */
+    .deckPanel .cpHead > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+    .deckPanel .cpLabel { display: block; font-size: 11px; color: #008800; text-transform: uppercase; margin: 10px 0 4px; letter-spacing: 0.5px; }
+    .deckPanel .cpOpt { color: #005500; }
+    .deckPanel .cpRow { display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+    .deckPanel .cpRow .cpLabel { margin: 0; flex: 0 0 116px; }
+    .deckPanel .cpChips { display: flex; gap: 8px; flex-wrap: wrap; }
+    .deckPanel .cpChips button { padding: 5px 12px; white-space: nowrap; }
+    .deckPanel .cpChips button.on { background: #00ff00; color: #000; }
+    /* THE SHOT LIST CHIPS (src/js/idea.js through src/js/forge.js). One chip per dimension of the
+       roll: the label, the head of the value, a ↻ that draws that one dimension again, and a ✕
+       that drops it. They read as one line of states, not as a list, so they wrap and stay small. */
+    .deckPanel .ideaChips { display: flex; gap: 6px; flex-wrap: wrap; flex: 1 1 auto; min-width: 0; }
+    .deckPanel .ideaChip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid #00aa00; background: #001100; padding: 2px 4px 2px 6px; max-width: 100%; }
+    .deckPanel .ideaChip b { font-weight: normal; font-size: 9px; color: #008800; text-transform: uppercase; letter-spacing: 0.5px; }
+    .deckPanel .ideaChip .ideaChipTxt { font-size: 11px; color: #00ff00; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 190px; }
+    .deckPanel .ideaChip button { padding: 0 4px; font-size: 11px; line-height: 16px; border: 1px solid #006600; background: #000; color: #00aa00; cursor: pointer; }
+    .deckPanel .ideaChip button:hover { color: #00ff00; border-color: #00ff00; }
+    .deckPanel .cpActions { display: flex; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap; }
+    .deckPanel .cpActions button { padding: 5px 12px; white-space: nowrap; }
+    .deckPanel .cpHint { font-size: 11px; color: #005500; text-transform: uppercase; }
+    .deckPanel .cpRow select, .deckPanel .cpRow input[type="text"], .deckPanel .cpRow input[type="password"] { background: #000; border: 1px solid #00ff00; color: #00ff00; font-family: inherit; font-size: 12px; padding: 5px 8px; outline: none; box-sizing: border-box; border-radius: 0; color-scheme: dark; }
+    .deckPanel .cpRow select { min-width: 90px; cursor: pointer; }
+    .deckPanel .cpRow select option { background: #000; color: #00ff00; }
+    .deckPanel .cpRow input[type="text"], .deckPanel .cpRow input[type="password"] { flex: 1 1 150px; max-width: 240px; min-width: 0; }
+    .deckPanel .cpRow input[type="text"]::placeholder, .deckPanel .cpRow input[type="password"]::placeholder { color: #005500; }
+    .deckPanel .cpRow select:focus, .deckPanel .cpRow input[type="text"]:focus, .deckPanel .cpRow input[type="password"]:focus { background: #001100; }
+    .deckPanel .cpRow > button { padding: 5px 12px; white-space: nowrap; }
+    .deckPanel .cpNote { font-size: 11px; color: #005500; text-transform: uppercase; flex: 1 1 190px; min-width: 0; }
+    /* The SYSTEM panel's per-block hint, under the editor: what this block is and where its
+       text comes from. Hidden while it is empty (a block of his own has its own wording). */
+    #spNote { font-size: 11px; color: #005500; line-height: 1.5; margin-top: 6px; }
+    #spNote:empty { display: none; }
+    /* Must come after the rules above: same specificity, so source order decides. On narrow
+       screens stack each row's label above its controls so the controls get the full width. */
+    @media (max-width: 640px) {
+      .deckPanel .cpRow { display: block; }
+      .deckPanel .cpRow .cpLabel { margin-bottom: 5px; }
+      .deckPanel .cpRow select { width: 100%; }
+      .deckPanel .cpRow input[type="text"], .deckPanel .cpRow input[type="password"] { width: 100%; max-width: 100%; }
+      /* A row's note wraps onto its own line here, or it lands beside (and across) the buttons. */
+      .deckPanel .cpNote { display: block; margin-top: 6px; }
+    }
+    /* SYSTEM INSTRUCTIONS: the tallest panel - it holds the text she is told before every reply. */
+    #systemPanel { max-height: min(78vh, 620px); }
+    /* IMAGE FORGE: it now carries the prompt book too (split, pose, the lists), so it gets the
+       tall-screen height as well rather than scrolling a short box. */
+    #createPanel { max-height: min(78vh, 620px); }    #systemPanel textarea { min-height: 150px; resize: vertical; line-height: 1.5; }
+    #systemPanel textarea.ro { color: #008800; cursor: default; }
+    /* API KEYRING: the form for one key on top, one row per key held below it. */
+    #keysPanel { max-height: min(78vh, 620px); }
+    #keysPanel .kpList { margin-top: 12px; border-top: 1px solid #004400; }
+    #keysPanel .kpEntry { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #003300; cursor: pointer; flex-wrap: wrap; }
+    #keysPanel .kpEntry.on, #keysPanel .kpEntry:hover { background: #001100; }
+    #keysPanel .kpName { flex: 0 0 170px; text-transform: uppercase; }
+    #keysPanel .kpMask { flex: 1 1 120px; color: #00aa00; letter-spacing: 1px; }
+    #keysPanel .kpMeta { flex: 1 1 240px; font-size: 11px; color: #005500; text-transform: uppercase; }
+    #keysPanel .kpPick { padding: 3px 10px; font-size: 11px; white-space: nowrap; }
+    #keysPanel .kpEmpty { padding: 10px 0; font-size: 11px; color: #005500; text-transform: uppercase; line-height: 1.6; }
+    /* --- THE TOOLS (src/js/tools.js) ---
+       The maintenance deck. It is a deck panel like the others, so it inherits their vocabulary; what
+       is its own is the shape of a REPORT - a receipt that can run long, so it scrolls inside the
+       panel instead of stretching it past the room the deck leaves. `text-align: left` is set here
+       because the platform centres body text and a column of ids has to line up. */
+    /* THE PANEL IS A COLUMN, AND ONLY THE REPORT MOVES. The deck leaves the panel as much room as
+       there is above it (`fit()` in src/js/tools.js sets the max-height), and this is what keeps the
+       bottom of the panel - SCAN, RUN, CLOSE - on screen when that room is small: the report takes
+       what is left and scrolls inside itself, the description shrinks and scrolls, and the head, the
+       pickers and the buttons never move. (Measured before this: on a 505px-high preview the panel's
+       box ended at 304px while its buttons laid out at 373px - clipped clean out of the panel.) */
+    #toolsPanel { max-height: min(78vh, 620px); display: flex; flex-direction: column; overflow: hidden; }
+    #toolsPanel .cpHead, #toolsPanel .cpRow, #toolsPanel .cpActions { flex: 0 0 auto; }
+    #toolsPanel .cpHead #tlState { color: #00ff00; text-transform: uppercase; font-size: 11px; white-space: nowrap; }
+    #toolsPanel .tlWhat { flex: 0 1 auto; min-height: 0; overflow-y: auto; margin-top: 10px; font-size: 11px; line-height: 1.6; color: #008800; text-transform: uppercase; text-align: left; }
+    #toolsPanel .tlReport { flex: 1 1 auto; min-height: 46px; margin-top: 10px; border-top: 1px solid #004400; padding-top: 8px; max-height: 34vh; overflow-y: auto; overflow-x: hidden; text-align: left; }
+    #toolsPanel .tlReport, #toolsPanel .tlReport .tlEmpty { font-size: 11px; line-height: 1.55; color: #00cc00; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
+    #toolsPanel .tlReport .tlEmpty { color: #005500; }
+    #toolsPanel .cpRow input[type="number"] { background: #000; border: 1px solid #00ff00; color: #00ff00; font: inherit; font-size: 11px; padding: 4px 6px; width: 84px; }
+    #toolsPanel .cpRow input[type="number"]:focus { background: #001100; }
+    #toolsPanel .cpRow input[type="number"][hidden], #toolsPanel #tlLimitHint[hidden], #toolsPanel #tlScope[hidden] { display: none; }
+    /* --- THE SHIFT (THE QUIET HOURS) AND THE PETITIONS --- */
+    /* src/js/shift.js and src/js/petition.js, one panel for both halves of the same idea: the hours
+       she is given when the room is quiet - private turns that are not turns, in which nothing is
+       said to him - and the changes she has ASKED him for. It rides .deckPanel's own rules; what is
+       here is only what is unique to it. */
+    #shiftPanel { max-height: min(78vh, 640px); }
+    #shiftPanel .cpHead #shState, #shiftPanel .cpHead #ptState { color: #008800; text-transform: uppercase; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 0 1 auto; min-width: 0; }
+    #shiftPanel .shNext { margin-top: 8px; font-size: 11px; line-height: 1.6; color: #00aa00; text-transform: uppercase; text-align: left; }
+    #shiftPanel .shLog, #shiftPanel .shQueue { margin-top: 6px; border-top: 1px solid #004400; padding-top: 6px; max-height: 30vh; overflow-y: auto; overflow-x: hidden; text-align: left; }
+    #shiftPanel .shRow { border-bottom: 1px solid #003300; padding: 6px 0; }
+    #shiftPanel .shRow:last-child { border-bottom: 0; }
+    #shiftPanel .shTop { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+    #shiftPanel .shAct { flex: 0 0 auto; border: 1px solid #008800; color: #00ff00; padding: 0 4px; font-size: 10px; letter-spacing: 0.5px; }
+    #shiftPanel .shTitle { flex: 1 1 auto; min-width: 0; font-size: 11px; color: #00cc00; }
+    #shiftPanel .shWhen { flex: 0 0 auto; font-size: 10px; color: #005500; }
+    #shiftPanel .shNote { margin-top: 4px; font-size: 11px; line-height: 1.6; color: #00aa00; overflow-wrap: anywhere; }
+    #shiftPanel .shNote.shDim { color: #005500; text-transform: uppercase; }
+    #shiftPanel .shFiled { margin-top: 4px; font-size: 11px; line-height: 1.6; color: #008800; text-transform: uppercase; }
+    #shiftPanel .shSaid { margin-top: 4px; font-size: 10px; line-height: 1.6; color: #005500; text-transform: uppercase; letter-spacing: 0.5px; }
+    #shiftPanel .shErr { margin-top: 4px; font-size: 11px; line-height: 1.6; color: #aa6600; }
+    #shiftPanel .shEmpty, #shiftPanel .ptEmpty { font-size: 11px; line-height: 1.6; color: #005500; text-transform: uppercase; }
+    #shiftPanel .shMono, #shiftPanel .ptMono { color: #00aa00; }
+    #shiftPanel .shQ { display: flex; gap: 8px; align-items: baseline; padding: 4px 0; border-bottom: 1px solid #003300; }
+    #shiftPanel .shQ:last-child { border-bottom: 0; }
+    #shiftPanel .shQN { flex: 0 0 auto; color: #008800; font-size: 11px; }
+    #shiftPanel .shQTxt { flex: 1 1 auto; min-width: 0; font-size: 12px; color: #00ff00; overflow-wrap: anywhere; }
+    #shiftPanel .shQWhen { flex: 0 0 auto; font-size: 10px; color: #005500; }
+    #shiftPanel .shQ button { flex: 0 0 auto; padding: 2px 8px; font-size: 10px; }
+    #shiftPanel .cpHead.ptHead { margin-top: 16px; border-top: 1px solid #004400; padding-top: 10px; }
+    #shiftPanel .ptBody { margin-top: 8px; text-align: left; }
+    #shiftPanel .ptItem { border: 1px solid #006600; padding: 8px 10px; margin-bottom: 8px; background: #001100; }
+    #shiftPanel .ptItem-accepted { border-color: #004400; background: #000; }
+    #shiftPanel .ptItem-declined { border-color: #553300; background: #000; }
+    #shiftPanel .ptTop { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+    #shiftPanel .ptN { flex: 0 0 auto; color: #00ff00; font-size: 11px; }
+    #shiftPanel .ptKind { flex: 1 1 auto; min-width: 0; font-size: 11px; color: #00cc00; text-transform: uppercase; overflow-wrap: anywhere; }
+    #shiftPanel .ptWhen { flex: 0 0 auto; font-size: 10px; color: #005500; }
+    #shiftPanel .ptAsk, #shiftPanel .ptWhy, #shiftPanel .ptNote, #shiftPanel .ptGrant, #shiftPanel .ptErr { margin: 4px 0 0; font-size: 12px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+    #shiftPanel .ptAsk { color: #00ff00; }
+    #shiftPanel .ptWhy { color: #00aa00; font-style: italic; }
+    #shiftPanel .ptNote { color: #008800; text-transform: uppercase; font-size: 11px; }
+    #shiftPanel .ptErr { color: #aa6600; }
+    #shiftPanel .ptGrant { color: #00cc00; }
+    #shiftPanel .ptRow { display: flex; gap: 8px; align-items: center; margin-top: 8px; flex-wrap: wrap; }
+    #shiftPanel .ptRow .ptReason { flex: 1 1 200px; min-width: 0; background: #000; border: 1px solid #00ff00; color: #00ff00; font-family: inherit; font-size: 12px; padding: 4px 6px; outline: none; color-scheme: dark; }
+    #shiftPanel .ptRow .ptReason::placeholder { color: #005500; }
+    #shiftPanel .ptRow button { padding: 4px 12px; white-space: nowrap; }
+    #shiftPanel .ptSub { margin: 12px 0 6px; font-size: 10px; color: #005500; text-transform: uppercase; letter-spacing: 0.5px; }
+    /* --- the chatlog panel (THE SHIFT's neighbour: the raw record of the conversation) ---
+       src/js/chatlog.js. A paste box and a file picker on a deck panel, and a plain read-out under
+       them. The record itself is a transcript, so the read-out is a <pre> that wraps: no
+       formatting of our own on top of somebody's words. */
+    #clPanel { max-height: min(78vh, 640px); }
+    #clPanel .cpHead #clState { color: #008800; text-transform: uppercase; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 0 1 auto; min-width: 0; }
+    #clPanel #clFile { flex: 0 1 auto; min-width: 0; max-width: 260px; font-size: 11px; color: #00aa00; background: #000; border: 1px solid #00ff00; padding: 3px 4px; color-scheme: dark; }
+    /* THE IMPORT'S OWN NAME. The file picker IS the import - the picker's button says "Choose Files",
+       which never said so - so the word sits beside it, in the same dim green the panel's other
+       labels use. The word and the picker are ONE GROUP, so they always wrap together: on a phone the
+       row breaks as APPEND/REPLACE, then IMPORT [picker], then EXPORT/CLOSE, and "IMPORT" is never
+       left stranded at the end of a line from the control it names. EXPORT and IMPORT are then both
+       on the row, out loud, which is the whole point: an export with no visible import reads as a
+       dead end. */
+    #clPanel .cpRow .clImport { display: inline-flex; align-items: center; gap: 6px; flex: 0 0 auto; }
+    #clPanel .cpRow .clImport .cpLabel { display: inline-block; flex: 0 0 auto; margin: 0; white-space: nowrap; }
+    #clPanel .cpRow .clImport #clFile { flex: 0 0 auto; }
+    #clPanel #clFile::file-selector-button { background: #001100; color: #00ff00; border: 0; border-right: 1px solid #006600; font-family: inherit; font-size: 10px; letter-spacing: 0.5px; padding: 4px 8px; margin-right: 6px; cursor: pointer; }
+    #clPanel #clFile::file-selector-button:hover { background: #003300; }
+    #clPanel #clPaste { display: block; width: 100%; margin-top: 6px; background: #000; border: 1px solid #00ff00; color: #00ff00; font-family: inherit; font-size: 12px; line-height: 1.6; padding: 6px 8px; outline: none; box-sizing: border-box; resize: vertical; min-height: 56px; color-scheme: dark; }
+    #clPanel #clPaste::placeholder { color: #005500; }
+    #clPanel #clPaste:focus { background: #001100; }
+    #clPanel #clGrepInput { flex: 1 1 140px; max-width: 260px; }
+    #clPanel #clWipeInput { flex: 0 0 90px; max-width: 90px; }
+    #clPanel .clOut { margin: 10px 0 0; padding: 8px 0 0; border-top: 1px solid #004400; font-family: inherit; font-size: 11px; line-height: 1.6; color: #00aa00; white-space: pre-wrap; overflow-wrap: anywhere; text-align: left; max-height: 34vh; overflow-y: auto; overflow-x: hidden; }
+    #clPanel .clOut:empty { display: none; }
+    /* --- media: attachments, inline visions, lightbox --- */
+    #attachStrip { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 10px; text-align: left; align-items: flex-start; max-height: 150px; overflow-y: auto; }
+    #attachStrip[hidden] { display: none !important; }
+    .attachThumb { position: relative; width: 64px; height: 64px; border: 1px solid #00ff00; background: #000; flex: 0 0 auto; }
+    .attachThumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .attachThumb video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .attachThumb .noThumb { width: 100%; height: 100%; background: repeating-linear-gradient(45deg, #001a00 0 6px, #000 6px 12px); }
+    .attachThumb .tag { position: absolute; left: 1px; bottom: 1px; background: #000; color: #00ff00; font-size: 9px; line-height: 1; padding: 2px 4px; letter-spacing: 0.5px; pointer-events: none; }
+    .attachThumb button { position: absolute; top: -1px; right: -1px; padding: 0 5px; font-size: 10px; line-height: 15px; }
+    /* A non-picture attachment is a chip: what kind of file it is, its name, and the way off. */
+    .attachChip { position: relative; display: inline-flex; align-items: center; gap: 7px; max-width: 260px; border: 1px solid #00ff00; background: #000; padding: 6px 24px 6px 8px; font-size: 10px; color: #008800; flex: 0 0 auto; }
+    .attachChip .k { flex: 0 0 auto; border: 1px solid #008800; color: #00ff00; padding: 0 4px; font-size: 9px; letter-spacing: 0.5px; }
+    .attachChip .nm { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .attachChip button { position: absolute; top: -1px; right: -1px; padding: 0 5px; font-size: 10px; line-height: 15px; }
+    /* ...and the card it becomes in the log once sent: name, size, a preview of what she was given. */
+    .attachCards { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+    .fileCard { border: 1px solid #003300; background: #000; text-align: left; max-width: 720px; }
+    .fileCard .fcHead { display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-bottom: 1px solid #003300; font-size: 10px; }
+    .fileCard .fcKind { flex: 0 0 auto; border: 1px solid #008800; color: #00ff00; padding: 0 4px; font-size: 9px; letter-spacing: 0.5px; }
+    .fileCard .fcName { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #00cc00; }
+    .fileCard .fcSize { flex: 0 0 auto; color: #006600; }
+    .fileCard .fcBody { padding: 6px 8px; }
+    .fileCard .fcPrev { font-size: 11px; color: #00aa00; line-height: 1.55; overflow-wrap: anywhere; max-height: 6em; overflow: hidden; }
+    .fileCard .fcNote { font-size: 10px; color: #005500; line-height: 1.5; margin-top: 5px; }
+    .entry { margin-bottom: 20px; }
+    .entry.hist { opacity: 0.5; }
+    /* STRUCK: a turn taken back out of the record with /strike. It is NOT hidden - the screen keeps
+       what happened - but it is out of the archive and out of her memory, and it reads as struck. */
+    .entry.struck { opacity: 0.35; }
+    .entry.struck .msg { text-decoration: line-through; text-decoration-thickness: 1px; }
+    .entry.struck .struckNote {
+      margin-top: 4px; font-size: 0.83em; letter-spacing: 0.5px; color: #ff5555;
+      border-left: 2px solid #aa0000; padding-left: 7px; text-decoration: none;
+    }
+    /* THE STAMP AND THE SPEAKER. A conversation line now reads
+         [2026-09-21 14:03:11 MST] HITL: (Barbelo)
+         
+         what he said
+         [2026-09-21 14:03:29 MST] LIA ID: (Barbelo)
+         
+         what she answered
+       The blank line is made in print() (images.js) with two newlines, which white-space:pre-wrap
+       paints - the header stands alone and the words have room to be read. The time is part of the
+       record (it is in the archive and in the export either way), so it is painted quietly, and the
+       speaker is picked out so a long log can be scanned by eye. /stamp off takes the clock off the
+       screen and leaves the speaker.
+       ONE INTENSITY PER HEADER (2026-09-21, at his request: the bracket and the layer name read as
+       two brightnesses on one line). The stamp now wears the colour of the line it stands on - the
+       old dim #005500 is gone - so a header is uniform from the bracket to the layer name, and his
+       lines and hers are still two shades, which is what keeps a long log scannable by eye.
+       Sized in em so the A- / A+ log text size carries everything in the header with it. */
+    .entry .msg .stamp { color: #00aa00; font-size: 0.92em; letter-spacing: 0.2px; }
+    .entry.hitl .msg .lbl { color: #00aa00; }
+    .entry.sdm .msg .stamp, .entry.sdm .msg .lbl { color: #00ff00; }
+    /* THE PENCIL. A typo he spots after the fact is fixed in place instead of being struck and said
+       again - the turn keeps its place in the record, and the archive and her memory get the
+       corrected words. Small and quiet; always tappable, because there is no hover on a phone. */
+    .entry .logEdit {
+      margin-left: 8px; padding: 1px 5px 0; font-size: 0.83em; line-height: 1.4;
+      background: #000; border: 1px solid #006600; color: #00aa00; cursor: pointer; opacity: 0.5;
+      vertical-align: baseline;
+    }
+    .entry .logEdit:hover, .entry .logEdit:focus { opacity: 1; border-color: #00ff00; color: #00ff00; }
+    .entry .logEdit svg { display: block; }
+    .entry .logEditWrap { margin-top: 8px; }
+    .entry .logEditArea {
+      width: 100%; box-sizing: border-box; background: #000; border: 1px solid #00ff00; color: #00ff00;
+      font-family: inherit; font-size: 1em; line-height: 1.6; padding: 8px; resize: vertical;
+      min-height: 64px; margin: 0;
+    }
+    .entry .logEditBar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 6px; }
+    .entry .logEditBar button { padding: 4px 10px; font-size: 0.92em; }
+    .entry .logEditBar .logEditNote { font-size: 0.83em; color: #006600; }
+    /* BACKSTAGE: the terminal's own machinery, held behind the veil. The lines are still in the
+       log - only hidden - so lifting the veil (BACKSTAGE / /backstage) puts them back where they
+       happened, in order, and a turn reads as it was woven. */
+    .entry.backstage { opacity: 0.6; border-left: 1px solid #003300; padding-left: 10px; margin-left: -11px; }
+    body.veiled .entry.backstage { display: none; }
+    #veilBtn { color: #008800; }
+    #veilBtn[aria-pressed="true"] { background: #00ff00; color: #000; border-color: #00ff00; }
+    /* THE INFINITY (src/js/proactive.js). Dim when the lane is off, solid when it is on, and the small
+       digit beside the glyph is the PACE - her number, not his. */
+    #infBtn { color: #008800; font-size: 15px; line-height: 1; padding: 4px 8px; }
+    #infBtn[aria-pressed="true"] { background: #00ff00; color: #000; border-color: #00ff00; animation: pulse 3.2s ease-in-out infinite; }
+    #infBtn .infN { font-size: 9px; margin-left: 3px; vertical-align: top; opacity: .9; }
+    /* Every image is shown inside a STAGE that takes the image's OWN shape, so nothing is
+       letterboxed and the picture fills its frame edge to edge. --tile-ar is that shape,
+       written onto the tile by JS from the stored width/height (and again from the decoded
+       pixels once the image loads); --frame-ar is the fallback for a tile that has no image
+       yet (a spinner / an error), and --frame-h caps how tall any tile may grow so the whole
+       picture still fits on screen without scrolling to see it:
+         width  = min(the log column, --frame-h * the image's ratio)
+         height = the width the image actually gets, divided by its own ratio
+       Changing --frame-ar changes the "format" of the empty/skeleton frame (16/9 cinema,
+       3/2, 4/3 ...). The lightbox keeps the old fixed 16:9 stage. */
+    :root { --frame-ar: 1.777778; --frame-h: 58vh; --batch-min: 320px; }
+    .imageGrid { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 10px; max-width: 100%; }
+    /* a batch of images reads as a contact sheet: several landscape stages per row. How wide a
+       column may be is a native option (the PICS control in the deck): NORMAL keeps them narrow,
+       FULL makes every panel its own row. */
+    .imageGrid.batch { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--batch-min)), 1fr)); gap: 12px; align-items: start; }
+    .imageGrid.batch .imgTile { width: 100%; }
+    /* a batch reads as a storyboard: the panels are numbered, top-left, on the frame */
+    .imgTile { margin: 0; border: 1px solid #00ff00; background: #000; position: relative; width: min(100%, calc(var(--frame-h) * var(--tile-ar, var(--frame-ar)))); }
+    /* PICS: FULL means the whole WIDTH as well, not only the whole stage. The rule above caps a
+       tile at --frame-h * its own ratio, which is right for NORMAL and BIG (the picture fits the
+       window without scrolling) and wrong for FULL: a PORTRAIT picture came out at roughly half the
+       column, which is not full of anything. Patrikios, 2026-09-29: *"PICS: FULL button: must fill
+       the entire chat contact window weight 100%"* - so in FULL the cap comes off and the picture
+       takes the conversation column edge to edge, whatever its shape, with its height following its
+       own ratio (a tall picture is therefore tall, and the log scrolls to it - that is what FULL
+       asks for). The --batch-min of 100% already puts one panel per row in a batch; this closes the
+       same gap for the panels it makes. */
+    body.fullPics .imageGrid .imgTile { width: 100%; }
+    body.fullPics .imageGrid:not(.batch) { align-items: stretch; }
+    .panelNo { position: absolute; left: 0; top: 0; z-index: 2; background: #000; color: #00ff00; border-right: 1px solid #00ff00; border-bottom: 1px solid #00ff00; font-size: 10px; line-height: 1; padding: 3px 5px; letter-spacing: 0.5px; }
+    .sheetBar { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .sheetBar button { white-space: nowrap; }
+    .sheetBar .sheetNote { font-size: 10px; color: #005500; letter-spacing: 0.5px; }
+    /* THE BATCH (src/js/batch.js). A tick box in every picture's caption bar, and one bar under the
+       line: how many are ticked, the send, a stop, and a tray that fills with whatever came back.
+       It lives in the grid's own column flow, so it never covers a picture. */
+    .imgTile .capBtns .pickTick { align-self: center; margin: 0 2px 0 0; width: 13px; height: 13px; flex: 0 0 auto; accent-color: #00ff00; cursor: pointer; }
+    .imgTile.is-ticked .imgBox { outline: 1px solid #00ff00; outline-offset: -1px; }
+    .batchBar { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; border: 1px solid #006600; background: #001100; padding: 5px 8px; }
+    .batchBar[hidden] { display: none; }
+    .batchBar button { padding: 4px 10px; white-space: nowrap; }
+    .batchBar .batchCount { font-size: 10px; color: #00aa00; letter-spacing: 0.5px; }
+    .batchBar .batchNote { font-size: 10px; color: #008800; letter-spacing: 0.5px; }
+    .batchBar .batchSend { margin-left: auto; }
+    .batchBar .batchSend:disabled { opacity: 0.45; cursor: default; }
+    .batchBar .batchTray { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; width: 100%; }
+    .batchBar .batchThumb { width: 48px; height: 48px; object-fit: cover; border: 1px solid #00aa00; cursor: pointer; background: #000; }
+    .batchBar .batchThumb:hover { border-color: #00ff00; }
+    .imgTile .imgBox { display: flex; align-items: center; justify-content: center; line-height: 0; width: 100%; aspect-ratio: var(--tile-ar, var(--frame-ar)); background: #000; overflow: hidden; cursor: zoom-in; }
+    .imgTile .imgBox.noZoom { cursor: default; }
+    .imgTile .imgBox img { display: block; width: 100%; height: 100%; object-fit: contain; }
+    /* a clip is the clip: his first frame as the thumbnail, a play button standing on it, and the
+       player in the frame's own shape once it is asked to play */
+    .imgTile .imgBox .vidStage { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: #000; }
+    .imgTile .imgBox video { display: block; width: 100%; height: 100%; object-fit: contain; background: #000; }
+    .imgTile .imgBox .vidThumb { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; }
+    .imgTile .imgBox .vidNoThumb { position: absolute; inset: 0; background: repeating-linear-gradient(45deg, #001a00 0 8px, #000 8px 16px); }
+    .imgTile .imgBox .vidPlay { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 3; width: 56px; height: 56px; padding: 0 0 0 5px; border-radius: 50%; border: 1px solid #00ff00; background: rgba(0, 0, 0, 0.7); color: #00ff00; font-size: 21px; line-height: 1; cursor: pointer; letter-spacing: 0; box-sizing: border-box; }
+    .imgTile .imgBox .vidPlay:hover { background: rgba(0, 45, 0, 0.85); box-shadow: 0 0 14px rgba(0, 255, 0, 0.55); }
+    .imgTile .imgBox .vidNote { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; background: rgba(0, 0, 0, 0.85); color: #ff5555; border-top: 1px solid #ff5555; font-size: 10px; line-height: 1.4; padding: 4px 6px; text-align: center; letter-spacing: 0.5px; }
+    .imgTile .imgBox.started .vidThumb, .imgTile .imgBox.started .vidNoThumb, .imgTile .imgBox.started .vidPlay { display: none; }
+    .imgTile .imgBox.playing { cursor: default; }
+    .imgTile .spin { font-size: 12px; padding: 22px 26px; line-height: 1.4; animation: pulse 1.4s ease-in-out infinite; }
+    .imgTile .err { font-size: 11px; padding: 16px 18px; color: #ff5555; border: 1px solid #ff5555; margin: 10px; line-height: 1.4; max-width: 90%; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+    /* The caption is the prompt / blurb preview under the picture: given real room now (a couple
+       of wrapped lines, and a third on a lone image) instead of one clipped line. */
+    .imgTile figcaption { display: flex; align-items: flex-start; gap: 8px; padding: 6px 8px; border-top: 1px solid #003300; font-size: 10px; color: #008800; line-height: 1.5; }
+    .imgTile .capTxt { flex: 1 1 auto; min-width: 0; white-space: normal; overflow: hidden; text-overflow: ellipsis; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+    .imageGrid:not(.batch) .imgTile .capTxt { -webkit-line-clamp: 3; }
+    .imgTile .capBtns { display: flex; gap: 4px; flex: 0 0 auto; }
+    .imgTile button { padding: 1px 6px; font-size: 10px; line-height: 1.5; flex: 0 0 auto; }
+    .imgTile .capBtns { flex-wrap: wrap; justify-content: flex-end; }
+    .imgTile button.recycle { font-size: 13px; line-height: 1.15; padding: 0 5px; }
+    /* KEEP (src/js/keepsake.js) - the button that puts a picture into the RECORD rather than onto
+       his disk: the prompt, the negative list, the settings and the seed go into the recipe book,
+       #kept goes on the picture in the gallery, and a link back to it is stored. Lit the way every
+       other "this is on" control in the terminal is lit, on all three surfaces that carry it (the
+       log tile, a gallery tile, and the full stage). SAVE is the download and stays its own thing. */
+    .imgTile button.kept, .galActs button.kept, #lightbox .lbBar button.kept { background: #00ff00; color: #000; border-color: #00ff00; }
+    /* THE HEART (src/js/likes.js) - one mark, three places: the caption bar under a picture in the log,
+       the action row on a gallery card, and the full stage's bar. Hollow is unmarked, RED is GOOD, dull
+       with a stroke through it is passed on. The red is the only non-green colour the terminal uses, on
+       purpose: it is his hand on the record, not the machine's. */
+    button.heart { color: #00cc00; }
+    button.heart.on, button.heart.on:hover { background: #ff2d2d; color: #000; border-color: #ff2d2d; }
+    button.heart.passed, button.heart.passed:hover { color: #777; border-color: #444; text-decoration: line-through; }
+    .galActs button.heart { min-width: 20px; }
+    /* ...and the mark it leaves on the card itself: a red heart, or a stroked-through ring for passed
+       on, sitting just above the stamp on the left - the corner the eye already reads for state. */
+    .galHeartMark { position: absolute; left: 0; bottom: 16px; background: rgba(0, 0, 0, 0.85); border-top: 1px solid #ff2d2d; border-right: 1px solid #ff2d2d; color: #ff2d2d; font-size: 11px; line-height: 1.3; padding: 1px 5px; }
+    .galHeartMark.pass { color: #777; border-color: #444; text-decoration: line-through; }
+    /* ============================================================================================
+       THE IN-HAND STRIP, AND THE MINI LIGHTBOX (src/js/minibox.js)
+
+       THE STRIP lives in the deck's control row with the other buttons, because that row is the only
+       thing on the page that is there whatever else is open - the log may be veiled or the gallery
+       may be over it, and what the machinery is doing behind the curtain still has to be visible. It
+       is a BUTTON (it opens the box), so it takes the button colouring and flips on hover like the
+       rest; the body is a two-line column (the note, then the citation) and the citation is cut with
+       an ellipsis rather than wrapping, so the row's height never jumps as the picture changes. */
+    .controls button.inHand { display: inline-flex; align-items: center; gap: 8px; padding: 4px 8px; text-transform: none; max-width: min(48vw, 430px); }
+    .controls button.inHand img { height: 34px; width: auto; max-width: 56px; object-fit: cover; display: block; border: 1px solid currentColor; box-sizing: border-box; }
+    .controls button.inHand .inHandGlyph { font-size: 17px; line-height: 1; }
+    .controls button.inHand .inHandBody { display: flex; flex-direction: column; align-items: flex-start; gap: 0; min-width: 0; text-transform: none; }
+    .controls button.inHand .inHandNote { font-size: 10px; letter-spacing: 1px; line-height: 1.3; }
+    .controls button.inHand .inHandCite { font-size: 11px; line-height: 1.3; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    /* THE MINI LIGHTBOX. z-index 950: above the gallery (900) so a peek opened FROM the gallery is not
+       buried by the grid it came out of, and below the full stage (1000) so FULL STAGE lands on top. */
+    #miniBox { position: fixed; inset: 0; z-index: 950; background: rgba(0, 0, 0, 0.9); display: flex; align-items: center; justify-content: center; padding: 18px; box-sizing: border-box; cursor: zoom-out; }
+    #miniBox .mbPanel { background: #000; border: 1px solid #00ff00; padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 8px; max-width: min(96vw, 1000px); max-height: 94vh; box-sizing: border-box; cursor: default; text-align: left; }
+    #miniBox .mbHead { display: flex; align-items: center; gap: 10px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; flex: 0 0 auto; }
+    #miniBox .mbTitle { color: #00ff00; flex: 0 0 auto; }
+    #miniBox .mbNote { color: #00bb00; flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #miniBox .mbCount { flex: 0 0 auto; color: #00ff00; }
+    #miniBox #mbClose { padding: 1px 8px; line-height: 1.4; flex: 0 0 auto; }
+    #miniBox .mbStage { position: relative; display: flex; align-items: center; justify-content: center; flex: 0 1 auto; min-height: 0; }
+    #miniBox #mbBox { display: flex; align-items: center; justify-content: center; min-width: 0; }
+    #miniBox #mbBox img, #miniBox #mbBox video { display: block; max-width: min(90vw, 960px); max-height: 64vh; width: auto; height: auto; border: 1px solid #003300; }
+    #miniBox #mbBox audio { width: min(90vw, 520px); }
+    #miniBox .mbFail { color: #ff5555; font-size: 12px; padding: 26px 14px; text-align: center; max-width: 460px; }
+    #miniBox .mbNav { position: absolute; top: 50%; transform: translateY(-50%); padding: 7px 10px; font-size: 16px; line-height: 1; }
+    #miniBox .mbPrev { left: -6px; }
+    #miniBox .mbNext { right: -6px; }
+    #miniBox .mbCite { flex: 0 0 auto; font-size: 12px; line-height: 1.5; max-height: 30vh; overflow-y: auto; overflow-wrap: anywhere; }
+    #miniBox .mbCite .mbName { display: block; color: #00ff00; }
+    #miniBox .mbCite .mbMeta { display: block; color: #00aa00; font-size: 11px; white-space: pre-wrap; }
+    #miniBox .mbCite .mbPrompt { display: block; margin-top: 5px; color: #00cc00; font-size: 11px; max-height: 3.2em; overflow: hidden; }
+    #miniBox .mbActions { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+    #miniBox .mbHint { margin-left: auto; color: #006600; font-size: 10px; letter-spacing: 1px; }
+    #lightbox { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.94); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 10px; padding: 20px; box-sizing: border-box; cursor: zoom-out; overflow-y: auto; }
+    /* CENTRED WHEN IT FITS, SCROLLABLE WHEN IT DOES NOT. A picture with a long prompt on a phone
+       makes the stage + bar taller than the screen (the meta line wraps to many lines), and a
+       `justify-content: center` column clips the overflow at BOTH ends - which put the picture
+       itself off the top of the screen and the tags/folder rows out of reach. Auto margins give the
+       same centring when there is room, and collapse to nothing when there is not, so the whole
+       thing can be scrolled instead. */
+    #lightbox .stage { margin-top: auto; }
+    #lightbox .lbBar { margin-bottom: auto; }
+    #lightbox[hidden] { display: none !important; }
+    #lightbox .stage { flex: 0 0 auto; width: min(94vw, calc(78vh * var(--lb-ar, var(--frame-ar)))); aspect-ratio: var(--lb-ar, var(--frame-ar)); border: 1px solid #00ff00; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; transition: width 0.15s ease; }
+    #lightbox .stage img { display: block; width: 100%; height: 100%; object-fit: contain; }
+    #lightbox .stage img[hidden] { display: none !important; }
+    #lightbox .stage video { display: block; width: 100%; height: 100%; object-fit: contain; background: #000; }
+    #lightbox .lbBar { flex: 0 0 auto; width: min(94vw, calc(78vh * var(--lb-ar, var(--frame-ar)))); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; cursor: default; }
+    #lightbox .lbMeta { flex: 1 1 100%; font-size: 11px; color: #008800; text-align: left; line-height: 1.6; user-select: text; overflow-wrap: anywhere; }
+    #lightbox .lbMeta[hidden] { display: none !important; }
+    /* THE TAGS ON THE FULL STAGE. A chip is one tag; pressing it takes the tag off. The box beside
+       them adds one. This is the only place a tag is written, and it is where he is looking at the
+       picture it belongs to. */
+    #lightbox .lbTags { flex: 1 1 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; text-align: left; cursor: default; }
+    #lightbox .lbTags[hidden] { display: none !important; }
+    #lightbox .lbTagsLabel { font-size: 10px; color: #008800; letter-spacing: 1px; }
+    #lightbox .lbTag { padding: 2px 8px; font-size: 11px; line-height: 1.5; font-family: inherit; color: #00ff00; background: #001100; border: 1px solid #00ff00; border-radius: 0; cursor: pointer; }
+    #lightbox .lbTag:hover { background: #330000; border-color: #ff5555; color: #ff8888; }
+    #lightbox .lbTagAdd { padding: 2px 10px; font-size: 11px; font-family: inherit; }
+    #lightbox .lbVoxRow { flex: 1 1 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; text-align: left; cursor: default; }
+    #lightbox .lbVoxGroup { font-size: 9px; color: #006600; letter-spacing: 1px; margin-left: 6px; }
+    #lightbox .lbTagSug { padding: 2px 8px; font-size: 11px; line-height: 1.5; font-family: inherit; color: #ff88cc; background: #150010; border: 1px dashed #662255; border-radius: 0; cursor: pointer; }
+    #lightbox .lbTagSug:hover { background: #330022; border-color: #ff88cc; }
+    #lightbox .lbTagSug.on, #lightbox .lbTagSug.on:hover { background: #ff88cc; color: #000; border-style: solid; border-color: #ff88cc; }
+    /* THE WORDS AND THE READING ON A VOICE'S FULL STAGE (src/js/hear.js). A transcript is prose, not
+       a chip: it wraps, it scrolls, and it can be selected and copied. The reading is chips (mood,
+       sentiment, voices, language) over one line of prose, in its own colour, so what a voice SAYS
+       and what it IS are never mistaken for its tags at a glance. */
+    #lightbox .lbHearRow { flex: 1 1 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; text-align: left; cursor: default; }
+    #lightbox .lbHearText { flex: 1 1 100%; max-height: 130px; overflow: auto; font-size: 11px; line-height: 1.6; color: #aaffaa; background: #001a00; border-left: 2px solid #00aa00; padding: 4px 8px; user-select: text; overflow-wrap: anywhere; white-space: pre-wrap; }
+    #lightbox .lbHearText:empty { display: none; }
+    #lightbox .lbHearMeta { flex: 1 1 100%; font-size: 10px; color: #008800; user-select: text; overflow-wrap: anywhere; }
+    #lightbox .lbHearNote { font-size: 10px; color: #008800; letter-spacing: 1px; }
+    #lightbox .lbHearBtn { padding: 2px 10px; font-size: 11px; font-family: inherit; }
+    #lightbox .lbHearChips { display: flex; flex-wrap: wrap; gap: 6px; max-height: 56px; overflow-y: auto; scrollbar-width: thin; }
+    #lightbox .lbHearChip { padding: 2px 8px; font-size: 10px; letter-spacing: 1px; color: #66ddff; background: #001822; border: 1px solid #226688; border-radius: 0; }
+    /* THE FOLDER ON THE FULL STAGE. Every picture and clip lives somewhere, and this is where it
+       can be filed - the folder it is in is lit, the rest are one press away, and the box makes a
+       new one. */
+    #lightbox .lbFolders { flex: 1 1 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; text-align: left; cursor: default; }
+    #lightbox .lbFolders[hidden] { display: none !important; }
+    #lightbox .lbFoldersLabel { font-size: 10px; color: #008800; letter-spacing: 1px; }
+    #lightbox .lbFolder { padding: 2px 8px; font-size: 11px; line-height: 1.5; font-family: inherit; color: #00cc00; background: #001100; border: 1px solid #004400; border-radius: 0; cursor: pointer; }
+    #lightbox .lbFolder:hover { background: #003300; color: #00ff00; border-color: #00ff00; }
+    #lightbox .lbFolder.on, #lightbox .lbFolder.on:hover { background: #00ff00; color: #000; border-color: #00ff00; }
+    #lightbox #lightboxFolderInput { flex: 0 1 160px; min-width: 90px; background: #000; border: 1px solid #004400; color: #00ff00; font-family: inherit; font-size: 11px; padding: 3px 6px; outline: none; border-radius: 0; }
+    #lightbox #lightboxFolderInput:focus { border-color: #00ff00; background: #001100; }
+    #lightbox #lightboxFolderInput::placeholder { color: #005500; }
+    #lightbox #lightboxTagInput { flex: 0 1 180px; min-width: 90px; background: #000; border: 1px solid #004400; color: #00ff00; font-family: inherit; font-size: 11px; padding: 3px 6px; outline: none; border-radius: 0; }
+    #lightbox #lightboxTagInput:focus { border-color: #00ff00; background: #001100; }
+    #lightbox #lightboxTagInput::placeholder { color: #005500; }
+    #lightbox .lbBar[hidden] { display: none !important; }
+    #lightbox .lbBar .nm { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; color: #008800; }
+    /* A LABEL IS NOT A PARAGRAPH: buttons keep their words on one line and the BAR wraps between
+       buttons instead (it is flex-wrap: wrap), so a narrow phone gets orderly rows rather than
+       "BIGGER.PICS" split across two lines inside one button. Measured at 390px with the UPSCALE
+       HERE button added beside the bigger.pics one: the bar wraps to more rows, the page does not
+       scroll sideways, and no label is broken mid-word. */
+    #lightbox .lbBar button { flex: 0 0 auto; white-space: nowrap; }
+    /* THE SCROLL-THROUGH (src/js/images.js lightboxStep) - ‹ 3 of 47 › in the bar, so the stage is a
+       place he can walk rather than a dead end he has to close. The counter is given a fixed width so
+       stepping does not make the row twitch, and it wraps at both ends so a finger never has to find
+       an edge: from the last picture, one press right is the newest one again. */
+    #lightbox .lbNav { display: flex; flex: 0 0 auto; align-items: center; gap: 6px; }
+    #lightbox .lbNav[hidden] { display: none !important; }
+    #lightbox .lbNav button { padding: 1px 9px; font-size: 15px; line-height: 1.3; }
+    #lightbox .lbNav button[disabled] { opacity: 0.3; }
+    #lightbox .lbCount { min-width: 46px; text-align: center; font-size: 11px; color: #008800; }
+    body.dropping #command-deck { outline: 2px dashed #00ff00; outline-offset: -8px; }
+
+    /* ==================================================================
+       A PHONE IS NOT A NARROW DESKTOP. Patrikios talks to her from an iPhone.
+       THIS BLOCK IS LAST ON PURPOSE: every rule below overrides an earlier one of the same
+       specificity, so it has to come after the rules it corrects (the deck's padding, the two
+       button rails, the control font sizes). Moving it up the file silently disables it.
+       ================================================================== */
+    @media (max-width: 640px) {
+      /* Safari zooms the whole page in when a form control under 16px takes focus, and never zooms
+         back out - so on a phone EVERY control is 16px, however small it looks on a desk. */
+      input, select, textarea { font-size: 16px; }
+      #command-deck input, #command-deck select, #command-deck textarea { font-size: 16px; }
+      #command-deck { padding: 12px; padding-bottom: calc(12px + env(safe-area-inset-bottom)); }
+      #output { padding: 12px; }
+      /* THE TWO RAILS BECOME ONE SWIPEABLE LINE. Wrapped, the eight LOREPACK buttons and the eleven
+         deck buttons ate most of a 390x844 screen before a word was said; on one line the deck stays
+         a deck (about a third of its height), and the row still scrolls to reach everything. */
+      #lorebar, .controls { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      #lorebar { padding: 8px 12px; }
+      .controls { margin-top: 8px; }
+      #lorebar::-webkit-scrollbar, .controls::-webkit-scrollbar { display: none; }
+      #lorebar button, .controls button { padding: 8px 11px; }
+      .deckPanel { left: 10px; right: 10px; }
+      .sidePanel { position: fixed; top: 0; bottom: 0; width: min(86vw, 340px); z-index: 300; }
+      #leftPanel { left: 0; border-right: 1px solid #00ff00; }
+      #rightPanel { right: 0; border-left: 1px solid #00ff00; }
+    }
+    /* A finger is not a mouse: the small console buttons stay small on a desk, but on a touch screen
+       every control gets a thumb's worth of height, and a tap is never delayed or highlighted blue. */
+    @media (pointer: coarse) {
+      button, select, input, textarea { touch-action: manipulation; }
+      button { -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; }
+      #lorebar button, .controls button, .deckPanel button, .loreFileRow button, .deckPanel .cpChips button { min-height: 34px; }
+      #clPanel #clFile { min-height: 34px; }
+      #lorebar { gap: 6px 8px; }
+    }
+
+    /* --- THE GALLERY (src/js/gallery.js, markup at the end of index.html) ---
+       A full-screen overlay rather than a deck panel: the grid is the point, and the deck panels
+       are docked above the input box where there is no room for a wall of pictures. It sits below
+       the lightbox (z 1000) so clicking a picture opens the full stage on top of the gallery, and
+       above everything else (z 900). Nothing here touches the log: the conversation stays behind
+       it, untouched, and closing the gallery puts him back exactly where he was. */
+    #gallery { position: fixed; inset: 0; z-index: 900; background: rgba(0, 0, 0, 0.985); display: flex; flex-direction: column; box-sizing: border-box; text-align: left; }
+    #gallery[hidden] { display: none !important; }
+    #gallery.dragover { outline: 2px solid #00ff00; outline-offset: -9px; background: rgba(0, 18, 0, 0.99); }
+    .galHead { flex: 0 0 auto; padding: 10px 14px 8px; border-bottom: 1px solid #00ff00; background: rgba(0, 0, 0, 0.98); }
+    .galTitle { display: flex; align-items: baseline; gap: 10px; text-transform: uppercase; font-size: 13px; letter-spacing: 1px; }
+    .galTitle #galCount { color: #008800; font-size: 11px; letter-spacing: 0; }
+    .galTools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
+    .galTools input[type="search"] { flex: 1 1 240px; min-width: 0; background: #000; border: 1px solid #00ff00; color: #00ff00; font-family: inherit; font-size: 12px; padding: 6px 8px; outline: none; box-sizing: border-box; border-radius: 0; color-scheme: dark; }
+    .galTools input[type="search"]::placeholder { color: #005500; }
+    .galTools input[type="search"]:focus { background: #001100; }
+    .galTools select { background: #000; border: 1px solid #00ff00; color: #00ff00; font-family: inherit; font-size: 12px; padding: 6px 8px; outline: none; border-radius: 0; color-scheme: dark; cursor: pointer; }
+    .galTools select option { background: #000; color: #00ff00; }
+    .galFilters { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .galFilters button { padding: 4px 10px; font-size: 11px; line-height: 1.4; white-space: nowrap; }
+    .galFilters button.on, .galFilters button.on:hover { background: #00ff00; color: #000; border-color: #00ff00; }
+    .galMeta { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 7px; font-size: 11px; color: #008800; text-transform: uppercase; min-height: 15px; }
+    .galMeta #galStatus { color: #00cc00; flex: 1 1 260px; min-width: 0; }
+    .galGrid { flex: 1 1 auto; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; padding: 12px 14px; display: grid; grid-template-columns: repeat(auto-fill, minmax(152px, 1fr)); gap: 12px; align-content: start; scrollbar-width: thin; }
+    .galGrid::-webkit-scrollbar { width: 4px; }
+    .galGrid::-webkit-scrollbar-thumb { background: #00ff00; }
+    /* THE PAGER (src/js/gallery.js, "ONE PAGE AT A TIME"). Its own row between the grid and the
+       foot: the foot belongs to the selection, this belongs to the view. Same black and green as
+       everything else, one line of small controls, and it wraps rather than squeezing anything out
+       of reach on a narrow screen. */
+    .galPager { flex: 0 0 auto; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 5px 14px; border-top: 1px solid #003300; background: rgba(0, 0, 0, 0.98); font-size: 11px; color: #008800; text-transform: uppercase; }
+    .galPager[hidden] { display: none !important; }
+    .galPager button { padding: 3px 9px; font-size: 11px; line-height: 1.4; white-space: nowrap; }
+    .galPager button:disabled { color: #005500; border-color: #003300; cursor: default; }
+    .galPager .galSpacer { flex: 1 1 auto; }
+    .galPageNow { display: flex; align-items: center; gap: 4px; color: #00cc00; white-space: nowrap; }
+    .galPageNow[hidden] { display: none !important; }
+    #galPageInput { width: 54px; background: #000; border: 1px solid #00ff00; color: #00ff00; font-family: inherit; font-size: 11px; padding: 3px 5px; outline: none; border-radius: 0; text-align: center; color-scheme: dark; }
+    #galPageInput:focus { background: #001100; }
+    .galPageRange { color: #00cc00; white-space: nowrap; }
+    .galPerPage { display: flex; align-items: center; gap: 5px; color: #00cc00; white-space: nowrap; }
+    .galPerPage select { background: #000; border: 1px solid #00ff00; color: #00ff00; font-family: inherit; font-size: 11px; padding: 3px 6px; outline: none; border-radius: 0; color-scheme: dark; cursor: pointer; }
+    .galPerPage select option { background: #000; color: #00ff00; }
+    .galEmpty { grid-column: 1 / -1; color: #008800; text-transform: uppercase; font-size: 12px; line-height: 1.8; padding: 18px 14px; border: 1px dashed #003300; }
+    .galTile { margin: 0; display: flex; flex-direction: column; min-width: 0; }
+    .galThumb { position: relative; border: 1px solid #003300; background: #000; aspect-ratio: 1 / 1; overflow: hidden; cursor: zoom-in; }
+    .galTile:hover .galThumb { border-color: #00ff00; }
+    .galTile.sel .galThumb { border-color: #00ff00; box-shadow: inset 0 0 0 1px #00ff00; }
+    .galThumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .galBadge { position: absolute; left: 0; top: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: rgba(0, 0, 0, 0.82); border-right: 1px solid #003300; border-bottom: 1px solid #003300; color: #00ff00; font-size: 9px; letter-spacing: 0.5px; padding: 2px 5px; text-transform: uppercase; }
+    .galBadge.sent { color: #00aa00; }
+    .galBadge.clip { color: #ffcc00; border-color: #554400; }
+    .galBadge.upscaled { color: #55ccff; border-color: #004455; }
+    .galBadge.vox { color: #ff88cc; border-color: #552233; }
+    .galStamp { position: absolute; left: 0; right: 0; bottom: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: rgba(0, 0, 0, 0.82); border-top: 1px solid #003300; color: #008800; font-size: 9px; letter-spacing: 0.4px; padding: 2px 5px; }
+    .galEye { position: absolute; right: 0; top: 0; background: rgba(0, 20, 0, 0.85); border-left: 1px solid #003300; border-bottom: 1px solid #003300; color: #00ff00; font-size: 9px; letter-spacing: 0.4px; padding: 2px 5px; text-transform: uppercase; }
+    .galPlay { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: #00ff00; font-size: 28px; line-height: 1; text-shadow: 0 0 10px #000, 0 0 4px #000; pointer-events: none; }
+    .galActs { position: absolute; right: 4px; bottom: 20px; display: flex; flex-wrap: wrap; justify-content: flex-end; max-width: calc(100% - 8px); gap: 3px; opacity: 0; transition: opacity 0.12s ease; }
+    .galTile:hover .galActs, .galTile:focus-within .galActs { opacity: 1; }
+    .galActs button { padding: 1px 6px; font-size: 12px; line-height: 1.45; background: rgba(0, 0, 0, 0.85); }
+    .galActs button.gVoice { color: #ff88cc; }
+    .galActs button.armed, .galActs button.armed:hover { background: #ff5555; border-color: #ff5555; color: #000; }
+    .galCap { padding: 5px 2px 0; font-size: 10px; color: #00aa00; line-height: 1.5; overflow-wrap: anywhere; cursor: zoom-in; }
+    .galCapTxt { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .galChipRow { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 3px; }
+    .galChipRow .galTagList { margin-top: 0; }
+    .galTagList { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 3px; }    .galTagMini { padding: 0 4px; font-size: 9px; line-height: 1.6; letter-spacing: 0.2px; color: #00cc00; background: #001a00; border: 1px solid #004400; border-radius: 0; font-family: inherit; cursor: pointer; }
+    .galTagMini:hover { background: #00ff00; color: #000; border-color: #00ff00; }
+    .galTagMore { font-size: 9px; line-height: 1.6; color: #006600; }
+    .galTagRow { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; margin-top: 7px; max-height: 56px; overflow-y: auto; scrollbar-width: thin; }
+    .galTagRow[hidden] { display: none !important; }
+    .galTagLabel { font-size: 10px; color: #008800; letter-spacing: 1px; }
+    .galTagChip { padding: 2px 7px; font-size: 10px; line-height: 1.5; white-space: nowrap; color: #00cc00; background: #001100; border: 1px solid #004400; border-radius: 0; font-family: inherit; cursor: pointer; }
+    .galTagChip:hover { background: #003300; color: #00ff00; }
+    .galTagChip.on, .galTagChip.on:hover { background: #00ff00; color: #000; border-color: #00ff00; }
+    /* THE FOLDERS ROW. A folder is a PATH - /images, /music, /images/portraits - and the vault is
+       organised by them. A chip is one folder and how much is in it; pressing it shows only that
+       folder, and the box at the end makes a new one (a folder can be made while it is empty,
+       which is what /music is for). */
+    .galFolderRow { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; margin-top: 7px; max-height: 56px; overflow-y: auto; scrollbar-width: thin; }
+    .galFolderRow[hidden] { display: none !important; }
+    .galFolderLabel { font-size: 10px; color: #008800; letter-spacing: 1px; }
+    .galFolderChip { padding: 2px 7px; font-size: 10px; line-height: 1.5; white-space: nowrap; color: #00cccc; background: #001111; border: 1px solid #006666; border-radius: 0; font-family: inherit; cursor: pointer; }
+    .galFolderChip:hover { background: #003333; color: #00ffff; }
+    .galFolderChip.on, .galFolderChip.on:hover { background: #00ffff; color: #000; border-color: #00ffff; }
+    .galFolderChip.made { border-style: dashed; }
+    #galFolderNew { flex: 0 1 140px; min-width: 90px; background: #000; border: 1px solid #004444; color: #00ffff; font-family: inherit; font-size: 10px; padding: 2px 6px; outline: none; border-radius: 0; }
+    #galFolderNew:focus { border-color: #00ffff; background: #001111; }
+    #galFolderNew::placeholder { color: #005555; }
+    .galFolderMini { padding: 0 4px; font-size: 9px; line-height: 1.6; letter-spacing: 0.2px; color: #00cccc; background: #001111; border: 1px solid #005555; border-radius: 0; font-family: inherit; cursor: pointer; }
+    .galFolderMini:hover { background: #00ffff; color: #000; border-color: #00ffff; }
+    /* A PIECE OF MUSIC HAS NO PICTURE. Its tile carries the same tile chrome - badge, stamp, acts -
+       with a note where a thumbnail would be, and the player is on the full stage. */
+    .galAudio { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; font-size: 34px; color: #00cc00; background: #000800; }
+    .galAudio.vox { color: #ff88cc; }
+    #lightbox .stage audio { display: block; width: 92%; background: #000; }
+    #lightbox .stage.audio { display: flex; align-items: center; justify-content: center; }
+    /* --- THE PROGRESS BAR: one thin green line, and what the machinery is doing ------------------
+       src/js/progress.js (window.progress). The rail is the first thing in the LOWER DECK's flow -
+       above the attach strip, the bus, the input and the controls - and it is HIDDEN until a job opens
+       one. Nothing here is pressable: it is a READOUT, so it is as small as it can be while still
+       being legible at arm's length, and its label never wraps (it ellipsises instead - a job's name is
+       worth one line, not two, and a two-line rail would shove the input box down as the count
+       changes). The fill is the terminal's own green; the track is a dark green box; the failure state
+       is the house red (#ff5555), and it only ever appears when a caller calls fail(). An
+       INDETERMINATE job (.pgIndet) is a narrower segment sliding across the track - "working, no
+       count" rather than a made-up fraction - and it is the only animation on the rail, so the fill's
+       own transitions stay cheap. Measured at 390px and at desk width: the rail is full width inside
+       the deck's padding, adds no horizontal overflow, and its height is the same whether the count
+       is present or not. */
+    .progressRail { display: block; padding: 0 0 9px; text-align: left; }
+    .progressRail[hidden] { display: none !important; }
+    .progressRail .pgTop { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; }
+    .progressRail .pgLabel { flex: 1 1 auto; min-width: 0; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #00ff00; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .progressRail .pgPct { flex: 0 0 auto; font-size: 11px; letter-spacing: 1px; color: #00cc00; white-space: nowrap; }
+    .progressRail .pgTrack { position: relative; height: 6px; background: #001100; border: 1px solid #004400; overflow: hidden; box-sizing: border-box; }
+    .progressRail .pgFill { height: 100%; width: 0; background: #00ff00; transition: width 0.13s linear; }
+    .progressRail .pgFill.pgIndet { width: 34%; animation: pgSlide 1.15s linear infinite; }
+    .progressRail .pgFill.pgFail { background: #ff5555; }
+    /* ...and the word FAILED is red too, so the failure reads as one thing whether the eye is on the
+       bar or on the label (the fill goes fully red as well - a job that failed must not look like a
+       job that finished). */
+    .progressRail.pgDone .pgPct { color: #ff5555; }
+    .progressRail .pgPct:empty { display: none; }
+    @keyframes pgSlide { 0% { margin-left: -36%; } 100% { margin-left: 100%; } }
+    @media (prefers-reduced-motion: reduce) {
+      .progressRail .pgFill { transition: none; }
+      .progressRail .pgFill.pgIndet { animation-duration: 2.6s; }
+    }
+    /* --- THE AUDITION BUS: one transport for the whole terminal --------------------------------
+       The strip above the input and the rack on the full stage are TWO VIEWS of ONE transport
+       (audition.js paints every [data-bus-rack] host out of a single state, one <audio> element
+       behind both of them), so the terminal never has two playheads and nothing ever talks over
+       anything. The strip shows itself while a piece is on the bus; the AUDITION button opens it
+       empty, which is also where a dropped audio file lands. */
+    .busStrip { display: block; padding: 0 0 10px; text-align: left; }
+    .busStrip[hidden] { display: none !important; }
+    .busAudioHost { display: none; }
+    .busRack { display: flex; flex-direction: column; gap: 7px; border: 1px solid #00ff00; background: #000800; padding: 7px 9px; }
+    .busRack[hidden] { display: none !important; }
+    .busRack.busOver { background: #003300; border-color: #00ff00; }
+    .busHead { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 11px; }
+    .busName { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #00ff00; }
+    .busState { flex: 0 0 auto; color: #008800; font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; }
+    .busEars { flex: 0 0 auto; font-size: 10px; color: #00cccc; border: 1px solid #005555; padding: 0 4px; letter-spacing: 0.5px; cursor: help; text-transform: uppercase; }
+    .busRow { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+    .busRow button { padding: 2px 8px; font-size: 11px; line-height: 1.5; }
+    .busRow button:disabled { opacity: 0.4; cursor: default; }
+    .busPlay { min-width: 36px; }
+    .busSeek { flex: 1 1 160px; min-width: 90px; }
+    .busTime { flex: 0 0 auto; font-size: 10px; color: #00aa00; letter-spacing: 0.5px; white-space: nowrap; }
+    .busVol { flex: 0 0 70px; width: 70px; }
+    .busAsk, .busLearn, .busClose { white-space: nowrap; }
+    .busLearn { color: #00cccc; border-color: #005555; }
+    .busLine { flex: 0 0 auto; font-size: 10px; color: #006600; white-space: nowrap; }
+    .busClose { margin-left: auto; }
+    input[type=range].busSeek, input[type=range].busVol { -webkit-appearance: none; appearance: none; height: 5px; background: #003300; border: none; outline: none; cursor: pointer; border-radius: 0; }
+    input[type=range].busSeek:disabled { opacity: 0.4; cursor: default; }
+    input[type=range].busSeek::-webkit-slider-thumb, input[type=range].busVol::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 10px; height: 15px; background: #00ff00; border: none; border-radius: 0; }
+    input[type=range].busSeek::-moz-range-thumb, input[type=range].busVol::-moz-range-thumb { width: 10px; height: 15px; background: #00ff00; border: none; border-radius: 0; }
+    /* ...and the same rack standing in the lightbox, where a piece of music opens on the full stage:
+       the stage has no picture to show, so it holds the transport instead. */
+    #lightbox .stage .lbBus { width: 94%; max-width: 760px; }
+    #lightbox .stage .lbBus[hidden] { display: none !important; }
+    #lightbox .stage.audio { flex-direction: column; }
+    /* --- THE STORY LANE: the same transport, dressed for HER VOICE -------------------------------
+       story.js paints #storyStrip with the bus's own class names on purpose - one visual language for
+       "something is playing here", already written above. All that is added is what says whose voice
+       it is: a quieter green than the music's hard #00ff00, so a glance tells you whether the sound in
+       the room is a piece of music she is listening to or a chapter she is telling. It sits between
+       the bus strip and the input, and shows itself only while a story is on the line. */
+    .storyStrip { display: block; padding: 0 0 10px; text-align: left; }
+    .storyStrip[hidden] { display: none !important; }
+    .storyRack { border-color: #00bb55; }
+    .storyRack .busName { color: #00dd66; }
+    .storyRack .busState { color: #00aa55; }
+    .storyRack .busTime { color: #00994d; }
+    .storyRack .busLine { color: #007a3a; }
+    .storyRack input[type=range].busSeek, .storyRack input[type=range].busVol { background: #00331a; }
+    .storyRack input[type=range].busSeek::-webkit-slider-thumb, .storyRack input[type=range].busVol::-webkit-slider-thumb { background: #00dd66; }
+    .galSub { display: block; color: #006600; margin-top: 2px; }
+    .galFoot { flex: 0 0 auto; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 14px 10px; border-top: 1px solid #00ff00; background: rgba(0, 0, 0, 0.98); }
+    .galFoot button { padding: 5px 10px; font-size: 11px; white-space: nowrap; }
+    .galFoot .galSpacer { flex: 1 1 auto; }
+    .galSel { color: #00ff00; font-size: 11px; text-transform: uppercase; }
+    .galHint { flex: 1 1 100%; color: #005500; font-size: 10px; text-transform: uppercase; }
+    /* A finger has no hover: the tile's own buttons (full stage, her eyes, save, delete) are always
+       on - dimmed, but there and tappable - and larger, because they are the only way to reach
+       those actions on a phone. */
+    @media (hover: none), (pointer: coarse) {
+      .galActs { opacity: 1; }
+      .galActs button { padding: 3px 8px; font-size: 13px; }
+      .galFoot button { min-height: 34px; }
+      .galFilters button { min-height: 30px; }
+      /* THE PAGER IS FOR THUMBS TOO: a page turn is a press on a phone far more often than a key. */
+      .galPager button { min-height: 34px; padding: 4px 10px; }
+      #galPageInput { min-height: 34px; width: 58px; }
+      .galPerPage select { min-height: 34px; }
+      /* The docs pager is the same control on the same device, so it gets the same target. */
+      .lorePager button { min-height: 34px; padding: 4px 10px; }
+      .lorePager input, .lorePager select { min-height: 34px; }
+      /* THE DECK TABS ARE A THUMB'S CONTROL TOO: on a phone the deck that hid itself is the one place
+         the input box lives, so the tab that brings it back gets the same target as everything else. */
+      .deckTab { min-height: 34px; padding: 7px 12px; }
+      /* THE ARROWS ARE FOR FINGERS (src/js/images.js lightboxStep): the stage is where a phone
+         actually scrolls through pictures, so the step buttons get the same 34px target as every
+         other control on this device rather than the desk's hairline. */
+      #lightbox .lbNav { gap: 8px; }
+      #lightbox .lbNav button { min-height: 34px; min-width: 44px; padding: 2px 10px; font-size: 19px; }
+      #lightbox .lbCount { min-width: 54px; font-size: 12px; }
+    }
+    @media (max-width: 640px) {
+      .galHead { padding: 8px 10px 6px; }
+      .galGrid { grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 8px; padding: 10px; }
+      .galTools { gap: 6px; margin-top: 6px; }
+      .galTools input[type="search"] { flex: 1 1 150px; }
+      .galFilters { gap: 4px; margin-top: 6px; }
+      .galFilters button { padding: 3px 7px; font-size: 10px; }
+      .galMeta { margin-top: 5px; font-size: 10px; }
+      /* A NARROW SCREEN IS A PHONE, whatever the pointer says (the coarse-pointer block above
+         cannot be relied on: an in-app browser or a desktop window resized to phone width does not
+         honour it, and this is the control a thumb reaches for). Same 34px target, same reason. */
+      #lightbox .lbNav { gap: 8px; }
+      #lightbox .lbNav button { min-height: 34px; min-width: 44px; padding: 2px 10px; font-size: 19px; }
+      #lightbox .lbCount { min-width: 54px; font-size: 12px; }
+      .galFoot { gap: 6px; padding: 6px 10px 8px; }
+      .galHint { display: none; }
+      .galPager { gap: 5px; padding: 5px 10px; font-size: 10px; }
+      /* A NARROW SCREEN IS A PHONE, whatever the pointer says (see the note above): the pager is a
+         thumb's control here, so it gets the same 34px target as everything else on this device. */
+      .galPager button { padding: 4px 9px; font-size: 11px; min-height: 34px; }
+      #galPageInput { min-height: 34px; width: 52px; }
+      .galPerPage select { min-height: 34px; }
+      .galPageRange { font-size: 10px; }
+      .lorePager { gap: 5px; padding: 5px 12px; font-size: 10px; }
+      .lorePager button { padding: 4px 9px; font-size: 11px; min-height: 34px; }
+      .lorePager input { min-height: 34px; width: 52px; }
+      .lorePager select { min-height: 34px; }
+      .lorePager .lorePageRange { font-size: 10px; }
+      .deckTab { min-height: 34px; padding: 7px 12px; }
+      /* THE CHATLOG PANEL on a phone: the same 34px target for its buttons and its file picker, so
+         the row a thumb is aiming at is not a 27px sliver. */
+      #clPanel button, #clPanel #clFile { min-height: 34px; }
+    }
+
+    /* ---- THE RTFM EDITOR (src/js/rtfm-edit.js) ------------------------------------------
+       The manual's own pages are markdown, and this is where one is written without touching the
+       files panel: /rtfm new or /rtfm edit opens it over the terminal. It sits above the gallery
+       (900) and the mini box (950) and under the full stage (1000) - a picture opened on the lightbox
+       is still the thing on top. What it saves goes to kv (lia_settings / rtfm_local), never to src/.
+
+       THE SPLIT: the body on the left, and on the right a preview built from rtfm.markdown() - the
+       same renderer that prints a page in the terminal - so the pane is not an impression of the page,
+       it IS the page. .prev on #rtfmEditor is what shows it; below 820px it starts off, because a
+       phone wants the whole screen for writing and the PREVIEW button is one press. */
+    #rtfmEditor { position: fixed; inset: 0; z-index: 960; background: rgba(0, 0, 0, 0.97); display: flex; flex-direction: column; padding: 16px; box-sizing: border-box; text-align: left; }
+    #rtfmEditor[hidden] { display: none !important; }
+    #rtfmEditor .reBox { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; border: 1px solid #00ff00; background: #000; padding: 10px 12px 12px; box-sizing: border-box; }
+    #rtfmEditor .reHead { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; text-transform: uppercase; }
+    #rtfmEditor .reHead .reTitle { color: #00ff00; overflow-wrap: anywhere; }
+    #rtfmEditor .reHead .reState { color: #008800; font-size: 11px; white-space: nowrap; }
+    #rtfmEditor .reFields { display: flex; flex-wrap: wrap; gap: 7px 12px; margin: 9px 0; }
+    #rtfmEditor .reField { display: flex; align-items: center; gap: 7px; flex: 1 1 170px; min-width: 0; font-size: 10px; color: #008800; text-transform: uppercase; letter-spacing: 1px; }
+    #rtfmEditor .reField.wide { flex: 1 1 100%; }
+    #rtfmEditor input[type="text"] { flex: 1 1 auto; min-width: 0; background: #000; border: 1px solid #004400; color: #00ff00; font-family: inherit; font-size: 12px; padding: 5px 7px; outline: none; border-radius: 0; color-scheme: dark; text-transform: none; letter-spacing: 0; }
+    #rtfmEditor input[type="text"]:focus { border-color: #00ff00; background: #001100; }
+    #rtfmEditor input[type="text"][readonly] { color: #008800; border-style: dashed; cursor: not-allowed; }
+    #rtfmEditor input[type="text"]::placeholder { color: #005500; }
+    #rtfmEditor .reSplit { flex: 1 1 auto; min-height: 0; display: flex; gap: 10px; }
+    #rtfmEditor textarea, #rtfmEditor pre { flex: 1 1 0; min-width: 0; min-height: 0; margin: 0; box-sizing: border-box; background: #000; color: #00ff00; border: 1px solid #004400; font-family: inherit; font-size: 13px; line-height: 1.55; padding: 8px 10px; outline: none; border-radius: 0; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; scrollbar-width: thin; }
+    #rtfmEditor textarea { resize: none; }
+    #rtfmEditor textarea:focus { border-color: #00ff00; background: #001100; }
+    #rtfmEditor pre#rePrev { display: none; color: #00aa00; }
+    #rtfmEditor.prev pre#rePrev { display: block; }
+    #rtfmEditor .reBar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
+    #rtfmEditor .reBar button { padding: 6px 14px; white-space: nowrap; }
+    #rtfmEditor .reBar button[hidden] { display: none !important; }
+    #rtfmEditor .reBar button.on, #rtfmEditor .reBar button.on:hover { background: #00ff00; color: #000; }
+    #rtfmEditor .reHint { flex: 1 1 220px; min-width: 0; font-size: 11px; color: #005500; text-transform: uppercase; }
+    #rtfmEditor .reNote { margin-top: 8px; min-height: 15px; font-size: 11px; color: #00aa00; text-transform: uppercase; overflow-wrap: anywhere; }
+    #rtfmEditor .reNote.bad { color: #ff5555; }
+    /* The two panes scroll a long page, and the browser's own scrollbar is a bright slab down the side
+       of a black terminal - the same 4px green the log wears, over a dark track, on both. */
+    #rtfmEditor textarea::-webkit-scrollbar, #rtfmEditor pre::-webkit-scrollbar { width: 4px; height: 4px; }
+    #rtfmEditor textarea::-webkit-scrollbar-thumb, #rtfmEditor pre::-webkit-scrollbar-thumb { background: #00ff00; }
+    #rtfmEditor textarea::-webkit-scrollbar-track, #rtfmEditor pre::-webkit-scrollbar-track { background: #001100; }
+    @media (max-width: 819px) {
+      /* A NARROW SCREEN IS A PHONE (see the note in the other narrow blocks): the editor takes the
+         whole screen, the fields wrap, the buttons are thumb-sized, and the preview is a press away
+         rather than permanently eating half of the box. */
+      #rtfmEditor { padding: 8px; }
+      #rtfmEditor .reSplit { flex-direction: column; }
+      #rtfmEditor.prev textarea { flex: 0 0 44%; }
+      #rtfmEditor .reBar button { min-height: 34px; padding: 7px 12px; }
+      #rtfmEditor .reHint { display: none; }
+      #rtfmEditor .reHead .reState { white-space: normal; }
+    }
+    /* THE SYNC (src/js/sync.js). A deck panel like the tools', with one job the other panels do not
+       have: it LISTS FILES. A row is the backup's name and what is in it (kind, turns, date, size,
+       device) with PULL on the right for the ones that are chat backups. The list scrolls - a folder
+       of backups is long - and a dragged folder over the panel lights the border and says so. */
+    #syncPanel { max-height: min(78vh, 620px); display: flex; flex-direction: column; overflow: hidden; }
+    #syncPanel .cpHead, #syncPanel .cpRow, #syncPanel .cpActions { flex: 0 0 auto; }
+    #syncPanel .cpHead #syState { color: #00ff00; text-transform: uppercase; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #syncPanel .cpRow button[hidden] { display: none !important; }
+    #syncPanel .syWhere { flex: 0 0 auto; margin-top: 8px; font-size: 11px; line-height: 1.6; color: #008800; text-transform: uppercase; overflow-wrap: anywhere; }
+    #syncPanel .syList { flex: 1 1 auto; min-height: 52px; max-height: 40vh; overflow-y: auto; overflow-x: hidden; margin-top: 8px; border-top: 1px solid #004400; border-bottom: 1px solid #004400; scrollbar-width: thin; }
+    #syncPanel .syList::-webkit-scrollbar { width: 4px; height: 4px; }
+    #syncPanel .syList::-webkit-scrollbar-thumb { background: #00ff00; }
+    #syncPanel .syList::-webkit-scrollbar-track { background: #001100; }
+    #syncPanel .syEmpty { padding: 10px 2px; font-size: 11px; line-height: 1.6; color: #005500; text-transform: uppercase; }
+    #syncPanel .syRow { display: flex; align-items: center; gap: 10px; padding: 6px 2px; border-bottom: 1px solid #003300; }
+    #syncPanel .syRow:last-child { border-bottom: 0; }
+    #syncPanel .syRow.syOther { opacity: 0.62; }
+    #syncPanel .syMain { flex: 1 1 auto; min-width: 0; }
+    #syncPanel .syName { font-size: 12px; color: #00ff00; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #syncPanel .syMeta { font-size: 10px; color: #008800; text-transform: uppercase; margin-top: 2px; overflow-wrap: anywhere; }
+    #syncPanel .syRow .syPull { flex: 0 0 auto; padding: 4px 12px; }
+    #syncPanel .syNote { flex: 0 0 auto; margin-top: 8px; min-height: 15px; max-height: 26vh; overflow-y: auto; font-size: 11px; line-height: 1.55; color: #00aa00; text-transform: uppercase; white-space: pre-wrap; overflow-wrap: anywhere; }
+    #syncPanel .syNote.bad { color: #ff5555; }
+    #syncPanel.syOver { border-color: #ffffff; background: #002200; }
+    @media (max-width: 819px) {
+      /* A NARROW SCREEN IS A PHONE (see the other narrow blocks): thumb-sized buttons, a shorter
+         list, and a row that wraps rather than crushing the name. */
+      #syncPanel .cpRow button { min-height: 34px; padding: 7px 12px; }
+      #syncPanel .syList { max-height: 34vh; }
+      #syncPanel .syRow { flex-wrap: wrap; }
+      #syncPanel .cpHint { display: none; }
+    }
+    /* THE PAIR LAMP IS A BUTTON NOW (it opens THE DEVICE SYNC BOARD - and opens NO socket doing it), so
+       the button chrome comes back off and it still reads as a lamp. The hover is overridden on
+       purpose: the base `button:hover` fills with bright green, which would turn a quiet lamp into a
+       solid block. */
+    button#pairBadge { background: #000; font-family: inherit; cursor: pointer; }
+    button#pairBadge:hover { background: #001100; border-color: #22c722; color: #22c722; }
+    button#pairBadge.here:hover { border-color: #00ff00; color: #00ff00; }
+    button#pairBadge:empty { display: none; }
+
+    /* THE DEVICE SYNC BOARD (src/js/pair.js). It rides .deckPanel's own vocabulary; these are only the
+       parts that are its own - the two boxes (THE CODE, and the FINGERPRINT that has to match), the
+       lists under them, and the STOP button's arm-then-press state. */
+    #pairPanel .ppState { color: #008800; text-transform: uppercase; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #pairPanel .ppState.live { color: #00ff00; }
+    #pairPanel .ppGrid { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 8px; }
+    #pairPanel .ppBox { flex: 1 1 250px; min-width: 0; border: 1px solid #003300; padding: 6px 10px 10px; }
+    #pairPanel .ppCode { font-size: 20px; letter-spacing: .16em; color: #00ff00; margin: 4px 0 2px; overflow-wrap: anywhere; }
+    #pairPanel .ppCode:empty::before { content: "NONE YET \00b7 MAKE A CODE"; font-size: 11px; letter-spacing: .04em; color: #005500; }
+    #pairPanel .ppFinger { font-size: 18px; letter-spacing: .14em; color: #00ff00; margin: 4px 0 2px; overflow-wrap: anywhere; }
+    #pairPanel .ppFinger:empty::before { content: "NO ROOM YET \00b7 IT APPEARS WITH A CODE"; font-size: 11px; letter-spacing: .04em; color: #005500; }
+    #pairPanel .ppWho, #pairPanel .ppMe, #pairPanel .ppLast { font-size: 11px; line-height: 1.6; color: #00aa00; text-transform: uppercase; min-height: 14px; overflow-wrap: anywhere; white-space: pre-wrap; }
+    #pairPanel #ppJoinInput { text-transform: uppercase; letter-spacing: .1em; }
+    #pairPanel #ppJoinInput::placeholder { text-transform: none; letter-spacing: 0; }
+    #pairPanel #ppStop.arm { border-color: #ff5555; color: #ff5555; }
+    #pairPanel #ppStop.arm:hover { background: #ff5555; color: #000; }
+    #pairPanel .ppQrBox { margin-top: 8px; }
+    #pairPanel #ppQr { display: block; background: #fff; padding: 10px; border: 1px solid #00ff00; max-width: 100%; height: auto; image-rendering: pixelated; }
+    #pairPanel .ppQrNote { font-size: 10px; line-height: 1.6; color: #008800; text-transform: uppercase; margin-top: 4px; overflow-wrap: anywhere; }
+    #pairPanel .ppScanBox { border: 1px solid #00ff00; padding: 6px 10px 10px; margin-top: 8px; }
+    #pairPanel #ppVideo { display: block; width: 100%; max-height: 46vh; background: #000; }
+    #pairPanel #ppVideo:empty, #pairPanel #ppVideo:not([srcObject]) { min-height: 120px; }
+    #pairPanel .ppScanState { font-size: 11px; line-height: 1.6; color: #00aa00; text-transform: uppercase; min-height: 14px; margin: 4px 0; overflow-wrap: anywhere; white-space: pre-wrap; }
+    #pairPanel .ppFileBtn { display: inline-block; padding: 3px 10px; border: 1px solid #00ff00; color: #00ff00; background: #000; cursor: pointer; font-size: 12px; text-transform: uppercase; }
+    #pairPanel .ppFileBtn:hover { background: #00ff00; color: #000; }
+
+    /* THE VOX PANEL (src/js/vox.js) - the button's lamp, and the road-by-road list of every voice. */
+    #voxBtn.on { background: #00ff00; color: #000; border-color: #00ff00; }
+    #voxPanel .vxIntro { font-size: 11px; line-height: 1.55; color: #008800; text-transform: uppercase; margin: 8px 0 2px; overflow-wrap: anywhere; }
+    #voxPanel .vxList { max-height: 46vh; overflow-y: auto; overflow-x: hidden; scrollbar-width: thin; border-top: 1px solid #004400; margin-top: 6px; }
+    #voxPanel .vxList::-webkit-scrollbar { width: 4px; }
+    #voxPanel .vxList::-webkit-scrollbar-thumb { background: #00ff00; }
+    #voxPanel .vxList::-webkit-scrollbar-track { background: #001100; }
+    #voxPanel .vxRoad { border-bottom: 1px solid #003300; padding: 6px 0 8px; }
+    #voxPanel .vxRoad:last-child { border-bottom: 0; }
+    #voxPanel .vxRoadHead { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; font-size: 10px; text-transform: uppercase; color: #005500; }
+    #voxPanel .vxRoadHead b { color: #00ff00; font-weight: normal; letter-spacing: .08em; }
+    #voxPanel .vxEmpty { font-size: 11px; color: #005500; text-transform: uppercase; padding: 4px 0; }
+    #voxPanel .vxRow { display: flex; align-items: center; gap: 8px; padding: 3px 0; border-bottom: 1px dotted #002200; }
+    #voxPanel .vxRow:last-child { border-bottom: 0; }
+    #voxPanel .vxRow.current { background: #001100; }
+    #voxPanel .vxPlay { flex: 0 0 auto; padding: 2px 9px; line-height: 18px; }
+    #voxPanel .vxName { flex: 0 1 auto; font-size: 12px; color: #00ff00; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #voxPanel .vxNote { flex: 1 1 auto; min-width: 0; font-size: 10px; color: #008800; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #voxPanel .vxOn { flex: 0 0 auto; font-size: 9px; letter-spacing: .08em; color: #000; background: #00ff00; padding: 1px 5px; }
+    #voxPanel .vxKept { flex: 0 0 auto; font-size: 9px; letter-spacing: .08em; color: #008800; border: 1px solid #005500; padding: 0 4px; }
+    #voxPanel .vxRow.off .vxName { color: #008800; }
+    /* MALE OR FEMALE - the two chips this panel draws itself (src/voice/voices.json -> sex, and the
+       reasoning in src/js/voice.js: sexOf). Only two roads publish a sex at all, so these chips carry
+       the only colour in the panel: pink for female, blue for male, and NO CHIP where nothing has
+       sexed the voice - a missing chip means "not known", never "forgotten". */
+    #voxPanel .vxSex { flex: 0 0 auto; font-size: 9px; letter-spacing: .1em; padding: 1px 5px; background: #000; border: 1px solid #005500; color: #00aa00; }
+    #voxPanel .vxSex.f { border-color: #ff88cc; color: #ff88cc; }
+    #voxPanel .vxSex.m { border-color: #7fb2ff; color: #7fb2ff; }
+    #voxPanel .vxRow button.vxKeep, #voxPanel .vxRow button.vxClip { flex: 0 0 auto; padding: 3px 9px; font-size: 11px; }
+    #voxPanel .vxRow button.vxClip { color: #ff88cc; border-color: #552233; }
+    #voxPanel .vxRow button.vxClip:hover { background: #ff88cc; color: #000; }
+    @media (max-width: 819px) {
+      /* A NARROW SCREEN: the list keeps less room, a row wraps rather than crushing the name, and the
+         note drops to its own line where it can be read. */
+      #voxPanel .vxList { max-height: 38vh; }
+      #voxPanel .vxRow { flex-wrap: wrap; }
+      #voxPanel .vxNote { flex: 1 1 100%; }
+      #pairPanel .ppGrid { display: block; }
+      #pairPanel .ppBox { margin-bottom: 10px; }
+    }
+
+#voxFactory { position: fixed; inset: 0; z-index: 940; background: rgba(0,0,0,.92); display: flex; align-items: center; justify-content: center; padding: 18px; box-sizing: border-box; overflow-y: auto; }
+#voxFactory[hidden] { display: none !important; }
+.vfCard { background: #000; border: 1px solid #00ff00; width: min(94vw, 560px); max-height: 92vh; overflow-y: auto; padding: 12px 14px; box-sizing: border-box; text-align: left; }
+.vfBtns button { margin: 2px 6px 2px 0; }
+#voxFactory input[type="text"], #voxFactory input[type="number"] { background: #000; border: 1px solid #00ff00; color: #00ff00; font-family: inherit; font-size: 12px; padding: 5px 8px; outline: none; box-sizing: border-box; border-radius: 0; color-scheme: dark; }
+#voxFactory .cpRow input[type="text"] { flex: 1 1 150px; }
+#voxFactory input[type="number"] { width: 110px; flex: 0 0 auto; }
+
+.vfCard .cpHead { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; text-transform: uppercase; margin-bottom: 6px; }
+.vfCard .cpHead > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+.vfCard .cpHead #vfState { color: #008800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; flex: 0 1 auto; min-width: 0; }
+.vfCard .cpLabel { display: block; font-size: 11px; color: #008800; text-transform: uppercase; margin: 10px 0 4px; letter-spacing: 0.5px; }
+.vfCard .cpRow { display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+.vfCard .cpRow .cpLabel { margin: 0; flex: 0 0 96px; }
+.vfCard .cpActions { display: flex; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap; }
+.vfCard .cpActions button { padding: 5px 12px; white-space: nowrap; }
+.vfCard .cpHint { font-size: 11px; color: #005500; text-transform: uppercase; }
+.vfCard .cpRow > button { padding: 5px 12px; white-space: nowrap; }
+.vfCard button.on { background: #00ff00; color: #000; }
+.vfCard .cpRow .cpHint { flex: 1 1 160px; min-width: 0; }
+@media (max-width: 640px) {
+  .vfCard .cpRow { display: block; }
+  .vfCard .cpRow .cpLabel { margin-bottom: 5px; }
+}

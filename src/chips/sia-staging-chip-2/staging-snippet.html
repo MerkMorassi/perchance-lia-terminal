@@ -1,0 +1,18 @@
+<div id="stagingMount"></div>
+<script>
+  var stager = MythosStaging.client({ el: document.getElementById("stagingMount") });
+  stager.setBackground(sceneFile);
+  stager.cutAddSubject(subjectFile, { x: 0.5, y: 0.97 });
+</script>
+<style>
+  #stagingMount .stagingBar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+  #stagingMount .stagingBar button {
+    background: #000; color: #7aff7a; border: 1px solid #7aff7a;
+    font-family: monospace; padding: 4px 10px; cursor: pointer;
+  }
+  #stagingMount .stagingCanvas {
+    width: 100%; display: block; background: #0a0f0a;
+    border: 1px solid #2f5f2f; touch-action: none; cursor: move;
+  }
+  #stagingMount .stagingNote { font-family: monospace; color: #7aff7a; min-height: 1.2em; margin-top: 4px; }
+</style>

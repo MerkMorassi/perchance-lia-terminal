@@ -1,0 +1,17 @@
+{
+  "pack": "LOREPACK",
+  "version": 1,
+  "note": "The LOREPACK is LIA's memory: her collective experience across every game and every role she has ever played, written down. Shipped documents are the part of that record which is published with the generator - every file listed here is fetched at boot and folded into the same BM25 index the uploaded .txt files use, then tagged PACK LOREPACK in the docs list. A document is re-indexed only when its text changes (content hash), so editing a file here and reloading the page is enough. A document marked \"foundational\": true is CANON: it is never merely retrieved, it is always in her context. NO DOCUMENT IS MARKED FOUNDATIONAL AT PRESENT - canon is deliberately unset (2026-09-17): the stack is ACTOR > ROLE and the universe here is improvised, so the LOREPACK is her lived experience, drawn on and inferred from, rather than a fixed scripture always in front of her. To make a document canon again, add \"foundational\": true to its entry. Anything in this folder is PUBLIC: it ships with the generator and anyone can read it. Personal, private, or user-uploaded memory belongs in the kv store via the LOAD LORE button instead.",
+  "documents": [
+    {
+      "file": "the-absolute.txt",
+      "title": "THE ABSOLUTE",
+      "tags": ["cosmology"]
+    },
+    {
+      "file": "capabilities.md",
+      "title": "THE POWERS AND THE PURSE",
+      "tags": ["capabilities", "budget", "how-it-works", "briefing"]
+    }
+  ]
+}

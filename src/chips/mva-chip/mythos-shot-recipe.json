@@ -1,0 +1,44 @@
+{
+  "pack": "RECIPE BOOK (ferry excerpt)",
+  "version": 1,
+  "negative": "modern city, skyscraper, car, streetlight, concrete, smartphone, computer, screen, monitor, military uniform, firearms, gun, rifle, ancient Greece, Rome, Hellenistic, medieval, castle, knight, armor, chainmail, sword, shield, marble temple, Doric columns, Ionic columns, Corinthian columns, Parthenon, Colosseum, toga, chiton, peplos, marble statue, bronze age, Minoan, Mycenaean, Egyptian, hieroglyphs, pyramid, ziggurat, pagan temple of stone, torchlit hall, thatch, timber frame, wattle and daub, peasant, village, farmland, wheat field, horse and cart, sailboat, oil lamp, parchment, scroll, pastoral daylight, sunny meadow, forest glade, clear blue sky, plastic doll skin, airbrushed, smooth featureless face, extra arms, extra legs, mutated hands, fused fingers, multiple perspectives, split-screen effect, simultaneous viewpoints, duplicated subject from different angles, cubist composition, multi-angle portrait, reflections showing alternate angles, time-lapse sequence, collage of perspectives, compound viewpoints, cartoon, 3d render, cartoonish, anime, childish, immature, flat shading, plastic toy, low-detail face, text overlays, ui elements, hud, subtitles, banner, watermark, signature, artist name, date stamp, frame, border, cropped subject, hands missing fingers, distorted faces, extra limbs, unnatural eye spacing, blurry backgrounds, harsh shadows across face, overexposed sky, cgi, snapshot, flat lighting, blurry, low quality, text, censored, mosaic, url, username, logo, stamp, deformed face, worst quality, normal quality, low res, jpeg artifacts, error, sketch, duplicate, ugly, monochrome, horror, geometry, mutation, disgusting, bad anatomy, bad hands, bad proportions, missing limbs, floating limbs, disconnected limbs, malformed limbs, extra fingers, missing fingers, long fingers, poorly drawn face, bad face, fused face, cloned face, extra eyes, huge eyes, extra digits, cropped, out of frame, cg, 3d, unreal, animate",
+  "recipes": [
+    {
+      "id": "mythos-shot",
+      "title": "THE REVERSE-ENGINEERED SHOT",
+      "note": "Harvested 2026-10-02 from Mythos-Video-Analyzer (his cinematography app): the reverse-engineer lane as a recipe — describe a shot's camera, lens, light and composition the way its analyzer would, and the frame renders to match. The analyzer's ten suggestion prompts (camera movement, lens and settings, scene breakdown, narrative, reverse-engineer, each for still and moving image) are the slot questions.",
+      "tags": [
+        "cinematography",
+        "reverse-engineer",
+        "camera",
+        "lens",
+        "lighting",
+        "sdxl"
+      ],
+      "template": "{{subject}}. Shot: {{shot}}. Lens: {{lens}}. Lighting: {{lighting}}. Style: {{style}}",
+      "negative": "house",
+      "slots": {
+        "subject": {
+          "default": "a beautiful woman in an ornate sheer dress, commanding the frame",
+          "note": "who and what is in the shot"
+        },
+        "shot": {
+          "default": "medium close-up, eye-level, shallow depth of field, rule of thirds",
+          "note": "framing, angle, movement: close-up, tracking shot, push-in, establishing shot"
+        },
+        "lens": {
+          "default": "85mm portrait lens, wide aperture, creamy bokeh",
+          "note": "probable lens, aperture, camera character"
+        },
+        "lighting": {
+          "default": "golden key light with soft fill, warm color grade, cinematic contrast",
+          "note": "key ratios, color temperature, grading palette"
+        },
+        "style": {
+          "default": "photoreal cinematic film still, ultra-detailed skin, 8k, sharp focus",
+          "note": "mood, tone, photographic aesthetic"
+        }
+      }
+    }
+  ]
+}

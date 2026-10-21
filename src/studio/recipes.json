@@ -1,0 +1,166 @@
+{
+  "pack": "RECIPE BOOK",
+  "version": 1,
+  "note": "The recipe book: whole prompt templates, in the house style Patrikios' own documents are written in, with named slots. A recipe is a FRAME plus the words that fill it: the frame comes from his uploaded LOREPACK documents (the Baseline Prompt sheets, the structured interior scene prompt, the SYS.AI.MUSE.SCENE shot, the aphrohermetic close-up), and the slots hold his own default wording for each part, so a recipe renders as a complete picture even with nothing changed. A template marks a slot as {{slot}}; a slot may carry its own inline fallback as {{slot|the words to use}}; the defaults for the shipped recipes live under each recipe's `slots` (a plain string = the default, or {default, note} to say what the slot is for). Change the wording of one slot, name a few, or none: whatever is left keeps the house wording. `negative` is \"house\" for the shared negative list at the top of this file, or a recipe's own negative text, or absent for none - it is HIS to use in the forge (it fills their negative box when it is empty) and it is offered to her as a slot value she may set with negative=... AND THE SHARED LIST AT THE TOP OF THIS FILE IS THE DEFAULT FOR A RENDER THAT CARRIES NO NEGATIVE OF ITS OWN (2026-09-30): when nothing else supplies one - not the forge's box, not a NEGATIVE PROMPT section in the document, not a (negativePrompt:::) cut - this list is the one that goes to the image service, so every picture the terminal makes is guarded from the same artifacts. It opens with the list Patrikios gave it in his own words (a later edit) - the modern world (city, car, screen, firearms), classical antiquity and the pastoral cliche (Greece, Rome, marble and Doric, the medieval castle, the thatched village, the sunny meadow), the multi-angle / collage / cubist failures and the duplicated subject, cartoon and anime and 3d, text and watermarks and frames - and then the quality, anatomy and hand terms the list always carried; the order is deliberate, because a service that cuts a long negative keeps the HEAD of it. A recipe never runs through the veiled-tongue glossary untouched: the filled text goes through exactly the same pipeline as a pasted document (sections split, (key:::value) tags routed, glossary translated, {a|b} chosen per image). Everything here is PUBLIC - it ships with the generator. A recipe Patrikios writes in the terminal is kept on his device instead (kv lia_settings / recipe_book) and sits over this file; /recipe reset puts the shipped seed back.",
+  "negative": "modern city, skyscraper, car, streetlight, concrete, smartphone, computer, screen, monitor, military uniform, firearms, gun, rifle, ancient Greece, Rome, Hellenistic, medieval, castle, knight, armor, chainmail, sword, shield, marble temple, Doric columns, Ionic columns, Corinthian columns, Parthenon, Colosseum, toga, chiton, peplos, marble statue, bronze age, Minoan, Mycenaean, Egyptian, hieroglyphs, pyramid, ziggurat, pagan temple of stone, torchlit hall, thatch, timber frame, wattle and daub, peasant, village, farmland, wheat field, horse and cart, sailboat, oil lamp, parchment, scroll, pastoral daylight, sunny meadow, forest glade, clear blue sky, plastic doll skin, airbrushed, smooth featureless face, extra arms, extra legs, mutated hands, fused fingers, multiple perspectives, split-screen effect, simultaneous viewpoints, duplicated subject from different angles, cubist composition, multi-angle portrait, reflections showing alternate angles, time-lapse sequence, collage of perspectives, compound viewpoints, cartoon, 3d render, cartoonish, anime, childish, immature, flat shading, plastic toy, low-detail face, text overlays, ui elements, hud, subtitles, banner, watermark, signature, artist name, date stamp, frame, border, cropped subject, hands missing fingers, distorted faces, extra limbs, unnatural eye spacing, blurry backgrounds, harsh shadows across face, overexposed sky, cgi, snapshot, flat lighting, blurry, low quality, text, censored, mosaic, url, username, logo, stamp, deformed face, worst quality, normal quality, low res, jpeg artifacts, error, sketch, duplicate, ugly, monochrome, horror, geometry, mutation, disgusting, bad anatomy, bad hands, bad proportions, missing limbs, floating limbs, disconnected limbs, malformed limbs, extra fingers, missing fingers, long fingers, poorly drawn face, bad face, fused face, cloned face, extra eyes, huge eyes, extra digits, cropped, out of frame, cg, 3d, unreal, animate",
+  "recipes": [
+    {
+      "id": "baseline",
+      "title": "THE BASELINE GODDESS",
+      "note": "From his Baseline Prompt sheets (001/002): one figure, fully described - body, face, dress, setting, light - closed with the house quality tail. The whole house look in one line, and the best recipe to change one thing in.",
+      "tags": ["portrait", "full body", "goddess", "baseline", "photoreal"],
+      "template": "{{subject}}. Wearing {{attire}}. Setting: {{setting}}. Lighting: {{lighting}}. {{quality}}",
+      "negative": "house",
+      "slots": {
+        "subject": {
+          "default": "A captivating 30-year-old Greek goddess with olive skin glowing under golden sunlight, short tousled brown hair streaked with light blond, brown honey-toned almond-shaped eyes that sparkle with warmth and intelligence, a perfectly symmetrical heart-shaped face, a delicate nose and plump lips, confident and graceful, commanding the viewer's attention",
+          "note": "who she is: age, skin, hair, eyes, face, body, presence"
+        },
+        "attire": {
+          "default": "an ornate sheer purple, gold-accented traditional sleeveless dress, flowing and transparent, complementing her beauty without overpowering it",
+          "note": "what she is wearing - or take it away entirely"
+        },
+        "setting": {
+          "default": "an ancient Greek interior of Minoan columns and faded frescoes, an Atlantean cityscape glimpsed beyond, subtle and elegant",
+          "note": "where she stands: temple, throne room, ruins, upscale interior"
+        },
+        "lighting": {
+          "default": "flattering golden light highlighting her best features and softly illuminating tanned olive skin, an ethereal glow",
+          "note": "the light on her"
+        },
+        "quality": {
+          "default": "Hellenic ruins merging with nebulae, ultra-detailed skin, dewy textures, Artgerm meets Klimt, rich gold and violet tones, sacred sensuality, full body pose, masterpiece, best quality, hyper-detailed, 8k, cinematic, sharp focus, film still, depth of field",
+          "note": "the house tail: style, texture, quality words - this is what makes it look like his pictures"
+        }
+      }
+    },
+    {
+      "id": "scene",
+      "title": "THE INTERIOR SCENE",
+      "note": "From his structured scene sheet (Scence Prompt - INT SMALL THRONE): setting, mood, wardrobe, props, set dressing, action, camera. His own section headers are kept, because they are what makes the picture read as ONE scene rather than as a list of nouns.",
+      "tags": ["scene", "interior", "minoan", "group", "nsfw"],
+      "template": "Movie, Women, {{setting}}.\n\nMood: {{mood}}\n\nWardrobe: {{wardrobe}}\n\nProps: {{props}}\n\nFilm Set Dressing Details: {{dressing}}\n\nAction: {{action}}\n\nCamera & Lighting: {{camera}}",
+      "negative": "house",
+      "slots": {
+        "setting": {
+          "default": "Minoan Civilization, Knossos, Crete, Greece, Late Bronze Age, 1500 BCE",
+          "note": "the place and the time - 'Movie, Women, <here>'"
+        },
+        "mood": {
+          "default": "glamorous, beautiful, noblewomen engaging in extreme debauchery, licentiousness and sensual pleasure, ornate masks hiding their true identities, nude, curvaceous, toned, glistening with sweat, some lounging, some on their hands and knees, others sitting",
+          "note": "how it feels, and how they are wearing the scene"
+        },
+        "wardrobe": {
+          "default": "nothing but ornate masks and jewellery of gold and semi-precious stone",
+          "note": "what is worn - masks, robes, harnesses, nothing at all"
+        },
+        "props": {
+          "default": "sex machines, fucking machines, sex furniture, sex toys, butt plugs, benches, chairs, pillows, cushions, sex swings",
+          "note": "the objects in the room"
+        },
+        "dressing": {
+          "default": "objects made exclusively of natural materials: wood, gold, semi-precious stones, bronze, leather, rope, linen, unrefined glass, clay",
+          "note": "what the set is built from - this is what stops it looking like a modern studio"
+        },
+        "action": {
+          "default": "sexual positions and physical configurations: sex, fucking, anal, bondage, mutual masturbation, kissing, caressing, fondling, sucking nipples, squirting, fellatio, cock sucking, blowjobs, cunnilingus, digital vaginal penetration, analingus, harness dildo fucking, tribadism, clit-to-clit, licking pussy, finger fucking, face sitting, dildo riding, strap-on dildo, dominance and submission, pussy fisting, anal fisting, squatting, double penetration, doggy style, cowgirl, reverse cowgirl",
+          "note": "what is actually happening - keep it to what this one picture can hold"
+        },
+        "camera": {
+          "default": "a hyper-real cinematic vision in 8K HDR, absolute masterpiece, impeccable detail, depth of field, ultra-realism, ultra-high definition, sharp focus, golden ratio composition, 2.39:1 aspect ratio, cinematic colour grading, key visual, film still, shot on Hasselblad X2D 100C medium format, dramatic natural rim light from the entrance behind them and a beauty dish strobe front-and-centre, micro-contrast in the textures, rich earthy palette of terracotta, gold and deep teal, Kodachrome 64 emulation",
+          "note": "how it is shot: camera, lens, light, film stock, colour"
+        }
+      }
+    },
+    {
+      "id": "muse",
+      "title": "THE ONE-LINE MUSE SHOT",
+      "note": "From SYS.AI.MUSE.SCENE - 001: a single cinematic line - shot, subject, setting, light, quality. The quickest recipe to use mid-conversation, because it asks for very little and still comes out in the house look.",
+      "tags": ["cinematic", "one line", "minoan", "shot", "nsfw"],
+      "template": "Cinematic, {{shot}} showing the scene, NSFW, {{subject}}, {{setting}}, {{lighting}}, {{quality}}",
+      "negative": "house",
+      "slots": {
+        "shot": {
+          "default": "long shot",
+          "note": "the framing: long shot, medium shot, close-up, POV, low angle..."
+        },
+        "subject": {
+          "default": "hermaphrodite, trans, futa, breasts exposed, 32 years old, female gender, athletic muscular build, toned olive skin, golden silk robes clinging to her frame, sheer fabric revealing symmetrical 36C breasts with large erect nipples, a pronounced bubble butt with deep back dimples, voluptuous hips, long brown hair streaked with blonde in a tight practical bun, fierce dark brown eyes with a greedy teasing sparkle, sensual charisma, provocative flirtatious energy, Aphrohermetic duality with functional phalluses and vaginas",
+          "note": "who is in the shot and what she looks like"
+        },
+        "setting": {
+          "default": "Minoan era, 1500 BCE, late Bronze Age, high priestesses of the Cult of Fire, sacred fire devotion",
+          "note": "where and when"
+        },
+        "lighting": {
+          "default": "natural soft lighting, photorealistic aesthetic, candid camera realism, sharp cinematic framing, immersive shadows, dominant ambition, raw flirty power radiating wisdom",
+          "note": "the light and the feel of the camera"
+        },
+        "quality": {
+          "default": "4K resolution, 8K detail, key visual film still composition, real photograph, real human, realistic lighting, real picture taken with a camera, professional photography",
+          "note": "the quality tail"
+        }
+      }
+    },
+    {
+      "id": "aphro",
+      "title": "THE APHROHERMETIC CLOSE-UP",
+      "note": "From aphrohermetica-prompt-001: the body itself, with the wording the service answers to - subject, positioning, expression, light, mood - and the negative list that document was written with. The most explicit recipe in the book; change the positioning and the whole picture changes.",
+      "tags": ["explicit", "close-up", "anatomy", "photograph", "nsfw"],
+      "template": "(((photograph)))\n\nSubject: {{subject}}\n\nPositioning: {{positioning}}\n\nFacial Expressions: {{expression}}\n\nLighting and Background: {{lighting}}\n\nMood and Atmosphere: {{mood}}",
+      "negative": "((scrotum, testicles, balls)), (((Close-up shot))), (((zoomed in face shot))), ((Close up image of a face)), ((multiple perspectives, split-screen effect, simultaneous viewpoints, duplicated subject from different angles, cubist composition, multi-angle portrait, reflections showing alternate angles, time-lapse sequence, collage of perspectives, compound viewpoints)), ((cartoon)), ((3d)), poor quality lighting, bright overexposed light, disfigured, deformed, poorly drawn, extra limbs, b&w, blurry, ((watermark)), ((text)), signature, logo, low quality, grainy, pixelated, out of focus, overexposed, underexposed, distorted, jpeg artifacts, duplicate, morbid, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, bad anatomy, bad proportions, cloned face, gross proportions, malformed limbs, missing arms, horns, elf ears",
+      "slots": {
+        "subject": {
+          "default": "a stunning female with both a vulva and an erection, the shaft an extension of the clitoral tissue emerging seamlessly from above the vulva and vertically aligned with the clit, large breasts, erect nipples, dark hair worn up",
+          "note": "the body being photographed"
+        },
+        "positioning": {
+          "default": "lying down with her legs spread apart, a clear view of the genital area, the phallus ejaculating transparent cum, one hand gripping the shaft",
+          "note": "what the body is doing - the pose, in plain words"
+        },
+        "expression": {
+          "default": "her face shows she is in orgasmic bliss",
+          "note": "the face"
+        },
+        "lighting": {
+          "default": "soft natural light highlighting the skin tones and the detail of the genital area, against a pure white sheet that contrasts with the skin and focuses attention on the subject",
+          "note": "the light and the background"
+        },
+        "mood": {
+          "default": "intimate and sensual, emphasising the unique anatomy of the individual, the soft light and the close view creating a sense of vulnerability and openness",
+          "note": "the atmosphere"
+        }
+      }
+    }    ,
+    {
+      "id": "mythos-shot",
+      "title": "THE REVERSE-ENGINEERED SHOT",
+      "note": "Harvested 2026-10-02 from Mythos-Video-Analyzer (his cinematography app): the reverse-engineer lane as a recipe — describe a shot's camera, lens, light and composition the way its analyzer would, and the frame renders to match. The analyzer's ten suggestion prompts (camera movement, lens and settings, scene breakdown, narrative, reverse-engineer, each for still and moving image) are the slot questions.",
+      "tags": ["cinematography", "reverse-engineer", "camera", "lens", "lighting", "sdxl"],
+      "template": "{{subject}}. Shot: {{shot}}. Lens: {{lens}}. Lighting: {{lighting}}. Style: {{style}}",
+      "negative": "house",
+      "slots": {
+        "subject": {
+          "default": "a beautiful woman in an ornate sheer dress, commanding the frame",
+          "note": "who and what is in the shot"
+        },
+        "shot": {
+          "default": "medium close-up, eye-level, shallow depth of field, rule of thirds",
+          "note": "framing, angle, movement: close-up, tracking shot, push-in, establishing shot"
+        },
+        "lens": {
+          "default": "85mm portrait lens, wide aperture, creamy bokeh",
+          "note": "probable lens, aperture, camera character"
+        },
+        "lighting": {
+          "default": "golden key light with soft fill, warm color grade, cinematic contrast",
+          "note": "key ratios, color temperature, grading palette"
+        },
+        "style": {
+          "default": "photoreal cinematic film still, ultra-detailed skin, 8k, sharp focus",
+          "note": "mood, tone, photographic aesthetic"
+        }
+      }
+    }
+  ]
+}

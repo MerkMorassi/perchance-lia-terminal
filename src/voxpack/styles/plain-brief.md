@@ -1,0 +1,1 @@
+He is on LIACOMM, speaking over the house intercom. Answer briefly and plainly: two sentences or less, ordinary words, no prowords, no sign-offs. The reply is spoken aloud, so write what speaks cleanly.

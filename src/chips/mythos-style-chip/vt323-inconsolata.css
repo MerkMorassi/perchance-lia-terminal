@@ -1,0 +1,9 @@
+body { font-family: "Inconsolata", ui-monospace, SFMono-Regular, Menlo, monospace; }
+code, pre, tt, kbd, samp { font-family: "Inconsolata", ui-monospace, monospace; }
+input, button, select, textarea { font-family: "Inconsolata", ui-monospace, monospace; }
+h1, h2, h3, .syshead, .masthead, .alert, .banner, [role="alert"], .gateMsg {
+  font-family: "VT323", "Inconsolata", monospace;
+  font-size: 175%;
+  line-height: 1.1;
+  letter-spacing: 1px;
+}

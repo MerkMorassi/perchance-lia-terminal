@@ -1,0 +1,20 @@
+<div id="mythosUpscaleBox" hidden>
+  <img id="mythosUpscaleImg" alt="upscaled picture">
+  <div>
+    <span id="mythosUpscaleName"></span>
+    <a id="mythosUpscaleDl" download>DOWNLOAD</a>
+    <button id="mythosUpscaleShut" type="button">CLOSE</button>
+  </div>
+</div>
+<script>
+  window.MythosUpscaleBox = function (rec) {
+    var box = document.getElementById("mythosUpscaleBox");
+    var img = document.getElementById("mythosUpscaleImg");
+    var nm = document.getElementById("mythosUpscaleName");
+    var dl = document.getElementById("mythosUpscaleDl");
+    img.src = rec.url; nm.textContent = rec.name;
+    dl.href = rec.url; dl.setAttribute("download", rec.name);
+    box.hidden = false;
+    document.getElementById("mythosUpscaleShut").onclick = function () { box.hidden = true; };
+  };
+</script>

@@ -1,0 +1,12 @@
+body{display:block;height:auto;min-height:100vh;overflow-y:auto}
+#factoryApp{display:flex;flex-direction:column;gap:12px;max-width:880px;margin:0 auto;padding:16px 14px 28px;box-sizing:border-box}
+#factoryApp h1{margin:0;font-size:clamp(18px,4vw,26px);line-height:1.25;overflow-wrap:anywhere}
+#keyRow,#mintRow,#talkRow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+#factoryApp input{flex:1 1 200px;min-width:0;min-height:34px;box-sizing:border-box}
+#factoryApp button{flex:0 0 auto;min-height:34px;white-space:nowrap}
+#gemKeyState{flex:1 1 100%;min-height:1.2em;overflow-wrap:anywhere}
+#mintLog{margin:0;max-width:100%;max-height:38vh;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere}
+#mintLog:empty{display:none}
+#talkOut{max-width:100%;overflow-wrap:anywhere}
+#talkOut:empty{display:none}
+@media (max-width:520px){#factoryApp input{flex-basis:100%}#factoryApp{padding:12px 10px 24px}}

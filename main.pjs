@@ -1,0 +1,1779 @@
+// ---------------------------------------------------------------------------
+// THE SIGN ON THE DOOR (2026-09-30)
+//
+// This generator had NO $meta at all until now, which meant three things worth
+// naming: the listing page and every share card showed an AUTOMATIC SCREENSHOT of
+// whatever the terminal happened to be displaying, the browser tab took its title
+// from the file, and nothing told a visitor what kind of place this is before they
+// opened it. All three are wrong for this one. Patrikios, 2026-09-30: "This site
+// is 18+ NSFW by default."
+//
+// So the title carries the 18+, the description says it in the first four words,
+// the tags say it to the listing's own filter, and the IMAGE is a picture of the
+// door rather than a live screenshot - an auto-screenshot of an adult terminal's
+// log is a public image that nobody chose. The image is a generated CRT screen
+// (uploads.dev; regenerate from the prompt in the chronicle entry if it is ever
+// lost).
+//
+// $meta is the one thing in this file that is not a perchance list: the engine
+// reads it for the listing card, the tab title and the share card. Keep the
+// values on one line each - everything after the `=` is the value, verbatim.
+// ---------------------------------------------------------------------------
+$meta
+  title = SIA TERMINAL (18+)
+  description = 18+ NSFW BY DEFAULT. An adults-only terminal you talk to: LIA, her roles, her moods and her memory, in black and green. Everything made here is creative, allegorical, symbolic and fictional - grown adults writing, playing and imagining together - and there is no content of any kind involving anyone under 18. A simple 18+ confirmation stands at the door.
+  image = https://user.uploads.dev/file/9541fdc98e4a2668d937b11be65e7647.jpg
+  tags = ai chat, roleplay, creative writing, terminal, adults only, 18+, nsfw
+
+// ---------------------------------------------------------------------------
+// THE SHOT LISTS (the idea dimensions)
+//
+// Everything below this line is a LIST, and every list is one dimension of a
+// picture: who is in it, where they are, and - the half a filmmaker cares about
+// - the film language that describes the shot. `src/js/idea.js` draws one item
+// from a dimension at a time and glues the draws into a prompt, which is what
+// makes a whole prompt rollable in passes instead of typed: roll the scene, look
+// at it, roll the camera and the light around it, then re-roll the one dimension
+// that is wrong and leave the rest exactly where they are.
+//
+// The lists are perchance lists rather than JSON on purpose: perchance's own
+// engine is the randomizer. An item may branch (`{blonde|brunette}`), take odds
+// (`^8`), or be computed (`[2+2] legs`), a whole item can carry its own `^`
+// weight, and a multi-line item is glued back into a ", "-separated chain by
+// `joinFragments`. That is the `^`/`{`/`[]` machinery the terminal would have to
+// reinvent in JS, so the lists live here and `src/js/idea.js` reads them off
+// `root`. Add a dimension by adding a list here plus a part in `idea.js`; add a
+// die to the `dice` list below and a button appears for it.
+//
+// The lists, the curation rule (the Minoan Aegean, 1500 BCE, in-period material
+// only) and the dice are ported byte-for-byte from Patrikios' standalone image
+// generator ("Kali Malindra and the Cult of Fire", perchance.org/i8ixqmhq2p),
+// with its comment block kept intact - the deprecated-terms rule and the
+// "every adult, in every combination" rule are the spec, and they are easier to
+// keep if they travel with the lists. That generator is left untouched; the
+// lists are now this terminal's too.
+//
+// The imports stay at the very top, above the banner, because a generator's
+// top-level names are what the engine puts on `root` - keep them apart from the
+// dimensions so a list named `title` or `style` can never be mistaken for one.
+// ---------------------------------------------------------------------------
+
+kv = {import:kv-plugin}
+generateText = {import:ai-text-plugin}
+generateImage = {import:text-to-image-plugin}
+superFetch = {import:super-fetch-plugin}
+background = {import:background-image-plugin}
+// THE PAIR ROAD'S SERVER (src/js/pair.js is its client, and the server itself is the
+// text/x-server-plugin element in index.html). Imported 2026-09-30 for DEVICE SYNC - two of Patrikios'
+// own devices finding each other by a shared code, with no login, no Drive and nothing durable on the
+// server. See THE PAIR in src/README.md and TODO.md 1dp. Nothing else in the terminal imports it, and
+// nothing opens a socket until he asks for one.
+createServerSocket = {import:server-plugin}
+// THE GATE QR ROAD'S RELAY (src/js/gatekeeper.js rendezvous). Short-lived editable text files stand
+// in as the scan-to-approve channel: unguessable name, two-minute life, burned after one use.
+uploadPlugin = {import:upload-plugin}
+
+
+// ---------------------------------------------------------------------------
+// THE WALL (the background image)
+//
+// Patrikios, 2026-09-30, handing over the lists: the background-image-plugin
+// plus a `bgData` list whose size, repeat and filter ROLL, so the wall is a
+// different roll of the same picture on every load. The plugin is one line:
+// it returns a single `<div style="position:fixed; inset:0; z-index:-1000;
+// background-image:url(...)">`, which is exactly why it works here without
+// fighting anything - everything in this terminal (the stage, both decks) is
+// transparent over `body { background:#000 }`, so a wall at z -1000 shows
+// through the whole page and the 18+ door (opaque, z 2000) still hides it.
+//
+// TWO THINGS ABOUT HIS CODE ARE DELIBERATE, AND ONE IS A PLUGIN BUG:
+//
+//  1. THE URL IS NOT THE ONE HE WROTE. He wrote `http://i.imgur.com/...`, and
+//     the plugin's own docs say Imgur is deleting old images now. Worse, an
+//     http:// image on this https page is blocked as MIXED CONTENT - the wall
+//     would have been silently blank, which reads as "the plugin is broken".
+//     So that exact picture was fetched once, byte-for-byte, and re-hosted on
+//     perchance's own upload service; the URL below is now the source of
+//     record. To change the picture: upload the new one, swap the url.
+//  2. `opacity = 0.8` IS STATED IN THE LIST AND PASSED AT THE CALL SITE.
+//     The plugin reads `bgData.opacity` only as a truthiness gate and then
+//     emits `opacity:${opacity||1}` - the FUNCTION ARGUMENT, not the list
+//     field. So `[background(bgData)]` alone renders the wall at opacity 1
+//     and 0.8 does nothing. The list keeps his 0.8 as the statement of what
+//     the wall should be; index.html passes it as the second argument so it
+//     actually takes effect. (Verified in the live DOM, not read and assumed.)
+//
+// AND THE MEASUREMENT WORTH KNOWING BEFORE BLAMING ANYTHING: this picture is a
+// bright high-key one - mean luminance 0.71, with 80% of its pixels above 0.5 -
+// so the invert(0%) roll is a LIGHT wall behind green #00ff00 text (weak
+// contrast), while the invert(100%) roll is dark (mean 0.29, half the frame
+// below 0.2) and reads the way a terminal wants. Both rolls are his; the
+// numbers are here so the bright one is a known trade, not a surprise.
+//
+// THIS PICTURE IS A PLACEHOLDER, AND THE WALL SHIPS OFF. Patrikios, 2026-09-30:
+// "That image is just a placeholder image for the moment. We can have a list
+// pointing to a perchance.org/upload file later. Toggle/Disable for now. But it
+// is an option later is needed." So the call in index.html stays wired and the
+// switch is elsewhere: the `wallOff` class on <body> in index.html plus one CSS
+// rule, driven by src/js/wall.js (`/wall on|off|toggle|forget`, the choice kept
+// in this browser). Off is the shipped state, so the measurement above is what
+// to expect WHEN HE TURNS IT ON, not what is on screen now.
+//
+// WHAT "LATER" LOOKS LIKE, so it is not re-derived: a LIST of URLs, each one a
+// perchance.org/upload file, and `url = imageUrl` - the plugin's own branch for
+// a list (it checks getPropertyNames and selects one item) covers it, so the
+// roll becomes per-load across several pictures with no other change. AND THE
+// TAKEAWAY HE NAMED: perchance.org/upload is the free, permanent home for an
+// asset inside this ecosystem - it is where this picture already lives (the
+// Imgur URL he pasted was only ever a placeholder source), it is why the $meta
+// image is on uploads.dev, and it is the road to prefer for anything the
+// terminal should still have in a year. /wall help says the short version.
+// ---------------------------------------------------------------------------
+
+bgData
+  url = https://user.uploads.dev/file/db8547df143abbb7649cc1e2de30932b.jpeg
+  size = {cover|contain^0.5|auto|{50-500}px^2}
+  repeat = {no-repeat|repeat}
+  position = center
+  opacity = 0.8
+  filter = invert({0|100}%) blur({0^3|10}px) hue-rotate({0-100}deg)
+
+
+// ---------------------------------------------------------------------------
+// The idea lists: the predetermined source of every prompt this generator
+// offers. Each list is one dimension of an image, and the 🎲 buttons draw one
+// item from each, gluing them into a finished prompt (see `PARTS` at the top of
+// src/js/idea.js for the order and the glue, and `dice` below for which button
+// rolls which dimensions).
+//
+//   subject     who              -> the positive prompt
+//   character   a named person   -> the positive prompt (replaces subject/age/physique)
+//   age         how old          -> the positive prompt
+//   physique    body/build       -> the positive prompt
+//   expression  the face         -> the positive prompt
+//   setting     where (location) -> the positive prompt
+//   space       interior/out     -> the positive prompt
+//   props       the rig          -> the positive prompt
+//   act         pose or action   -> the positive prompt (one branch of the two lists)
+//   pose        where the bodies -> the positive prompt (via `act`, or on its own)
+//   timeOfDay   when             -> the positive prompt
+//   weather     the air          -> the positive prompt
+//   cropping    the frame        -> the positive prompt
+//   shot        framing          -> the positive prompt
+//   angle       camera angle     -> the positive prompt
+//   camera      shot on what     -> the positive prompt
+//   capture     the file/format  -> the positive prompt
+//   lens        lens/focal length-> the positive prompt
+//   depthOfField focus           -> the positive prompt
+//   lighting    light            -> the positive prompt
+//   colorGrade  graded how       -> the positive prompt
+//   lut         imitation look   -> the positive prompt
+//   style       rendered how     -> the positive prompt
+//   negativePrompt  what to steer away from -> the *negative* field
+//
+// Because the dimensions are independent, one chip can be re-rolled on its own
+// while the others stay put — that is how a subject, a setting or a camera is
+// kept consistent across a run of images.
+//
+// The lists are the whole idea space: add, delete or reorder items freely, and
+// add a dimension by adding a list here plus an entry in `idea.parts`.
+//
+// CURATION RULE: everything in `subject`, `character`, `setting`, `pose`,
+// `action` and `props` stays inside the Minoan Aegean. **1500 BCE is the
+// standard date** — the `setting`
+// chains hard-code "Late Bronze Age / 1500 BCE" and that is what ships, even
+// though the Minoan period as a whole spans roughly 3500-1100 BCE. Nothing else
+// creeps in: not 3500 BCE, not the classical Greek world. No modern places,
+// clothing, props or roles either: "pharmacy", "back room", "laboratory",
+// "headset", "name tag", "polo shirt", "e-stim" and their relatives are
+// deprecated and must not come back.
+//
+// WHO IS ALLOWED: every adult is, in every combination. `subject`, `pose` and
+// `action` are as explicit as the user wants them to be, and the whole range is
+// permitted — lesbian and gay pairings, bisexual and mixed-gender groupings, and
+// group scenes that mix adults of different ages. "Mixed age" means a group of
+// adults (18+), never a minor: `age` stays 18-and-up and the negative list still
+// excludes children. Nothing here is fenced off as a special case, so write a new
+// item wherever the combination belongs rather than giving it a list of its own.
+//
+// SEX TOYS: a phallus, a dildo, a plug or a harness is in-period *when it is made
+// of in-period material* — turned olive wood, polished horn, carved stone,
+// knotted leather, bone. Same rule as `props`: no plastic, no silicone, no steel
+// or machined metal, no modern look. Write the object a Minoan workshop would
+// actually have made ("a carved olive-wood phallus in a knotted leather
+// harness"), never a modern sex-shop product.
+//
+// The CINEMATIC dimensions — `space`, `timeOfDay`, `weather`, `cropping`,
+// `shot`, `angle`, `camera`, `capture`, `lens`, `depthOfField`, `lighting`,
+// `colorGrade`, `lut` and `style` —
+// are the other half of the tool and ARE deliberately modern: this is film
+// language, not a description of what exists in the scene. Every still is a
+// plate that a motion picture tool animates next, so it is described the way a
+// shot is described on a call sheet: framing, angle, lens, body, focus, light,
+// time, weather and crop. Keep additions to those lists to shot vocabulary (an
+// in-period scene tag belongs in `setting`), and keep modern *scenes* (backrooms,
+// cyberpunk, neon anime) out of all of them.
+//
+// `age`, `physique` and `expression` are the ACTOR dimensions: generic casting
+// and direction vocabulary, independent of the `subject` presets, so age, build
+// or expression can be held or re-rolled while a subject stays recognisable.
+// They describe a performer, not a scene, so they may say modern things only in
+// the sense that a call sheet would ("athletic frame", "eyes closed in bliss");
+// in-period *costume* still belongs in `subject` or `setting`. `age` is
+// adult-only (18 and up) — the negative list already excludes children.
+//
+// `props` is the one exception on the scene side: it is restraint furniture and
+// equipment (timber frame slings, rope harnesses, bronze rings, sheepskin-lined
+// cuffs), so it must stay in-period like `setting` — no modern hardware.
+//
+// `style` is the canonical look for every roll, the way `negativePrompt` is the
+// canonical anti-look: it is the long "hyperreal cinematic master" tail that
+// closes every prompt. It is deliberately a one-item list, so re-rolling it is a
+// no-op until someone adds a second alternative.
+//
+// The dice that roll these dimensions in groups — `d6` for the scene, `d20` for
+// everything else, and as many more as you care to add — are the `dice` list
+// below.
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// One fragment per line
+//
+// Perchance reads `[`, `{` and `^` inside a list item as syntax, so a single
+// long, comma-separated item can use none of it. Split that chain onto its own
+// lines and every fragment becomes its own item, free to branch
+// (`{blonde|brunette}`), take odds (`{blonde|brunette^9}`) or be computed
+// (`[2+2] legs`). `$output = [joinFragments(this)]` glues the lines back into
+// the same ", "-separated chain the prompt expects, and a whole alternative can
+// still carry its own `^` weight. Sibling lines are always included, so a `^`
+// on a fragment line by itself does nothing.
+// ---------------------------------------------------------------------------
+
+joinFragments(node) =>
+  let parts = [node.getName, node.joinItems(", ")].filter(Boolean);
+  return parts.join(", ");
+
+// ---------------------------------------------------------------------------
+// The dice
+//
+// The 🎲 buttons. A die rolls a *group* of the dimensions below, so a scene can
+// be built in passes instead of in one go: roll the small die for the bones of
+// the shot, look at it, then roll the big die for the film language around it —
+// and press either one again to re-roll just that half. A die only touches its
+// own dimensions; whatever the other dice put there stays exactly as it is, so
+// `d6` then `d20` reads as one prompt built in two steps.
+//
+// The die's name is its button, and its children are the dimensions it rolls:
+//
+//   d6    the scene — who is in it and where they are, in six dimensions
+//   d20   everything the other dice did not claim
+//
+// A die with **no children** is a catch-all: it takes whatever no other die has
+// claimed, and a die that names its dimensions always wins over it, whatever the
+// order they are written in. That is what makes a third die free — uncomment
+// `d4` below, or add a `d100`, and `d20` shrinks to fit without a line being
+// edited anywhere else. The number is the die's name, not a promise: hover a die
+// button to see the count and the dimensions it actually rolls.
+//
+// `🎲 idea` rolls every dimension at once, `🎬 scene` does the same while keeping
+// the character, and a chip's ↻ re-rolls the one dimension it names.
+// ---------------------------------------------------------------------------
+
+dice
+  d6
+    subject
+    character
+    setting
+    space
+    props
+    act
+  d20
+
+// More dice are just more lines. This one makes the light its own button, and
+// `d20` gives up those four dimensions automatically, because a catch-all only
+// ever takes what is left:
+//
+//   d4
+//     lighting
+//     colorGrade
+//     lut
+//     style
+
+// ---------------------------------------------------------------------------
+// The naming glossary: English -> myth register
+//
+// The MYTH line (the name read out of a finished picture — src/myth.js) is asked
+// to speak this language. Each line is one English term and the words this cycle
+// reaches for instead, so the tool holds a *translation* rather than a bag of
+// archaic nouns:
+//
+//   sex: the rites, the sacred union
+//
+// which is what lets a still be named "Two Fire-Walkers Drink Deep at The Font of
+// Nectar" instead of "two women having sex". Add lines freely — the list is the
+// whole glossary, and a term with no line yet is simply an English word the
+// namer has to invent around. A line may also carry words with no English term
+// in front of it (`the labyrinth`), which is just a word to reach for.
+//
+// Keep the left-hand terms plain and unglamorous: they are the *lookup* keys.
+
+mythGlossary
+  fire: the sacred flame, ember, ash, the hearth, the bull-fire
+  hearth: the mother of the house, the feeding stone
+  light: the god's glance, the gold hour
+  water: the spring, the sea, the salt, the god's tears
+  garden: the god's plot, the tended green, the orchard of the sanctuary
+  garden work: watering, tending, the long green labour
+  bull: the horned god, the bull, the labyrinth's keeper
+  labyrinth: the winding house, the coiled path
+  priest-king: the masked one, the bull-king, the horned crown
+  priestess: the fire-tender, the veiled one, the god's mouth
+  sex: the rites, the sacred union, the coupling, the god's work
+  oral sex: drinking, tasting, taking the god into the mouth, drinking deep
+  penetration: the horn entering the vessel, the god filling his vessel
+  ejaculation: the outpouring, the god's gift released, the flood
+  semen: seed, nectar, honey, the god's gift
+  breasts: the amphora, the honey jars, the twin vessels
+  nipples: the stops of the honey jars, the buds
+  vulva: the fig, the shell, the sacred gate, the font
+  buttocks: the twin hills, the harvest mounds, the full moon
+  hips: the wide valley, the threshing floor
+  thighs: the gateposts, the pillars at the threshold
+  mouth: the font of nectar, the speaking gate
+  tongue: the flame that tastes
+  fingers: the fire-tenders' fingers, the five waxing lights
+  hands: the hands that tend the flame
+  hair: the dark harvest, the rope of night
+  skin: the pelt, the oiled hide, the sun's work
+  freckles: the god's scattered seed, the speckled gift
+  tan: the sun's mark, the harvest colour
+  sweat: the labour's dew, the salt of the rite
+  oil: the anointing, the gleaming gift of the olive
+  nudity: bare as the harvest, stripped for the rite
+  restrained: bound for the god, roped to the pillar
+  rope: the god's cord, the binding
+  wood: the timber, the frame, the press
+  blood: the red offering, the life-gift
+  wine: the dark blood of the vine, the pressed grape
+  honey: the god's sweetness, the golden gift
+  moon: the night's eye, the silver witness
+  dawn: the first light, the god's waking
+  night: the dark house, the unlit hour
+  orgasm: the breaking wave, the fire taken up
+  the sacred flame
+  the double axe
+  the vine, the press
+
+// ---------------------------------------------------------------------------
+
+subject
+  Stunning adult woman
+    nude
+    large breasts
+    loose bun
+    damp glistening hair
+    flushed skin
+    $output = [joinFragments(this)]
+  stunning Minoan woman
+    athletic frame
+    toned muscles rippling beneath sweat-sheened olive skin
+    voluptuous curves
+    thick silhouette
+    light brown eyes
+    practical hair bun
+    symmetrical breasts with huge erect nipples
+    pronounced buttocks
+    smooth vulva
+    $output = [joinFragments(this)]
+  Stunning nude middle-aged female
+    dark hair up
+    brown eyes
+    submissive facial expression
+    $output = [joinFragments(this)]
+  Minoan High Priestess muse goddess
+    5'7 muscular frame
+    toned olive skin
+    golden linen wrap
+    long brown curls with blonde highlights
+    practical bun
+    dark brown eyes
+    32 years old
+    $output = [joinFragments(this)]
+  Two nude Minoan women
+    tanned skin
+    flawless complexions
+    $output = [joinFragments(this)]
+  Two adult females
+    Mediterranean and Levantine mixed heritage
+    loose bun
+    honey-colored eyes
+    upturned nose
+    plump buttocks
+    $output = [joinFragments(this)]
+  Minoan temple attendant
+    young adult female
+    dark hair in a coiled braid
+    bronze fibula brooch at the shoulder
+    beaded carnelian necklace
+    wrapped linen skirt
+    bare feet on plaster
+    $output = [joinFragments(this)]
+  Minoan woman
+    32 year old
+    muscular
+    huge ass
+    callipygian
+    arching back
+    $output = [joinFragments(this)]
+  Stunning nude Minoan man
+    broad-shouldered frame
+    oiled bronze skin
+    bare chest and hard stomach
+    thick erect circumcised penis
+    $output = [joinFragments(this)]
+  Two nude Minoan men
+    lean athletic frames
+    oiled skin, close-shaven
+    both hard
+    $output = [joinFragments(this)]
+  Three nude Minoan men
+    a knot of hard bodies
+    hands and mouths busy on each other
+    $output = [joinFragments(this)]
+  A mixed group of nude Minoan men and women
+    three women and two men
+    oiled skin and loose hair
+    not a stitch between them
+    $output = [joinFragments(this)]
+  A mixed-age group of nude Minoan worshippers
+    a woman in her forties, two in their twenties, a man of fifty
+    all uncovered and all willing
+    $output = [joinFragments(this)]
+  An older Minoan man and a young adult woman
+    a grey-flecked man of fifty
+    a flushed woman of nineteen
+    $output = [joinFragments(this)]
+
+// --- the cast: named characters with a fixed sheet ---------------------------
+// A character sheet is one block of text — the **name first**, then the canonical
+// description that must not drift between stills: age, build, skin, hair, eyes,
+// marks, wardrobe. The name is the token that keeps the model pointed at the
+// same person, and the sheet is what keeps her the same person.
+//
+// `character` stands in for `subject`, `age`, `physique` and `skin` (see
+// `replaces` in src/config.js): while a character is set, those dimensions are
+// left out of the prompt entirely, and `expression` stays free so the face can
+// change shot to shot. Remove the character chip and the generic actor
+// dimensions are rolled again.
+//
+// More characters can be loaded at runtime from a sheet URL (the "Character
+// sheet URL" control) without touching this file: JSON, or one plain
+// `Name: description, description` line per character. A loaded character with
+// the same name overrides the one here.
+character
+  Kali Malindra
+    24 year old Minoan woman
+    the fire-cult's chosen
+    5'7 athletic frame
+    toned olive skin
+    amber eyes
+    long dark curls pinned with a bronze hairpin
+    narrow waist and full hips
+    a small burn scar on her left palm
+    barefoot
+    $output = [joinFragments(this)]
+  Ione the Fire-Tender
+    29 year old Minoan woman
+    priestess of the fire cult
+    soft full figure
+    deep olive skin
+    black hair in a coiled braid
+    soot-stained fingertips
+    sleeveless linen shift
+    barefoot
+    $output = [joinFragments(this)]
+  Pasiphae the High Priestess
+    36 year old Minoan woman
+    mistress of the sanctuary
+    tall imperious frame
+    dark brown skin
+    heavy-lidded black eyes
+    hair in a tall coiled headdress
+    gold rings on every finger
+    layered linen skirts and a beaded bodice
+    $output = [joinFragments(this)]
+  Ariadne of Knossos
+    19 year old Minoan woman
+    the new initiate
+    5'4 slender frame
+    fair olive skin
+    wide green eyes
+    shaved sides, long hair on top
+    a thin gold band around the upper arm
+    plain white linen wrap
+    $output = [joinFragments(this)]
+  Melanthos the Fire Priest
+    41 year old Minoan man
+    keeper of the sacred flame
+    broad-shouldered frame
+    weathered bronze skin
+    close-cropped grey-flecked hair
+    a bull-leaper's scar across the ribs
+    bronze razor at his belt
+    $output = [joinFragments(this)]
+  Merkos the Guardian of the Garden
+    34 year old man
+    Celtic, a northerner off the amber road
+    noble-born, tall and handsome
+    broad-shouldered frame
+    flawless, poreless skin
+    dark hair to the shoulders, braided back for the rite
+    grey-green eyes and a clean-shaven jaw
+    a bronze torc at the throat
+    keeper of the sanctuary's garden
+    $output = [joinFragments(this)]
+  The Two Fire-Tenders
+    Kali Malindra and Ione the Fire-Tender
+    both in matching linen wraps
+    soot on their hands and knees
+    $output = [joinFragments(this)]
+
+// --- the actor half: who the performer is, independent of `subject` ----------
+// Generic casting and direction vocabulary. These three compose with any
+// subject, which is how a subject stays recognisable across a run while the age,
+// the build or the face is re-rolled on its own.
+//
+// `age` is 18-and-up, and it is one age for one performer. A group of mixed ages
+// is written into the group items in `subject` (and the odd group `pose`) rather
+// than here — "a woman in her forties, two in their twenties, a man of fifty" —
+// so the adult floor stays true on every line.
+
+age
+  young adult, 18 to 21
+  early twenties
+  25 years old
+  late twenties
+  32 years old
+    in her prime
+    $output = [joinFragments(this)]
+  mid-thirties
+    early maturity
+    $output = [joinFragments(this)]
+  late thirties
+  early forties
+    mature adult woman
+    $output = [joinFragments(this)]
+  mid-forties
+    confident mature woman
+    $output = [joinFragments(this)]
+  late forties
+    woman in her late forties
+    $output = [joinFragments(this)]
+  ageless
+    timeless adult beauty
+    $output = [joinFragments(this)]
+
+physique
+  athletic frame
+    toned muscles
+    $output = [joinFragments(this)]
+  swimmer's build
+  tall and slender
+    long legs
+    $output = [joinFragments(this)]
+  petite and compact
+    curvy
+    $output = [joinFragments(this)]
+  soft and voluptuous
+    generous curves
+    $output = [joinFragments(this)]
+  thick hourglass figure
+    narrow waist
+    wide hips
+    $output = [joinFragments(this)]
+  muscular and powerful
+    broad shoulders
+    $output = [joinFragments(this)]
+  full bust
+    large heavy breasts
+    $output = [joinFragments(this)]
+  small firm breasts
+    pronounced nipples
+    $output = [joinFragments(this)]
+  smooth vulva
+    neatly trimmed pubic hair
+    $output = [joinFragments(this)]
+  pronounced buttocks
+    round full hips
+    $output = [joinFragments(this)]
+  smooth olive skin
+    sun-tanned
+    $output = [joinFragments(this)]
+  flawless complexion
+    silky skin
+    $output = [joinFragments(this)]
+  high cheekbones
+    strong jawline
+    $output = [joinFragments(this)]
+  full lips
+    straight nose
+    $output = [joinFragments(this)]
+  almond eyes
+    long lashes
+    $output = [joinFragments(this)]
+  long wavy hair
+  coiled dark braids
+  loose hair falling to the waist
+
+// The skin, as its own dimension so it can be held or re-rolled on its own: the
+// one thing about a body that is a *state* rather than a build — how it looks
+// under the light, not what shape it is. "Flawless" is the default (the two
+// `^`-weighted entries first, eight and two, are about two rolls in five),
+// because that is what the rest of the lists are written for; the alternatives
+// are here so a freckled, tanned or ash-dusted body is one click away rather
+// than a hand-edit.
+//
+// `character` stands in for this dimension too (see `replaces` in
+// src/config.js), because a character sheet already fixes its own skin.
+skin
+  flawless, poreless skin^8
+  flawless skin with a faint sheen of oil^2
+  freckled skin
+    freckles across the shoulders and nose
+    $output = [joinFragments(this)]
+  sun-tanned skin
+    pale lines where the linen was
+    $output = [joinFragments(this)]
+  clean, freshly scrubbed skin
+  spotless skin
+    not a speck of soot on her
+    $output = [joinFragments(this)]
+  skin gleaming with olive oil^3
+  sun-browned skin
+    the tan of someone who works outdoors
+    $output = [joinFragments(this)]
+  skin dusted with hearth ash^2
+  skin flushed pink from the fire^2
+  salt-dried skin from the sea
+  young unmarked skin
+
+// The face alone, as direction rather than scene: every item drops into any
+// subject, pose or action. Section labels are for the editor — a rolled prompt
+// is still one flat comma chain.
+expression
+  neutral expression
+  calm and composed
+  soft smile
+  faint smile
+  playful smirk
+  smug satisfaction
+  confident gaze
+  sultry look
+    heavy-lidded eyes
+    $output = [joinFragments(this)]
+  bedroom eyes
+    direct eye contact
+    $output = [joinFragments(this)]
+  seductive pout
+    lips slightly parted
+    $output = [joinFragments(this)]
+  parted lips
+    quickened breath
+    $output = [joinFragments(this)]
+  biting her lower lip
+    flushed cheeks
+    $output = [joinFragments(this)]
+  eyes closed in bliss
+    ecstatic expression
+    $output = [joinFragments(this)]
+  open-mouthed moan
+    ecstatic expression
+    $output = [joinFragments(this)]
+  orgasmic expression
+    mouth open wide
+    eyes rolled back
+    $output = [joinFragments(this)]
+  dazed and dreamy
+    unfocused eyes
+    $output = [joinFragments(this)]
+  trancelike rapture
+    eyes half closed
+    $output = [joinFragments(this)]
+  worshipful awe
+    upturned face
+    $output = [joinFragments(this)]
+  submissive downcast eyes
+    lowered gaze
+    $output = [joinFragments(this)]
+  defiant glare
+    chin raised
+    $output = [joinFragments(this)]
+  fear and apprehension
+    wide eyes
+    $output = [joinFragments(this)]
+  distressed grimace
+    knitted brow
+    $output = [joinFragments(this)]
+  gritted teeth
+    strained expression
+    $output = [joinFragments(this)]
+  tearful eyes
+    wet lashes
+    $output = [joinFragments(this)]
+  gasping
+    open mouth
+    $output = [joinFragments(this)]
+  looking off camera
+    gazing into the distance
+    $output = [joinFragments(this)]
+
+setting
+  Minoan
+    Late Bronze Age
+    1500 BCE
+    Knossos
+    Crete
+    Greece
+    low platform floor mattress
+    $output = [joinFragments(this)]
+  Minoan Civilization
+    Knossos
+    Crete
+    Greece
+    Late Bronze Age
+    1500 BCE
+    covered floor mattress
+    $output = [joinFragments(this)]
+  interior chamber of the palace
+    tiled gypsum floor
+    painted plaster walls
+    a single high window
+    $output = [joinFragments(this)]
+  Minoan palace megaron
+    frescoed walls
+    gypsum slab floor
+    cypress columns
+    central hearth
+    $output = [joinFragments(this)]
+  Lustral basin
+    sunken plastered chamber
+    dolphin fresco
+    shallow oil-scented water
+    clay oil lamps
+    $output = [joinFragments(this)]
+  Storeroom of pithoi
+    rows of tall clay jars
+    dim lamplight
+    cool still air
+    $output = [joinFragments(this)]
+  Terraced olive grove
+    silver-green leaves
+    dry stone wall
+    cicadas
+    $output = [joinFragments(this)]
+  Rocky Aegean cove
+    turquoise water
+    wet sand
+    driftwood
+    $output = [joinFragments(this)]
+  Wine press courtyard
+    pithoi against a painted wall
+    trellised vines
+    trampled grapes
+    $output = [joinFragments(this)]
+
+action
+  positions herself on top of a nude man with his huge cock pressed and sliding between her squeezed well-lubricated cleavage titty fucking and ejaculating
+  nude man puts his glistening cock in her mouth
+    giving a blowjob drooling and dripping saliva
+    cumming in her mouth
+    $output = [joinFragments(this)]
+  bi-sexual engagement
+    aphrohermetic phallic penetration without pregnancy
+    $output = [joinFragments(this)]
+  two nude females spread wide
+    masturbating and coming together
+    $output = [joinFragments(this)]
+  POV shot between first woman's open thighs lying on back
+    second woman lying on stomach deep in pussy licking clit slick with saliva and pussy juice
+    $output = [joinFragments(this)]
+  kneeling on the low platform mattress sucking cock and licking balls while man stands with erect circumcised penis
+  bending forward
+    woven skirt lifted
+    pussy and huge puckered asshole exposed
+    $output = [joinFragments(this)]
+  masturbating exposed pussy to orgasm
+    dripping with pussy juice
+    $output = [joinFragments(this)]
+  kneeling giving blowjob fellatio to the priest-king
+    cum erupting in open mouth
+    $output = [joinFragments(this)]
+  straddling a Minoan priest on a stone bench
+    golden linen wrap gathered at the waist
+    $output = [joinFragments(this)]
+  bending all the way forward on elbows and knees bowing deeply
+    reaching behind and spreading ass cheeks to reveal huge gaping asshole
+    $output = [joinFragments(this)]
+  suspended in mid-air above the tiled floor
+    legs held open by braided ropes
+    a man lies on his back beneath and behind her
+    his thick erect penis buried in her anus
+    she grinds and slides her body on his penis as he thrusts from below
+    he cradles her buttocks with his hands and guides her
+    $output = [joinFragments(this)]
+  two nude men together
+    one bent forward with his hips raised
+    the other behind him, cock sliding into his asshole
+    $output = [joinFragments(this)]
+  a man taken from behind
+    on all fours, chest to the floor
+    another man kneeling behind him, driving in
+    $output = [joinFragments(this)]
+  a man on his back taking a man
+    knees drawn up and open
+    the other between his thighs, buried to the root
+    $output = [joinFragments(this)]
+  two men kissing
+    mouths open, tongues meeting
+    cocks pressed together between their bellies
+    $output = [joinFragments(this)]
+  male blowjob
+    a kneeling man taking the other in his mouth
+    hands braced on the other man's thighs
+    $output = [joinFragments(this)]
+  bisexual three
+    a woman between two men
+    one in her mouth, one buried in her
+    $output = [joinFragments(this)]
+  two women and a man
+    the man beneath them while they kiss over him
+    one riding him, one working at her breast
+    $output = [joinFragments(this)]
+  mixed group orgy
+    men and women interlaced on the pallet
+    not a free hand left in the room
+    $output = [joinFragments(this)]
+  double penetration
+    one man below her and one behind
+    both buried in her at once
+    $output = [joinFragments(this)]
+  double penetration with a wood phallus
+    a carved olive-wood phallus in her asshole
+    a live cock in her cunt
+    $output = [joinFragments(this)]
+  phallus and tongue together
+    a polished horn phallus in her while a mouth works her clit
+    her hips lifting clear of the pallet
+    $output = [joinFragments(this)]
+  the harnessed woman takes her partner
+    a carved olive-wood phallus in a knotted leather harness
+    driving it into the other woman from behind, hips snapping
+    $output = [joinFragments(this)]
+  spit roast between a harness and a cock
+    one woman behind with the leather harness strapped on
+    a live cock at her mouth, and no way to turn around
+    $output = [joinFragments(this)]
+  the initiate passed around
+    grey-haired worshippers taking her in turn on the pallet
+    hands and mouths everywhere at once
+    $output = [joinFragments(this)]
+
+// --- poses: the geometry of the act ------------------------------------------
+// One item per position, from the pose keyword set. A pose is *where the bodies
+// are*; `action` is what they are doing there, so the two are rolled
+// independently and can be re-rolled or removed one at a time — a roll gives
+// both, and ✕ on either chip drops the one that does not belong to the shot.
+//
+// The keyword set is written for a modern tool, so the prop-driven entries were
+// translated into the Minoan Aegean rather than copied: panties -> a linen wrap,
+// pole -> a painted cypress pillar, couch -> a low stone bench, dildo -> an
+// oiled olive-wood phallus, spreader bar -> wood, swing -> a rope sling (the
+// `props` list already hangs one). Nothing here may reintroduce modern hardware
+// or clothing, and nothing in this list may name a camera move — that is what
+// the shot lists are for.
+pose
+  standing
+    upright on her feet
+    bodies pressed together
+    $output = [joinFragments(this)]
+  legs spread wide
+    standing with her feet planted apart
+    hips open and presented
+    $output = [joinFragments(this)]
+  missionary position
+    on her back, knees drawn up and spread wide
+    her partner kneeling between her thighs
+    $output = [joinFragments(this)]
+  doggy style
+    on all fours
+    back arched, hips raised high
+    taken from behind
+    $output = [joinFragments(this)]
+  on her back
+    lying flat, legs open
+    arms above her head
+    $output = [joinFragments(this)]
+  cowgirl
+    straddling her partner
+    riding him face to face, hands braced on his chest
+    $output = [joinFragments(this)]
+  kneeling
+    upright on her knees
+    thighs apart, back straight
+    $output = [joinFragments(this)]
+  contorted pose
+    folded into a deep contortion
+    one leg drawn up behind her head
+    $output = [joinFragments(this)]
+  full splits
+    legs opened in a straight line on the floor
+    both thighs flat, hips open
+    $output = [joinFragments(this)]
+  ballet splits
+    balanced on one foot
+    the other leg raised high and held straight up
+    $output = [joinFragments(this)]
+  standing splits
+    standing with her legs opened past a right angle
+    held wide and high by her own hands
+    $output = [joinFragments(this)]
+  bent over
+    bent at the waist
+    hands on her knees, hips presented
+    $output = [joinFragments(this)]
+  begging
+    on her knees with hands clasped
+    face upturned in supplication
+    $output = [joinFragments(this)]
+  being eaten out
+    her partner's face buried between her spread thighs
+    fingers laced in his hair
+    $output = [joinFragments(this)]
+  cuddling
+    curled together
+    limbs tangled, foreheads touching
+    $output = [joinFragments(this)]
+  hetero cuddle
+    a man and a woman curled together
+    his arms wrapped around her from behind
+    $output = [joinFragments(this)]
+  dancing
+    caught mid-step
+    hips swung, arms raised, hair flying
+    $output = [joinFragments(this)]
+  lying down
+    stretched out at ease
+    loose-limbed and relaxed
+    $output = [joinFragments(this)]
+  sleeping
+    asleep
+    eyes closed, breathing slow, limbs sprawled
+    $output = [joinFragments(this)]
+  bathing under poured water
+    standing while water is poured over her from a clay jug
+    wet skin, water running down her body
+    $output = [joinFragments(this)]
+  removing her wrap
+    thumbs hooked in the waist of her linen wrap
+    slipping it down over her hips
+    $output = [joinFragments(this)]
+  dancing against a pillar
+    grinding against a painted cypress pillar
+    hips circling, arms overhead
+    $output = [joinFragments(this)]
+  baring her breasts
+    lifting her wrap to free her breasts
+    breasts exposed to the open air
+    $output = [joinFragments(this)]
+  hands covering her breasts
+    cupping her breasts in both hands
+    nipples showing between her fingers
+    $output = [joinFragments(this)]
+  downblouse view
+    looking down the front of her loose linen shift
+    breasts half-bare above the fabric
+    $output = [joinFragments(this)]
+  bare feet
+    soles and toes in view
+    feet bare on painted plaster
+    $output = [joinFragments(this)]
+  feet close-up
+    her feet filling the frame
+    toes curled, soles turned up
+    $output = [joinFragments(this)]
+  kneeling seen from behind
+    on her knees with her back to the viewer
+    back arched, soles turned up
+    $output = [joinFragments(this)]
+  vulva close-up
+    her spread vulva filling the frame
+    open and glistening
+    $output = [joinFragments(this)]
+  on all fours
+    knees and palms on the floor
+    back dipped low between raised hips
+    $output = [joinFragments(this)]
+  holding her legs back
+    gripping her own thighs behind the knees
+    folded open, ankles by her ears
+    $output = [joinFragments(this)]
+  hips stuck and presented
+    lower half wedged in place
+    rear raised and helplessly offered
+    $output = [joinFragments(this)]
+  humping a folded pillow
+    grinding her hips down against a folded wool pillow
+    clutching it between her thighs
+    $output = [joinFragments(this)]
+  riding a carved phallus
+    mounted on an oiled olive-wood phallus
+    sinking down onto it, thighs braced
+    $output = [joinFragments(this)]
+  sucking a carved phallus
+    lips stretched around the oiled wood
+    eyes up, cheeks hollowed
+    $output = [joinFragments(this)]
+  squirting
+    fluid gushing as she comes
+    thighs shaking, wet spray across the floor
+    $output = [joinFragments(this)]
+  tentacles coiled around her
+    slick tentacles wrapped around her limbs and thighs
+    holding her spread and lifted off the floor
+    $output = [joinFragments(this)]
+  riding a beast-headed phallus
+    a carved beast-headed phallus between her thighs
+    riding it slowly, chest heaving
+    $output = [joinFragments(this)]
+  phallus seen from below
+    the shaft standing up between her spread thighs
+    seen from the floor looking up
+    $output = [joinFragments(this)]
+  head beside the phallus for scale
+    her face level with the shaft
+    the length of it reaching past her chin
+    $output = [joinFragments(this)]
+  face fucked
+    head held steady, throat taking him
+    eyes watering, spit down her chin
+    $output = [joinFragments(this)]
+  blowjob on a stone bench
+    he sits on a low stone bench
+    she kneels between his knees
+    $output = [joinFragments(this)]
+  squatting blowjob
+    squatting flat-footed over him
+    mouth working his cock from below
+    $output = [joinFragments(this)]
+  licking his cock
+    tongue running up the shaft
+    eyes lifted to his face
+    $output = [joinFragments(this)]
+  butt job
+    his cock sliding between her oiled buttocks
+    her back arched, hands braced
+    $output = [joinFragments(this)]
+  nursing handjob
+    she strokes him with one hand
+    he suckles her breast at the same time
+    $output = [joinFragments(this)]
+  POV eating her out
+    the view down her own body as his tongue works her clit
+    her hands knotted in his hair
+    $output = [joinFragments(this)]
+  face sitting
+    she straddles his face
+    weight on his mouth, thighs clamped around his ears
+    $output = [joinFragments(this)]
+  glory hole
+    a cock pushed through a hole in a painted plaster wall
+    she kneels on the far side of it
+    $output = [joinFragments(this)]
+  double blowjob
+    two women sharing one cock
+    tongues meeting along the shaft
+    $output = [joinFragments(this)]
+  reverse cowgirl
+    straddling him facing away
+    riding him with her back turned to him
+    $output = [joinFragments(this)]
+  doggy style from the front
+    on all fours, face and breasts turned to the viewer
+    hips raised behind her
+    $output = [joinFragments(this)]
+  seated straddle
+    she straddles his lap on a stone bench
+    arms around his neck, bodies pressed together
+    $output = [joinFragments(this)]
+  mating press
+    he pins her knees back beside her head
+    driving down into her, weight on her thighs
+    $output = [joinFragments(this)]
+  gangbang
+    several men around her in a ring
+    taking turns, hands holding her in place
+    $output = [joinFragments(this)]
+  spooning sex
+    both lying on their sides
+    his body curved behind her, entering her from behind
+    $output = [joinFragments(this)]
+  two women kissing
+    mouths open, tongues meeting
+    hands in each other's hair
+    $output = [joinFragments(this)]
+  fingering another woman
+    fingers buried in her, thumb circling her clit
+    her head thrown back
+    $output = [joinFragments(this)]
+  lesbian oral
+    her face between the other woman's thighs
+    thighs clamped around her head
+    $output = [joinFragments(this)]
+  sixty-nine
+    heads between each other's thighs
+    upside down, both working at once
+    $output = [joinFragments(this)]
+  scissoring
+    vulvas pressed together
+    legs interlocked, hips grinding
+    $output = [joinFragments(this)]
+  riding a woman's thigh
+    straddling the other woman's leg
+    grinding down against her thigh
+    $output = [joinFragments(this)]
+  lesbian orgy
+    a knot of women
+    hands and mouths everywhere at once
+    $output = [joinFragments(this)]
+  pegging
+    a carved phallus held in a leather harness
+    taking her partner from behind, hips driving
+    $output = [joinFragments(this)]
+  lesbian pegging
+    one woman wearing a carved phallus in a leather harness
+    driving it into the other woman from behind
+    $output = [joinFragments(this)]
+  lesbian sandwich
+    one woman between the other two
+    taken at both ends at once
+    $output = [joinFragments(this)]
+  two men standing over her
+    both upright, a hand gripping her hair
+    she kneels between them, one in her mouth
+    $output = [joinFragments(this)]
+  taken standing between two men
+    both upright behind and before her
+    she is bent forward between them
+    $output = [joinFragments(this)]
+  a woman standing over two
+    she stands over the pair below her
+    watching them work, hands on their heads
+    $output = [joinFragments(this)]
+  two men, one in her mouth
+    she kneels between them
+    both hands busy, mouth full
+    $output = [joinFragments(this)]
+  a cock in each hand
+    two men standing either side of her
+    she strokes them together
+    $output = [joinFragments(this)]
+  threesome doggy style
+    one man behind her, one at her mouth
+    she stays on all fours between them
+    $output = [joinFragments(this)]
+  threesome missionary
+    on her back between two men
+    one inside her while the other waits at her mouth
+    $output = [joinFragments(this)]
+  suspended by ropes
+    hung in the air by braided ropes
+    feet clear of the floor, arms drawn up
+    $output = [joinFragments(this)]
+  suspended and spread
+    hung upside down by the ankles
+    legs spread wide
+    $output = [joinFragments(this)]
+  wooden spreader bar
+    ankles fixed wide on a wooden bar
+    thighs forced open, unable to close
+    $output = [joinFragments(this)]
+  hung in a rope sling
+    her weight carried in a sling of braided rope
+    swaying above the tiled floor
+    $output = [joinFragments(this)]
+  led on a leash
+    a braided leather lead at her throat
+    crawling on hands and knees behind him
+    $output = [joinFragments(this)]
+  gagged
+    a leather gag strapped in her mouth
+    cheeks bulging, breath through her nose
+    $output = [joinFragments(this)]
+  anal plug
+    a carved wooden plug seated in her anus
+    hips shifting around it
+    $output = [joinFragments(this)]
+  cumshot
+    his come across her face and breasts
+    ropes of it on her skin
+    $output = [joinFragments(this)]
+  cumshot from the side
+    seen from the side as he finishes
+    come landing across her tongue and cheek
+    $output = [joinFragments(this)]
+  cumshot in missionary
+    he pulls out at the end
+    coming across her belly and breasts
+    $output = [joinFragments(this)]
+  two men, one behind the other
+    a man on all fours with his hips raised
+    a second man kneeling behind him
+    $output = [joinFragments(this)]
+  a man riding a man
+    straddling the other man's lap face to face
+    riding him, hands braced on his chest
+    $output = [joinFragments(this)]
+  a man on his back with a man between his thighs
+    lying flat with his knees drawn up
+    thighs open and holding
+    $output = [joinFragments(this)]
+  orgy on the pallet
+    a knot of nude worshippers on layered wool blankets
+    limbs and mouths tangled past telling
+    $output = [joinFragments(this)]
+  mixed-age foursome
+    two women in their twenties and two men past forty
+    coupled in a ring on the pallet
+    $output = [joinFragments(this)]
+  gangbang of mixed ages
+    men of every age around her in a ring
+    hands holding her in place, one at each end
+    $output = [joinFragments(this)]
+  riding a horn phallus
+    mounted on a polished horn phallus
+    sinking down onto it, thighs braced
+    $output = [joinFragments(this)]
+  taking the harness
+    bent over while a woman in a leather harness drives a carved phallus into her
+    hands gripping the edge of the pallet
+    $output = [joinFragments(this)]
+  a double-ended phallus between two women
+    a carved phallus inside both of them at once
+    hips pressed together, both working it
+    $output = [joinFragments(this)]
+  two men at either end of a woman
+    she is held between them, upright on her knees
+    one at her mouth, one behind her
+    $output = [joinFragments(this)]
+
+// --- pose or action ----------------------------------------------------------
+// `pose` and `action` answer two halves of one question — where the bodies are,
+// and what they are doing there — and rolling both lets them contradict each
+// other (doggy style fighting a blowjob). Perchance's own alternation settles it
+// without any code: one branch is picked per roll, and the block inside the
+// winning branch is what gets evaluated:
+//
+//   {[root.pose.selectOne.evaluateItem]|[root.action.selectOne.evaluateItem]}
+//
+// Odds work as everywhere else, so `^3` on a branch makes it three times as
+// likely, and a third branch can offer both at once when a shot really wants
+// them:
+//
+//   {[root.pose.selectOne.evaluateItem]|[root.action.selectOne.evaluateItem]|[root.pose.selectOne.evaluateItem], [root.action.selectOne.evaluateItem]}
+//
+// `pose` and `action` stay whole lists underneath: either can be switched on as
+// its own dimension by adding it back to `idea.parts`, for a shot that needs to
+// pin the position and roll the act (or the other way round).
+act
+  {[root.pose.selectOne.evaluateItem]|[root.action.selectOne.evaluateItem]}
+
+// --- the cinematic half: how the shot is framed, lit and captured ------------
+
+space
+  interior
+  room
+  exterior
+  interior looking out
+    through a doorway
+    $output = [joinFragments(this)]
+  exterior looking in
+    framed by a doorway
+    $output = [joinFragments(this)]
+  semi-enclosed
+    a roofed colonnade open at the sides
+    $output = [joinFragments(this)]
+  deep interior
+    no daylight, lit from within
+    $output = [joinFragments(this)]
+
+// Restraint furniture, equipment, and the objects the bodies are worked with.
+// In-period like `setting`: timber, rope, leather, bronze, horn, stone and
+// sheepskin — nothing modern. That includes the phalluses and the harnesses they
+// sit in: carved and turned from olive wood, horn or stone and strapped in
+// knotted leather, never plastic, silicone or steel (see the sex-toy rule at the
+// top of the file).
+props
+  sturdy 4-poster timber frame sling
+    a smooth wooden dowel fixed across the top like a pull-up bar
+    leather ankle cuffs lined with sheepskin
+    braided leather ropes holding the legs open
+    suspended above a tiled floor
+    $output = [joinFragments(this)]
+  braided rope suspension harness
+    sheepskin-lined cuffs at wrists and ankles
+    a rope counterweighted over a cypress beam
+    $output = [joinFragments(this)]
+  low stone bench
+    rope loops set into the floor
+    folded linen pads
+    $output = [joinFragments(this)]
+  bronze ring bolted into painted plaster
+    leather wrist bindings
+    a rope drawn taut to the floor
+    $output = [joinFragments(this)]
+  painted wooden pallet bed
+    layered wool blankets
+    rope lashings at the corners
+    $output = [joinFragments(this)]
+  waist rope tied off to a cypress column
+    wrists bound behind the back
+    $output = [joinFragments(this)]
+  oiled olive-wood phallus
+    a shaft turned on a pole lathe from close-grained olive wood
+    oiled until it gleams, dark with handling
+    $output = [joinFragments(this)]
+  polished horn phallus
+    a shaft carved from a single ox horn
+    oiled and translucent at the tip
+    $output = [joinFragments(this)]
+  carved stone phallus
+    cut from soft veined stone
+    heavy and cool, resting on a folded linen cloth
+    $output = [joinFragments(this)]
+  leather harness with a carved phallus
+    a carved olive-wood phallus fixed through a knotted leather harness
+    bone toggles and a waist strap
+    $output = [joinFragments(this)]
+  string of wooden anal beads
+    turned olive-wood beads graduating in size
+    threaded on a waxed linen cord
+    $output = [joinFragments(this)]
+
+timeOfDay
+  dawn
+    first light
+    $output = [joinFragments(this)]
+  early morning
+  midday
+    sun overhead
+    $output = [joinFragments(this)]
+  afternoon
+  late afternoon
+  golden hour
+  sunset
+  dusk
+  twilight
+  blue hour
+  night
+  moonlit night
+  midnight
+
+weather
+  clear sky
+  cloudless
+  light clouds
+  overcast
+  sea mist
+  fog
+  haze
+  light rain
+  heavy rain
+  storm
+    distant lightning
+    $output = [joinFragments(this)]
+  wind
+    hair and cloth moving
+    $output = [joinFragments(this)]
+  salty sea air
+  dust in the air
+  still warm air
+
+// The frame itself: the black bars and the aspect ratio the still is cropped to.
+cropping
+  black bars
+    cinematic letterbox
+    widescreen
+    2.39:1 aspect ratio
+    $output = [joinFragments(this)]
+  horizontally centered black bars
+    cinematic letterbox
+    2.39:1 aspect ratio
+    $output = [joinFragments(this)]
+  cinematic letterbox
+    widescreen
+    2.39:1 anamorphic aspect ratio
+    $output = [joinFragments(this)]
+  2.39:1 aspect ratio
+    anamorphic widescreen frame
+    $output = [joinFragments(this)]
+  2:1 aspect ratio
+    cinematic crop
+    thin black bars
+    $output = [joinFragments(this)]
+  1.85:1 widescreen
+    thin black bars
+    $output = [joinFragments(this)]
+
+shot
+  extreme close-up
+    filling the frame
+    $output = [joinFragments(this)]
+  close-up
+  medium close-up
+    head and shoulders
+    $output = [joinFragments(this)]
+  medium shot
+    from the waist up
+    $output = [joinFragments(this)]
+  full body shot
+  wide shot
+  extreme wide shot
+  establishing shot
+    the location dwarfs the figures
+    $output = [joinFragments(this)]
+  two-shot
+    both figures in frame
+    $output = [joinFragments(this)]
+  over-the-shoulder shot
+  POV shot
+  insert shot
+    a detail filling the frame
+    $output = [joinFragments(this)]
+
+angle
+  eye-level shot
+    level with the subject
+    $output = [joinFragments(this)]
+  low-angle shot
+    camera below, looking up
+    $output = [joinFragments(this)]
+  high-angle shot
+    camera above, looking down
+    $output = [joinFragments(this)]
+  bird's-eye view
+    directly overhead
+    $output = [joinFragments(this)]
+  worm's-eye view
+    from the ground, looking up
+    $output = [joinFragments(this)]
+  ground-level shot
+    camera resting on the floor
+    $output = [joinFragments(this)]
+  Dutch angle
+    tilted horizon
+    $output = [joinFragments(this)]
+  three-quarter angle
+  profile view
+  front-on view
+  from behind
+  over-the-shoulder angle
+
+camera
+  shot on 35mm film
+  shot on 16mm film
+  shot on 65mm film
+  shot on Super 8 film
+  shot on an Arri Alexa 35
+  shot on a RED V-Raptor
+  shot on a Sony Venice
+  shot on a Hasselblad X2D medium format camera
+  shot on a medium format camera
+  shot on a vintage Bolex
+  shot on a digital cinema camera
+
+// The file the still came out of, as opposed to *how* it was shot (`camera`).
+// "RAW" and "LOG" ask for a flat, ungraded plate; the grade and LUT lists then
+// describe the look built on top. Choosing a flat capture and a strong grade in
+// the same roll pulls both ways — the grade wins in practice, which is the
+// useful direction for a storyboard still (grading proper happens on the clip).
+capture
+  RAW photo
+    unprocessed sensor data
+    $output = [joinFragments(this)]
+  RAW, flat contrast
+    no picture profile applied
+    $output = [joinFragments(this)]
+  14-bit RAW capture
+  DNG digital negative
+  LOG color profile
+    flat and ungraded
+    low contrast
+    $output = [joinFragments(this)]
+  ACES linear
+    ungraded
+    $output = [joinFragments(this)]
+  film negative scan
+    raw scan, no color correction
+    $output = [joinFragments(this)]
+  35mm negative scan
+    visible film grain
+    $output = [joinFragments(this)]
+  65mm large format scan
+    fine grain
+    $output = [joinFragments(this)]
+  Cineon log film scan
+  uncompressed TIFF master
+  ProRes 4444 XQ
+  12-bit HDR master
+    wide dynamic range
+    $output = [joinFragments(this)]
+  8K RAW
+
+lens
+  14mm ultra-wide lens
+  24mm wide-angle lens
+  35mm cinematic prime lens
+  50mm cinematic prime lens
+  85mm cinematic portrait lens
+  135mm telephoto lens
+  200mm telephoto lens
+  macro lens
+  tilt-shift lens
+  anamorphic lens
+    oval bokeh, lens flare
+    $output = [joinFragments(this)]
+  fisheye lens
+  soft-focus portrait lens
+
+// Named `depthOfField`, not `focus`, so the list can't shadow the built-in
+// `window.focus` when top-level names become globals on the page.
+depthOfField
+  shallow depth of field
+    background falling into bokeh
+    $output = [joinFragments(this)]
+  razor-thin depth of field
+    only the eyes in focus
+    $output = [joinFragments(this)]
+  deep focus
+    everything from foreground to horizon sharp
+    $output = [joinFragments(this)]
+  soft focus
+  sharp focus on the subject
+  selective focus
+  bokeh
+  split diopter
+  macro detail
+
+lighting
+  warm raking light
+  low-key lighting
+    deep shadows
+    $output = [joinFragments(this)]
+  high-key lighting
+    soft and even
+    $output = [joinFragments(this)]
+  chiaroscuro
+    a single hard light source
+    $output = [joinFragments(this)]
+  rim light
+    separating the subject from the background
+    $output = [joinFragments(this)]
+  backlit
+    glowing edge
+    $output = [joinFragments(this)]
+  oil-lamp light
+    warm flicker
+    $output = [joinFragments(this)]
+  firelight
+    dancing orange glow
+    $output = [joinFragments(this)]
+  dappled sunlight
+    leaves casting broken shadows
+    $output = [joinFragments(this)]
+  volumetric light
+    shafts of light, dust in the air
+    $output = [joinFragments(this)]
+  moonlight
+    cool blue
+    $output = [joinFragments(this)]
+  overcast light
+    soft and diffuse
+    $output = [joinFragments(this)]
+  harsh midday sun
+    hard shadows
+    $output = [joinFragments(this)]
+  practical light sources in frame
+
+// Color grading profile — the *technique* the still is graded with, named the
+// way a colourist names it (teal-and-orange, bleach bypass, a print emulation).
+// Grading proper happens on the finished clip; these keep the storyboard stills
+// consistent with the grade that is planned.
+colorGrade
+  teal and orange blockbuster grade
+    warm skin against cool shadows
+    $output = [joinFragments(this)]
+  cool desaturated grade
+    muted blue shadows
+    $output = [joinFragments(this)]
+  warm amber grade
+    golden highlights
+    $output = [joinFragments(this)]
+  earthy muted palette
+    ochre and umber
+    $output = [joinFragments(this)]
+  Mediterranean palette
+    turquoise and terracotta
+    $output = [joinFragments(this)]
+  fire-lit grade
+    deep amber and ember orange
+    $output = [joinFragments(this)]
+  bleach bypass
+    silver retained
+    desaturated highlights
+    $output = [joinFragments(this)]
+  Technicolor three-strip
+    saturated primaries
+    $output = [joinFragments(this)]
+  Kodak 2383 print emulation
+    rich blacks
+    film print density
+    $output = [joinFragments(this)]
+  Fuji 3510 print emulation
+    soft greens
+    gentle highlights
+    $output = [joinFragments(this)]
+  ACES filmic tone mapping
+    natural highlight rolloff
+    $output = [joinFragments(this)]
+  high-contrast noir grade
+    crushed blacks
+    $output = [joinFragments(this)]
+  low-contrast flat grade
+    lifted blacks
+    $output = [joinFragments(this)]
+  cross-processed
+    shifted cyan shadows
+    $output = [joinFragments(this)]
+  split-tone grade
+    warm highlights and cool shadows
+    $output = [joinFragments(this)]
+  natural neutral grade
+    true-to-eye color
+    $output = [joinFragments(this)]
+
+// Imitation LUTs — looks that imitate a film stock or a shot film. A look
+// reference, not a scene: the LUT borrows the palette and contrast, nothing
+// else. Curated to period-adjacent epics and to stocks so none of them drags a
+// modern scene in with it.
+lut
+  Apocalypto look LUT
+    desaturated jungle greens
+    raw high-contrast skin
+    $output = [joinFragments(this)]
+  300 look LUT
+    crushed bronze and ochre
+    $output = [joinFragments(this)]
+  Gladiator look LUT
+    dusty gold and cold blue skies
+    $output = [joinFragments(this)]
+  Troy look LUT
+    sun-bleached warm tones
+    $output = [joinFragments(this)]
+  The Northman look LUT
+    overcast grey-violet
+    $output = [joinFragments(this)]
+  Valhalla Rising look LUT
+    muted stone and blood red
+    $output = [joinFragments(this)]
+  The Witch look LUT
+    grey desaturated naturalism
+    $output = [joinFragments(this)]
+  The Green Knight look LUT
+    emerald and gold
+    $output = [joinFragments(this)]
+  Agora look LUT
+    warm desert gold
+    $output = [joinFragments(this)]
+  The Revenant look LUT
+    cold natural light and pale skin
+    $output = [joinFragments(this)]
+  Lawrence of Arabia look LUT
+    burnt orange desert
+    $output = [joinFragments(this)]
+  Dune look LUT
+    bone white and burnt orange
+    $output = [joinFragments(this)]
+  Baraka look LUT
+    rich saturated 65mm color
+    $output = [joinFragments(this)]
+  Samsara look LUT
+    hyper-saturated 65mm color
+    $output = [joinFragments(this)]
+  Kodak Portra 400 film LUT
+    creamy warm skin tones
+    $output = [joinFragments(this)]
+  Cinestill 800T film LUT
+    halated highlights
+    $output = [joinFragments(this)]
+  Fuji Eterna 500T film LUT
+    soft green shadows
+    $output = [joinFragments(this)]
+  Kodak Vision3 250D film LUT
+    clean daylight
+    $output = [joinFragments(this)]
+  Fuji Velvia 50 film LUT
+    punchy saturated color
+    $output = [joinFragments(this)]
+  Agfa Ultra film LUT
+    red-heavy saturation
+    $output = [joinFragments(this)]
+
+style
+  This hyperreal cinematic vision in 8K HDR
+    a world-class masterpiece
+    (((Absolute masterpiece)))
+    (((world-class masterpiece)))
+    impeccable attention to detail
+    (((exquisite detail)))
+    perfect focus
+    intricately detailed
+    finest details
+    depth of field
+    hyper-real ultra-realism
+    ultra-high definition
+    perfectly positioned
+    (((Golden Ratio composition)))
+    (((Cinematic shot)))
+    cinematic composition
+    cinematic color grading
+    key visual
+    film still
+    sharp focus
+    Real cinematography
+    real photograph
+    photorealistic
+    glamorous
+    aesthetic
+    realistic lighting
+    real picture taken with a camera
+    real camera quality photo
+    natural soft lighting and shadows
+    professional cinematography
+    $output = [joinFragments(this)]
+
+// The negative is deliberately ONE line. It is a chain of comma-separated
+// terms, and several terms carry commas *inside* a parenthesised weight group
+// ("(classical Greek, Hellenistic, Roman:1.4)", "((watermark, ((text)),
+// signature, logo, low quality,))"), plus one pair with no separator at all
+// ("missing arms(low quality, worst quality, normal quality:1.2)"). Split onto
+// fragment lines, `joinFragments` would insert a ", " at every break and quietly
+// corrupt those groups ("low quality, ))", "missing arms, (low quality"). One
+// line round-trips the text byte-for-byte, and it needs no `$output` because it
+// has no children. Perchance reads `[`, `{` and `^` as syntax; this text has
+// none of them, so it stays plain.
+//
+// NOTE: this block still contains "close up" among the quality terms, while the
+// `shot` list offers "close-up" and "extreme close-up". The two pull against
+// each other — kept as written, because it is the user's own negative prompt.
+negativePrompt
+  mud, dirt, dirty, modest clothing, modern clothing, t-shirt, bra, underwear, noise, artifacts, cartoon, anime, 3d render, plastic skin, airbrushed, doll,  awkward pose, flat lighting, boring composition, childish, modest, overly clothed, airbrushed, smooth skin, plastic, doll-like, cgi, 3d render, makeup too heavy, lipstick too bright, modern clothing, studio background, plain background, blurry, low resolution. (classical Greek, Hellenistic, Roman:1.4), (Egyptian, Mesopotamian:1.2), iron, steel, plate armor, hoplite, legionary, toga, chiton, Doric columns, Ionic columns, Corinthian columns, marble temples, Parthenon, Colosseum, arches, domes, stone castle, medieval, zippers, buttons, refined glass, firearms, plastic, electricity, stirrups, (classical Greek, Hellenistic, Roman, Greco-Roman:1.4), white marble temple, Doric columns, Ionic columns, Corinthian columns, Parthenon, Colosseum, aqueduct, (stone arch, dome:1.3), pyramid, hieroglyphs, ziggurat, (fortress, fortified walls, stone castle:1.2),  (iron, steel, aluminum:1.3), machined metal, plate armor, chainmail, crossbow, firearms, gunpowder, refined glass windows, plastic, concrete, asphalt, electric lights, wires, machinery, clocks, paper books, printed text, (toga, chiton, peplos:1.3), helmet with crest, gladiator armor, viking, barbarian, furs, trousers, pants, zippers, buttons, sneakers, modern shoes, victorian dress, ((multiple perspectives, split-screen effect, simultaneous viewpoints, duplicated subject from different angles, cubist composition, multi-angle portrait, reflections showing alternate angles, time-lapse sequence, collage of perspectives, compound viewpoints)), ((cartoon)), ((3d)), poor quality lighting, bright overexposed light, disfigured, bad art, deformed, poorly drawn, extra limbs, close up, b&w, weird colors, blurry, ((watermark, ((text)), signature, logo, low quality,)) grainy, pixelated, out of focus, overexposed, underexposed, distorted, jpeg artifacts, duplicate, morbid, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, bad anatomy, bad proportions, cloned face, disfigured, gross proportions, malformed limbs, missing arms(low quality, worst quality, normal quality:1.2), lowres, blurry, jpeg artifacts, ugly, duplicate, morbid, mutilated, out of frame, error, monochrome, sketch, cartoon, cg, 3d, anime, manga, disney, animation, render, fake, artwork, drawing, painting,(bad anatomy, wrong anatomy, bad proportions:1.3), (mutation, malformed, deformed, disfigured:1.2), gross proportions, unrealistic flesh, extra limbs, missing limbs, amputation,(poorly drawn face, bad face, fused face, cloned face:1.2), extra eyes, deformed iris, deformed pupils, deformed vagina, deformed pussy, bad teeth, crooked teeth, long neck,(bad hands, poorly drawn hands, malformed hands:1.3), (fused fingers, extra fingers, mutated fingers, missing fingers:1.2), disconnected limbs, floating limbs, extra arms, extra legs, multiple views, extra heads, watermark, text, username, signature, logo, banner, graphics,(baby, toddler, kid, child, children), body hair, stubble, dirt, filth, grease, tattoos, piercings, make-up,  accessories, headgear, weapons, elf ears, wings, horns, alien, demon, angel, furry, animal, glowing eyes

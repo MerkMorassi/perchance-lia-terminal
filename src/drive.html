@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LIA DRIVE</title>
+<meta name="color-scheme" content="dark">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#000;color:#00ff00;text-align:left;
+    font:14px/1.55 "Courier New",Courier,monospace;padding:22px 22px 30px}
+  header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px}
+  .brand{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#008800;font-weight:700}
+  .brand b{color:#00ff00;font-weight:700}
+  #close{border:1px solid #005500;background:transparent;color:#00aa00;font:inherit;font-size:12.5px;
+    padding:5px 10px;border-radius:8px;cursor:pointer}
+  #close:hover{color:#00ff00;border-color:#00aa00}
+  h1{margin:2px 0 10px;font-size:22px;font-weight:700;letter-spacing:.06em}
+  p{margin:0 0 14px;color:#00aa00;font-size:13.5px}
+  p.note{color:#008800;font-size:12.5px;border-left:2px solid #005500;padding-left:12px;margin-top:18px}
+  strong{color:#00ff00;font-weight:700}
+  .row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  button.act{border:1px solid #005500;background:#001100;color:#00ff00;font:inherit;font-weight:700;
+    font-size:13px;padding:9px 14px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+  button.act:hover{border-color:#00aa00;background:#002200}
+  button.act[disabled]{opacity:.4;cursor:default}
+  button.act.primary{background:#00ff00;color:#000;border-color:#00ff00}
+  button.act.wide{width:100%;justify-content:center}
+  .card{border:1px solid #005500;border-radius:14px;background:#001100;padding:14px 15px;margin-bottom:14px}
+  .kv{display:flex;justify-content:space-between;gap:12px;font-size:13px;padding:4px 0}
+  .kv span{color:#008800}
+  .kv b{font-weight:700;word-break:break-word;text-align:right}
+  .pill{display:inline-block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+    padding:3px 8px;border-radius:999px;border:1px solid #005500;color:#00aa00}
+  .pill.ok{color:#000;border-color:#00ff00;background:#00ff00}
+  .pill.warn{color:#00ff00;border-color:#00aa00;background:#002200}
+  .bar{height:7px;border-radius:999px;background:#001100;border:1px solid #005500;overflow:hidden;margin:12px 0 8px}
+  .bar i{display:block;height:100%;width:0;background:#00ff00;border-radius:999px}
+  #log{font-size:12.5px;color:#00aa00;min-height:19px;margin:0}
+  #log.ok{color:#00ff00}
+  #log.err{color:#ff5555}
+</style>
+</head>
+<body>
+  <header>
+    <div class="brand">LIA <b>drive</b></div>
+    <button id="close" type="button">Close</button>
+  </header>
+  <h1>A FOLDER ON YOUR OWN DISK</h1>
+  <p>This little window is the one place the browser lets a folder be opened, so the drive lives here and
+    the terminal talks to it. Pick a folder once - a mapped drive, an external disk, a photo library -
+    and the terminal can read every picture in it and write its own back.</p>
+
+  <button id="choose" class="act primary wide" type="button" style="margin-bottom:14px">Choose a folder on your drive</button>
+
+  <div class="card">
+    <div class="kv"><span>Folder</span><b id="fName">—</b></div>
+    <div class="kv"><span>Access</span><b><span class="pill" id="fPerm">not connected</span></b></div>
+    <div class="kv"><span>Pictures found</span><b id="fCount">—</b></div>
+  </div>
+
+  <div class="row">
+    <button id="pull" class="act" type="button" disabled>Pull pictures into the terminal</button>
+    <button id="push" class="act" type="button" disabled>Save the vault onto the drive</button>
+    <button id="forget" class="act" type="button" disabled>Disconnect</button>
+  </div>
+
+  <div class="bar"><i id="prog"></i></div>
+  <p id="log"></p>
+
+  <p class="note">Reading and writing both happen in this window because the terminal is embedded, and browsers
+    refuse a folder picker inside an embedded page. Chrome and Edge have this API; Firefox and Safari do not -
+    there the vault still works on its own storage. Pulling again only brings in what is new, and the pictures
+    are written into a <strong>Mythos</strong> subfolder - never over the top of the folder's own files, and
+    never pulled back in on a later scan. NOTHING HERE IS UPLOADED ANYWHERE: the folder is yours, on your disk.</p>
+
+<script>
+(function () {
+  "use strict";
+  var HOST = window.opener || window.parent || null;
+  var DB_NAME = "lia_drive", STORE = "handles", KEY = "linked";
+  var MAX_FILES = 2000, MAX_DEPTH = 3, PULL_BATCH = 8, SUBFOLDER = "Mythos";
+  var IMG = /\.(jpe?g|png|webp|gif|avif|bmp)$/i;
+
+  var handle = null;
+  var perm = "";
+  var scanning = false;
+  var pushing = false;
+  var scanCount = null;
+  var push = { written: 0, skipped: 0, failed: 0, total: 0 };
+
+  function $(id) { return document.getElementById(id); }
+  function post(msg) {
+    msg.k = "drive";
+    try { if (HOST) HOST.postMessage(msg, "*"); } catch (e) {}
+  }
+  function log(text, cls) { $("log").textContent = text || ""; $("log").className = cls || ""; }
+  function progress(pct) { $("prog").style.width = Math.max(0, Math.min(100, pct || 0)) + "%"; }
+  function supported() { return typeof window.showDirectoryPicker === "function"; }
+
+  /* --------------------------------------------------------------- idb */
+
+  function idb() {
+    return new Promise(function (res, rej) {
+      var r = indexedDB.open(DB_NAME, 1);
+      r.onupgradeneeded = function () { try { r.result.createObjectStore(STORE); } catch (e) {} };
+      r.onsuccess = function () { res(r.result); };
+      r.onerror = function () { rej(r.error); };
+    });
+  }
+  function idbWrite(rec) {
+    return idb().then(function (db) {
+      return new Promise(function (res, rej) {
+        var t = db.transaction(STORE, "readwrite");
+        var s = t.objectStore(STORE);
+        if (rec === null) s["delete"](KEY); else s.put(rec, KEY);
+        t.oncomplete = function () { res(true); };
+        t.onerror = function () { rej(t.error); };
+      });
+    });
+  }
+  function idbRead() {
+    return idb().then(function (db) {
+      return new Promise(function (res) {
+        var q = db.transaction(STORE, "readonly").objectStore(STORE).get(KEY);
+        q.onsuccess = function () { res(q.result || null); };
+        q.onerror = function () { res(null); };
+      });
+    }).catch(function () { return null; });
+  }
+  function live(h) {
+    return !!h && typeof h.queryPermission === "function" && typeof h.getDirectoryHandle === "function";
+  }
+  function canUse(h, mode) {
+    return Promise.resolve().then(function () { return h.queryPermission({ mode: mode }); })
+      .catch(function () { return "unknown"; });
+  }
+  function mayUse(h, mode) {
+    return canUse(h, mode).then(function (p) {
+      if (p === "granted") return p;
+      return h.requestPermission({ mode: mode }).catch(function () { return "denied"; });
+    });
+  }
+
+  /* ------------------------------------------------------------ reading */
+
+  function scan(dir, prefix, depth, out) {
+    var iter = dir.entries();
+    var step = function () {
+      if (out.length >= MAX_FILES || !scanning) return Promise.resolve(out);
+      return iter.next().then(function (r) {
+        if (r.done) return out;
+        var name = r.value[0], h = r.value[1];
+        if (h.kind === "file") {
+          if (IMG.test(name)) out.push({ path: prefix + name, handle: h });
+          return step();
+        }
+        if (h.kind === "directory" && depth > 0 && name.charAt(0) !== "." && name !== SUBFOLDER) {
+          return scan(h, prefix + name + "/", depth - 1, out).then(step);
+        }
+        return step();
+      }, function () { return out; });
+    };
+    return step();
+  }
+
+  function readBatch(list, from, count) {
+    var slice = list.slice(from, from + count);
+    var out = [];
+    var step = function (i) {
+      if (i >= slice.length) return Promise.resolve(out);
+      return slice[i].handle.getFile().then(function (file) {
+        out.push({ path: slice[i].path, name: file.name, size: file.size,
+          lastModified: file.lastModified, type: file.type, blob: file });
+        return step(i + 1);
+      }, function () { return step(i + 1); });
+    };
+    return step(0);
+  }
+
+  function pull(deep) {
+    if (!handle || scanning || perm !== "granted") return;
+    scanning = true;
+    setBusy(true);
+    progress(2);
+    log("Reading " + handle.name + "…");
+    var list = [];
+    scan(handle, "", deep ? MAX_DEPTH : 0, list).then(function () {
+      scanning = false;
+      var total = list.length;
+      scanCount = total;
+      paint();
+      post({ type: "pull-start", total: total });
+      if (!total) { log("No pictures in that folder.", "err"); progress(0); setBusy(false); return; }
+      var i = 0, handed = 0;
+      var next = function () {
+        if (i >= total) {
+          progress(100);
+          log("Handed " + handed + " pictures to the terminal.", "ok");
+          setTimeout(function () { progress(0); }, 900);
+          setBusy(false);
+          return;
+        }
+        readBatch(list, i, PULL_BATCH).then(function (batch) {
+          handed += batch.length;
+          progress((i / total) * 100);
+          log("Read " + Math.min(i + PULL_BATCH, total) + " of " + total + " pictures…");
+          post({ type: "pull-files", batch: batch, total: total, done: i + PULL_BATCH >= total });
+          i += PULL_BATCH;
+          setTimeout(next, 0);
+        });
+      };
+      next();
+    }).catch(function (e) {
+      scanning = false;
+      setBusy(false);
+      progress(0);
+      log("Couldn't read that folder: " + (e && e.message ? e.message : e), "err");
+      post({ type: "pull-failed", text: String((e && e.message) || e) });
+    });
+  }
+
+  /* ------------------------------------------------------------ writing */
+
+  function safeName(name) {
+    var parts = String(name || "picture").split("/");
+    var base = parts[parts.length - 1].replace(/[\\:*?"<>|]/g, "_").replace(/^\.+/, "").trim();
+    return base || "picture";
+  }
+
+  function dirHandle(root, path) {
+    var segs = String(path || "").split("/").filter(function (x) {
+      return x && x !== "." && x !== "..";
+    });
+    var chain = Promise.resolve(root);
+    segs.forEach(function (seg) {
+      chain = chain.then(function (d) { return d.getDirectoryHandle(seg.slice(0, 60), { create: true }); });
+    });
+    return chain;
+  }
+
+  function writeSlice(items) {
+    if (!handle) return Promise.resolve({ written: 0, skipped: 0, failed: 0 });
+    var out = { written: 0, skipped: 0, failed: 0 };
+    var cache = {};
+    return handle.getDirectoryHandle(SUBFOLDER, { create: true }).then(function (root) {
+      var chain = Promise.resolve(true);
+      items.forEach(function (it) {
+        chain = chain.then(function () {
+          var key = String(it.dir || "");
+          var got = cache[key] ? Promise.resolve(cache[key])
+            : dirHandle(root, key).then(function (d) { cache[key] = d; return d; });
+          return got.then(function (sub) {
+            return sub.getFileHandle(safeName(it.name), { create: true }).then(function (fh) {
+              return fh.getFile().then(function (existing) {
+                if (existing.size === it.blob.size && existing.size > 0) { out.skipped++; return; }
+                return fh.createWritable().then(function (w) {
+                  return w.write(it.blob).then(function () { return w.close(); }).then(function () { out.written++; });
+                });
+              });
+            });
+          }).catch(function () { out.failed++; });
+        });
+      });
+      return chain.then(function () { return out; });
+    });
+  }
+
+  function onSlice(msg) {
+    if (!handle || !pushing || perm !== "granted") return;
+    push.total = msg.total || 0;
+    if (!msg.items || !msg.items.length) { finishPush(); return; }
+    writeSlice(msg.items).then(function (r) {
+      push.written += r.written;
+      push.skipped += r.skipped;
+      push.failed += r.failed;
+      var next = (msg.from || 0) + msg.items.length;
+      progress(push.total ? (next / push.total) * 100 : 0);
+      log("Wrote " + push.written + " of " + push.total + " onto " + handle.name + "…");
+      if (next >= push.total) { finishPush(); return; }
+      post({ type: "need-shelf", from: next });
+    });
+  }
+
+  function finishPush() {
+    pushing = false;
+    progress(100);
+    setBusy(false);
+    log("Saved " + push.written + " onto the drive" +
+      (push.skipped ? ", skipped " + push.skipped + " already there" : "") +
+      (push.failed ? ", " + push.failed + " failed" : "") + ".", "ok");
+    post({ type: "push-done", written: push.written, skipped: push.skipped, failed: push.failed, total: push.total });
+    setTimeout(function () { progress(0); }, 900);
+  }
+
+  /* ---------------------------------------------------------------- UI */
+
+  function setBusy(on) {
+    ["choose", "pull", "push", "forget"].forEach(function (id) { $(id).disabled = true; });
+    window.__liaDriveBusy = on;
+    if (!on) paint();
+  }
+
+  function paint() {
+    $("fName").textContent = handle ? handle.name : "—";
+    var pill = $("fPerm");
+    if (!handle) { pill.textContent = "not connected"; pill.className = "pill"; }
+    else if (perm === "granted") { pill.textContent = "read & write"; pill.className = "pill ok"; }
+    else if (perm === "prompt") { pill.textContent = "ask again"; pill.className = "pill warn"; }
+    else { pill.textContent = perm || "unknown"; pill.className = "pill warn"; }
+    $("fCount").textContent = !handle ? "—"
+      : scanCount === null ? "not counted yet"
+      : scanCount + (scanCount === 1 ? " picture" : " pictures");
+    var ok = !!handle && perm === "granted";
+    $("choose").disabled = false;
+    $("pull").disabled = !ok;
+    $("push").disabled = !ok;
+    $("forget").disabled = !handle;
+    $("choose").textContent = handle ? "Choose a different folder" : "Choose a folder on your drive";
+    post({ type: "status", name: handle ? handle.name : "", permission: perm, granted: ok,
+      count: scanCount, supported: supported(), busy: !!window.__liaDriveBusy });
+  }
+
+  function choose() {
+    if (!supported()) { log("This browser has no folder picker (Chrome and Edge do).", "err"); return; }
+    if (handle && perm !== "granted") {
+      mayUse(handle, "readwrite").then(function (p) {
+        perm = p;
+        if (p === "granted") { scanCount = null; paint(); log("Re-connected to " + handle.name + ".", "ok"); }
+        else pick();
+      });
+      return;
+    }
+    pick();
+  }
+
+  function pick() {
+    window.showDirectoryPicker({ id: "lia-drive", mode: "readwrite" }).then(function (h) {
+      return canUse(h, "readwrite").then(function (p) { return { h: h, p: p }; });
+    }).then(function (r) {
+      handle = r.h;
+      perm = r.p;
+      scanCount = null;
+      idbWrite(handle).catch(function () {});
+      paint();
+      log("Linked " + handle.name + ". Pull its pictures in, or save the vault onto it.", "ok");
+    }).catch(function (e) {
+      if (e && e.name === "AbortError") { log("No folder chosen."); return; }
+      log("The picker refused: " + (e && e.message ? e.message : e) +
+        " — a folder can only be opened from a window like this one, so check that pop-ups are allowed for the terminal.", "err");
+      post({ type: "pick-failed", text: String((e && e.message) || e) });
+    });
+  }
+
+  function restore() {
+    if (!supported()) {
+      log("This browser has no folder picker (Chrome and Edge do). The vault still works.", "err");
+      paint();
+      return;
+    }
+    idbRead().then(function (saved) {
+      if (!live(saved)) { paint(); return; }
+      handle = saved;
+      return canUse(handle, "readwrite").then(function (p) {
+        perm = p;
+        paint();
+        log(p === "granted"
+          ? "Linked to " + handle.name + " from last time."
+          : "Linked to " + handle.name + " — press the button to let it in again.");
+      });
+    });
+  }
+
+  /* ----------------------------------------------------------- wiring */
+
+  $("close").addEventListener("click", function () { window.close(); });
+  $("choose").addEventListener("click", choose);
+  $("forget").addEventListener("click", function () {
+    idbWrite(null).catch(function () {});
+    handle = null; perm = ""; scanCount = null;
+    paint();
+    log("Forgotten. The folder itself is untouched.");
+  });
+  $("pull").addEventListener("click", function () { pull(true); });
+  $("push").addEventListener("click", startPush);
+
+  function startPush() {
+    if (!handle || pushing || perm !== "granted") return;
+    pushing = true;
+    push = { written: 0, skipped: 0, failed: 0, total: 0 };
+    setBusy(true);
+    progress(1);
+    log("Asking the terminal for its pictures…");
+    post({ type: "need-shelf", from: 0 });
+  }
+
+  window.addEventListener("message", function (e) {
+    var d = e.data;
+    if (!d || typeof d !== "object" || d.k !== "drive") return;
+    if (d.type === "ping") { paint(); return; }
+    if (d.type === "pull") { pull(true); return; }
+    if (d.type === "push-request") { startPush(); return; }
+    if (d.type === "shelf-slice") { onSlice(d); return; }
+    if (d.type === "disconnect") { $("forget").click(); return; }
+  });
+
+  window.addEventListener("pagehide", function () { scanning = false; pushing = false; });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) paint(); });
+
+  window.__liaDrive = { handle: function () { return handle; }, state: function () {
+    return { name: handle ? handle.name : "", permission: perm, count: scanCount, supported: supported() };
+  }, paint: paint, pick: pick, pull: pull, onSlice: onSlice, scan: scan, writeSlice: writeSlice,
+    startPush: startPush };
+
+  paint();
+  post({ type: "hello" });
+  restore();
+})();
+</script>
+</body>
+</html>

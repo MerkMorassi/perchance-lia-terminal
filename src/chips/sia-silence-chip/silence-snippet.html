@@ -1,0 +1,48 @@
+<div id="mythosSilencePanel">
+  <div>POETIC <input id="mssPoetic" type="range" min="200" max="1500" step="50" value="700"> <span id="mssPoeticV"></span></div>
+  <div>AWKWARD <input id="mssAwkward" type="range" min="1000" max="4000" step="100" value="2200"> <span id="mssAwkwardV"></span></div>
+  <div>THRESH <input id="mssThresh" type="range" min="0.5" max="0.95" step="0.01" value="0.72"> <span id="mssThreshV"></span></div>
+  <div>GATE <input id="mssMinSem" type="range" min="0.3" max="0.8" step="0.01" value="0.55"> <span id="mssMinSemV"></span></div>
+  <div>W-SEM <input id="mssWSem" type="range" min="0" max="1" step="0.05" value="0.6"> <span id="mssWSemV"></span></div>
+  <div>W-PAUSE <input id="mssWPause" type="range" min="0" max="1" step="0.05" value="0.25"> <span id="mssWPauseV"></span></div>
+  <div>W-FALL <input id="mssWFall" type="range" min="0" max="1" step="0.05" value="0.15"> <span id="mssWFallV"></span></div>
+  <div><button id="mssScoreBtn" type="button">SCORE</button> <span id="mssLamp"></span></div>
+  <div id="mssRead"></div>
+</div>
+<script>
+window.MythosSilencePanel = function (sClient, hostId) {
+var host = document.getElementById(hostId || "mythosSilencePanel");
+if (!host || !sClient || typeof sClient.tune !== "function") return false;
+function el(id) { return host.querySelector("#" + id); }
+function val(id) { return parseFloat(el(id).value); }
+function paint() {
+var st = sClient.state();
+if (!st.ok) return false;
+el("mssPoeticV").textContent = st.poeticMs + "ms";
+el("mssAwkwardV").textContent = st.awkwardMs + "ms";
+el("mssThreshV").textContent = st.thresh;
+el("mssMinSemV").textContent = st.minSem;
+el("mssWSemV").textContent = Math.round(st.weights.sem * 100) / 100;
+el("mssWPauseV").textContent = Math.round(st.weights.pause * 100) / 100;
+el("mssWFallV").textContent = Math.round(st.weights.fall * 100) / 100;
+return true;
+}
+function push() {
+var r = sClient.tune({ poeticMs: val("mssPoetic"), awkwardMs: val("mssAwkward"), thresh: val("mssThresh"), minSem: val("mssMinSem"), weights: { sem: val("mssWSem"), pause: val("mssWPause"), fall: val("mssWFall") } });
+if (!r.ok) el("mssRead").textContent = r.error;
+paint();
+return r.ok;
+}
+["mssPoetic", "mssAwkward", "mssThresh", "mssMinSem", "mssWSem", "mssWPause", "mssWFall"].forEach(function (id) {
+el(id).addEventListener("input", push);
+});
+el("mssScoreBtn").addEventListener("click", function () {
+var r = sClient.score();
+if (!r.ok) { el("mssRead").textContent = r.error; return; }
+el("mssLamp").textContent = r.yield ? "YIELD" : (r.gated ? "GATED" : "HOLD");
+el("mssRead").textContent = r.score + " :: sem " + r.parts.sem + " pause " + r.parts.pause + " fall " + r.parts.fall + (r.forced ? " FORCED" : "");
+});
+paint();
+return true;
+};
+</script>

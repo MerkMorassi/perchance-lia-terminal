@@ -1,0 +1,504 @@
+
+
+<div class="bg-fx" aria-hidden="true"></div>
+
+<!-- ==================== APP PROMO / URGENT OFFER BANNER ==================== -->
+<div class="wrap">
+  <!-- ==================== HEADER ==================== -->
+  <div class="header">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 48 48" role="img" aria-label="GPT Vision logo">
+        <defs>
+          <linearGradient id="bmGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#ff4d9d"/>
+            <stop offset="1" stop-color="#ff9d4d"/>
+          </linearGradient>
+          <clipPath id="bmClip"><rect x="0" y="0" width="48" height="48" rx="15"/></clipPath>
+        </defs>
+        <rect x="0" y="0" width="48" height="48" rx="15" fill="url(#bmGrad)"/>
+        <g clip-path="url(#bmClip)">
+          <rect class="bm-shine" x="21" y="-14" width="7" height="76" rx="3.5" fill="rgba(255,255,255,.5)"/>
+        </g>
+        <path d="M9.5 23.5c3.9-6.4 9-9.6 14.5-9.6s10.6 3.2 14.5 9.6c-3.9 6.4-9 9.6-14.5 9.6s-10.6-3.2-14.5-9.6Z" fill="#2a0b18" fill-opacity=".62"/>
+        <circle cx="24" cy="23.5" r="6.4" fill="none" stroke="#fff" stroke-width="2.6"/>
+        <circle cx="24" cy="23.5" r="3" fill="#fff"/>
+        <circle cx="26.1" cy="21.4" r="1" fill="#2a0b18"/>
+        <path class="bm-spark" d="M40 3.2c.75 3.4 1.4 4.05 4.8 4.8-3.4.75-4.05 1.4-4.8 4.8-.75-3.4-1.4-4.05-4.8-4.8 3.4-.75 4.05-1.4 4.8-4.8Z" fill="#fff"/>
+        <path class="bm-spark2" d="M10.5 34.2c.5 2.3.95 2.75 3.25 3.25-2.3.5-2.75.95-3.25 3.25-.5-2.3-.95-2.75-3.25-3.25 2.3-.5 2.75-.95 3.25-3.25Z" fill="#fff" fill-opacity=".9"/>
+      </svg>
+      <div class="brand-text">
+        <h1 class="brand-name">GPT Vision</h1>
+        <span class="brand-tag">AI Image Generator</span>
+      </div>
+    </div>
+    <div class="online-pill" id="onlinePill" hidden>
+      <span class="online-dot"></span>
+      <span id="onlineNum">–</span>
+      <span class="online-word">online</span>
+    </div>
+    <button class="hbtn" id="clearBtn" type="button" title="Clear results"><span class="hico">✕</span><span class="hlbl">Clear</span></button>
+    <button class="hbtn" id="historyBtn" type="button" title="Generation history"><span class="hico">🖼</span><span class="hlbl">History</span></button>
+    <button class="hbtn auth-open" id="authBtn" type="button" title="Sign in">
+      <span class="auth-av" id="authAv">👤</span><span id="authBtnTxt">Login</span>
+    </button>
+  </div>
+
+  <!-- ==================== PROMPT ==================== -->
+  <div class="panel">
+    <div class="plabel-row">
+      <label class="plabel" for="promptInput">Prompt</label>
+      <span class="pai-tools">
+        <span class="pai-note" id="promptAiNote" hidden></span>
+        <button class="hbtn pai-btn" id="promptAiBtn" type="button"
+          title="Turn a messy, copy-pasted or Hinglish idea into one clean prompt (AI) — your text is kept, ↩ Undo brings it back">✨ Auto prompt</button>
+        <button class="hbtn pai-btn" id="promptUndoBtn" type="button" hidden title="Bring back the text that was there before ✨ Auto prompt">↩ Undo</button>
+      </span>
+    </div>
+    <textarea id="promptInput" placeholder="Describe the image you want… e.g. a red fox in a snowy forest at dusk, golden light, detailed fur"></textarea>
+    <details class="negwrap" id="negDetails">
+      <summary>
+        <span class="negttl">🚫 Negative prompt <span class="negopt">optional — what to leave out</span></span>
+        <span class="negpeek" id="negPeek"></span>
+        <span class="chev">▸</span>
+      </summary>
+      <div class="negbody">
+        <div class="negrow">
+          <span class="olbl">Type what the image should avoid</span>
+          <button class="hbtn" id="negClearBtn" type="button" hidden title="Clear the negative prompt">✕ Clear</button>
+        </div>
+        <textarea id="negInput" placeholder="e.g. blurry, low quality, extra fingers, deformed hands, watermark, text" aria-label="Negative prompt"></textarea>
+        <div class="phex">Kept out of the picture. Most of the cloud engines below don't take a negative prompt — ♾️ qinegen and ⚡ Z-Image (free) do.</div>
+      </div>
+    </details>
+    <div class="negprev" id="negPrev" hidden></div>
+
+    <!-- ==================== OPTIONS ==================== -->
+    <div class="opt-row">
+      <div class="opt">
+        <span class="olbl">Images</span>
+        <div class="chip-row" id="countChips"></div>
+      </div>
+      <div class="opt">
+        <span class="olbl">Aspect ratio</span>
+        <div class="chip-row" id="aspectChips"></div>
+      </div>
+      <div class="opt">
+        <span class="olbl">Guidance <span id="guidanceVal">7</span></span>
+        <input type="range" id="guidanceRange" min="1" max="15" step="1" value="7">
+      </div>
+      <div class="opt">
+        <span class="olbl">Seed (optional)</span>
+        <div class="seed-row">
+          <input type="text" id="seedInput" placeholder="random" inputmode="numeric">
+          <button class="hbtn dice-btn" id="seedRandBtn" type="button" title="Random seed">🎲</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== GENERATE ==================== -->
+    <div class="gen-row">
+      <button id="generateBtn" type="button">Generate</button>
+      <button id="cancelBtn" type="button" hidden>Cancel</button>
+    </div>
+    <div class="opt-row" style="margin-top:14px">
+      <button class="hbtn" id="styleBtn" type="button" title="Choose a style">🎨 Style: <b>No style</b> ▾</button>
+      <button class="hbtn" id="shareBtn" type="button" title="Share this generator with a friend">🔗 Share</button>
+    </div>
+    <div class="status" id="statusEl" hidden></div>
+  </div>
+
+  <!-- ==================== ADVANCED ==================== -->
+  <details class="adv" id="advDetails">
+    <summary>⚙️ Advanced settings <span class="chev">▸</span></summary>
+    <div class="adv-body">
+      <div class="adv-grid">
+        <div class="opt">
+          <span class="olbl">Resolution (optional)</span>
+          <select id="resSelect">
+            <option value="auto">Auto (from aspect)</option>
+            <option value="512x512">512 × 512</option>
+            <option value="512x768">512 × 768</option>
+            <option value="768x512">768 × 512</option>
+            <option value="768x768">768 × 768</option>
+          </select>
+        </div>
+        <div class="opt">
+          <span class="olbl">Quality</span>
+          <label class="toggle-row" style="padding-top:7px">
+            <input type="checkbox" id="detailCb" checked>
+            <span>Detail boost</span>
+          </label>
+        </div>
+        <div class="opt">
+          <span class="olbl">Quality check</span>
+          <label class="toggle-row" style="padding-top:7px" title="The AI looks at each picture and asks for another one if a face or a hand is broken. Always shows the best picture it got.">
+            <input type="checkbox" id="verifyCb" checked>
+            <span>🧠 Auto-verify</span>
+          </label>
+        </div>
+        <div class="opt">
+          <span class="olbl">Checking budget</span>
+          <select id="verifyBudgetSel" title="How long the checker may keep asking for better pictures before it settles for the best one it has.">
+            <option value="60000">1 minute</option>
+            <option value="120000" selected>2 minutes</option>
+            <option value="180000">3 minutes</option>
+            <option value="300000">5 minutes</option>
+          </select>
+        </div>
+      </div>
+      <div class="phex" style="margin-top:9px">
+        <b>🧠 Auto-verify</b> — the AI inspects every picture for the classic mistakes (six fingers, melted hands, warped faces) and quietly asks for another one when it finds them, keeping the cleanest of them. It never secretly loops: it stops at the <b>checking budget</b> (2 minutes by default), always shows its best attempt, and prints a one-line note saying what it found — so you can also see when it <i>couldn't</i> check. Turn it off for the fastest possible generation.
+      </div>
+
+      <div style="margin-top:14px; border-top:1px solid var(--line); padding-top:12px">
+        <span class="olbl">Reference image (optional)</span>
+        <div class="ref-area" style="margin-top:6px">
+          <div class="ref-controls">
+            <label class="hbtn file-btn" style="cursor:pointer">
+              📎 Upload reference
+              <input type="file" id="refFile" accept="image/*">
+            </label>
+            <span class="olbl" id="refName" hidden></span>
+            <button class="hbtn" id="refRemove" type="button" hidden>✕ Remove</button>
+          </div>
+          <img id="refThumb" class="ref-thumb" hidden alt="reference image">
+          <div class="ref-controls" id="refStrengthRow" hidden>
+            <span class="olbl">How closely to follow it: <span id="refStrengthVal">20%</span></span>
+            <input type="range" id="refStrength" min="0" max="90" value="20">
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== ULTRA RESOLUTION ==================== -->
+      <!-- Real AI super-resolution (ESRGAN, in the browser) to a target SIZE
+           (1K/2K/4K/8K on the longest side) plus a sharpening pass. Two ways in:
+           the toggle re-processes every generated picture, and the local-image
+           row enhances a file from the visitor's own device. See the "Ultra
+           resolution" notes in src/README.md for the timing model. -->
+      <div class="ultra" id="ultraBlock">
+        <div class="ultra-head">
+          <span class="olbl">🔍 Ultra resolution</span>
+          <span class="ultra-badge">real AI</span>
+          <span class="ultra-est" id="ultraEstNote"></span>
+        </div>
+        <label class="toggle-row" style="margin-top:7px"
+          title="Every generated picture is enlarged with a real AI super-resolution model in your browser, then sharpened.">
+          <input type="checkbox" id="ultraCb">
+          <span>Upscale every result to <b id="ultraOnTarget">4K</b> — slower, much more detail</span>
+        </label>
+        <div class="ultra-row">
+          <span class="olbl">Target size (longest side)</span>
+          <div class="chip-row" id="ultraTargetChips"></div>
+        </div>
+        <div class="ultra-row">
+          <span class="olbl">Sharpness <span id="ultraSharpenVal">35%</span></span>
+          <input type="range" id="ultraSharpen" min="0" max="100" value="35">
+        </div>
+        <div class="ultra-row">
+          <label class="hbtn file-btn" style="cursor:pointer"
+            title="Pick any picture from your device and upscale + sharpen it">
+            📎 Sharpen a local image
+            <input type="file" id="ultraFile" accept="image/*">
+          </label>
+          <button class="hbtn" id="ultraRunLocalBtn" type="button" hidden>✨ Make it <b id="ultraLocalTarget">4K</b></button>
+          <span class="olbl" id="ultraLocalNameEl" hidden></span>
+          <button class="hbtn" id="ultraLocalRemoveBtn" type="button" hidden title="Forget this local image">✕</button>
+        </div>
+        <div class="vup-prog" id="ultraProg" hidden>
+          <div class="vup-line"><span id="ultraProgTxt">Preparing…</span>
+            <button class="hbtn" id="ultraCancelBtn" type="button">Cancel</button></div>
+          <div class="vup-bar"><i id="ultraProgBar"></i></div>
+        </div>
+        <p class="vup-err" id="ultraErr" hidden></p>
+        <div class="ultra-result" id="ultraLocalResult" hidden>
+          <img id="ultraLocalImg" alt="ultra resolution result">
+          <div class="ultra-facts">
+            <span class="olbl" id="ultraLocalInfo"></span>
+            <div class="ultra-btns">
+              <button class="hbtn" id="ultraLocalViewBtn" type="button">🔍 View</button>
+              <button class="hbtn" id="ultraLocalDlBtn" type="button">⬇ Download</button>
+              <button class="hbtn" id="ultraLocalSaveBtn" type="button">🔒 Save</button>
+            </div>
+          </div>
+        </div>
+        <p class="ultra-note">
+          Downscaling a big picture is free, but <b>adding</b> real detail is not: an AI super-resolution model
+          (ESRGAN) looks at the picture in tiles, invents the detail it can prove, then the result is enlarged
+          exactly to your target and sharpened. It runs <b>in your browser</b> — free, unlimited, nothing is
+          uploaded — and it stops itself well before it gets boring: if this device is slow, fewer AI passes are
+          made and the rest is a high-quality enlarge. Watch the bar, and press <b>Cancel</b> any time.
+        </p>
+      </div>
+    </div>
+  </details>
+
+  <!-- ==================== HUGGING FACE ==================== -->
+  <div class="panel">
+    <div class="plabel-row">
+      <label class="plabel">🤗 Free cloud models <span class="mcount" style="text-transform:none;letter-spacing:0">free · no login · real FLUX models</span></label>
+      <span class="pai-tools">
+        <span class="pai-note" id="hfPromptAiNote" hidden></span>
+        <button class="hbtn pai-btn" id="hfPromptAiBtn" type="button"
+          title="Turn a messy, copy-pasted or Hinglish idea into one clean prompt for the selected model (AI)">✨ Auto prompt</button>
+        <button class="hbtn pai-btn" id="hfPromptUndoBtn" type="button" hidden title="Bring back the text that was there before ✨ Auto prompt">↩ Undo</button>
+      </span>
+    </div>
+    <textarea id="hfPrompt" placeholder="Describe the image for the Hugging Face model… e.g. a photorealistic portrait of a woman in a red dress, golden hour light"></textarea>
+    <div class="opt-row" style="margin-top:12px">
+      <div class="opt">
+        <span class="olbl">Model</span>
+        <div class="chip-row" id="hfModelChips"></div>
+      </div>
+      <div class="opt" id="hfAspectOpt">
+        <span class="olbl">Aspect ratio</span>
+        <div class="chip-row" id="hfAspectChips"></div>
+      </div>
+    </div>
+    <!-- 🛡️ Safe-prompt conversion — the safe-only engine's own control, and the
+         only row here that is right-aligned. It appears only while that engine is
+         selected (`syncHfControls`), and selecting the engine runs it by itself
+         when the box already holds a prompt (see sfwAutoConvertSoon). -->
+    <div class="opt-row sfw-conv-row" id="sfwConvRow" hidden>
+      <span class="pai-note" id="sfwConvNote" hidden></span>
+      <button class="hbtn pai-btn" id="sfwConvBtn" type="button"
+        title="Rewrite the prompt above so it describes a safe (SFW) picture — the subject, style and setting stay the same">🛡️ Convert to safe prompt</button>
+    </div>
+    <div class="opt-row">
+      <div class="opt" id="hfStepsOpt">
+        <span class="olbl">Steps <span id="hfStepsVal">8</span></span>
+        <input type="range" id="hfStepsRange" min="1" max="20" step="1" value="8">
+      </div>
+      <div class="opt" id="hfGuidanceOpt">
+        <span class="olbl">Guidance <span id="hfGuidanceVal">3.5</span></span>
+        <input type="range" id="hfGuidanceRange" min="1" max="15" step="0.5" value="3.5">
+      </div>
+      <div class="opt">
+        <span class="olbl">Seed (optional)</span>
+        <div class="seed-row">
+          <input type="text" id="hfSeedInput" placeholder="random" inputmode="numeric">
+          <button class="hbtn dice-btn" id="hfSeedRandBtn" type="button" title="Random seed">🎲</button>
+        </div>
+      </div>
+    </div>
+    <div class="gen-row" style="margin-top:12px">
+      <button id="hfGenerateBtn" type="button">🤗 Generate with Hugging Face</button>
+      <button id="hfCancelBtn" type="button" hidden>Cancel</button>
+    </div>
+    <!-- Photo style for THIS panel, just under its Generate button. It appears
+         only for qinegen: the 🌍 Real Photo choice appends qinegen's own photo
+         look to the prompt. "No style" is the default and sends the prompt
+         exactly as typed. -->
+    <div class="opt-row" id="hfPhotoOpt" style="margin-top:10px" hidden>
+      <div class="opt" style="flex:1 1 100%">
+        <span class="olbl"><span id="hfStyleLabel">📷 Photo style</span> <span id="hfStyleNote" style="opacity:.7;text-transform:none;letter-spacing:0">— optional · 🌍 Real Photo = qinegen's own photo look</span></span>
+        <div class="chip-row" id="hfPhotoChips"></div>
+      </div>
+    </div>
+    <div class="opt-row" style="margin-top:10px">
+      <button class="hbtn" id="hfUseMainBtn" type="button" title="Copy the main prompt into this box">↧ Use main prompt</button>
+    </div>
+    <div class="status" id="hfStatusEl" hidden></div>
+    <div class="hf-result" id="hfResult" hidden>
+      <div class="hf-spin" id="hfSpin">
+        <div class="spinner"></div>
+        <div id="hfSpinTxt">Contacting Hugging Face…</div>
+        <div class="hf-queue" id="hfQueueTxt"></div>
+        <div id="hfProgressBar" hidden><i></i></div>
+      </div>
+      <img id="hfImg" alt="Hugging Face result">
+      <div class="card-actions">
+        <button class="card-act" id="hfRegenBtn" type="button">🔄 Regenerate</button>
+        <button class="card-act" id="hfCopyBtn" type="button" title="Copy this prompt">📋 Copy</button>
+        <button class="card-act" id="hfSaveBtn" type="button" title="Keep this image in your private gallery">🔒 Save</button>
+        <button class="card-act" id="hfShareBtn" type="button" title="Share this prompt as a link">🔗 Share</button>
+        <button class="card-act" id="hfDownloadBtn" type="button">⬇ Download</button>
+        <button class="card-act" id="hfOpenBtn" type="button">↗ Open</button>
+      </div>
+    </div>
+    <div class="hf-note">Runs real <b>FLUX / Z-Image</b> models on public Hugging Face Spaces — no key, no signup. Those run on ZeroGPU, which gives each visitor only about <b>2 minutes per day</b> (5 min with a free token). If you see “quota exceeded”, switch to <b>⚡ Z-Image (free)</b> (a separate free daily allowance, and it takes a negative prompt), <b>SDXL-Turbo CPU</b> (no daily limit — free CPU, so it takes a minute or two per image, 512×512) or <b>Pollinations</b> (no key, no signup, one image at a time, no daily quota — it also takes very long prompts happily, applies no content filter, and keeps your picture out of every public feed).</div>
+    <div class="hf-note">🎲 Every Generate uses a <b>fresh random seed</b>, so you get a new picture each time even with the same prompt. Type a seed to reproduce one you liked.</div>
+    <details class="adv" id="hfTokenDetails" style="background:rgba(10,6,24,.45)">
+      <summary>🔑 More quota — use your own Hugging Face token <span class="chev">▸</span></summary>
+      <div class="adv-body">
+        <div id="hfTokenRow">
+          <input type="password" id="hfTokenInput" placeholder="hf_…" autocomplete="off" spellcheck="false">
+          <button class="hbtn" id="hfTokenSaveBtn" type="button">Save</button>
+          <button class="hbtn" id="hfTokenClearBtn" type="button">Clear</button>
+        </div>
+        <div class="hf-note">Create a free token at <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener">huggingface.co/settings/tokens</a> — a <b>read</b> token is enough. It is saved <b>only in this browser</b>, never sent anywhere except Hugging Face.</div>
+      </div>
+    </details>
+  </div>
+
+  <!-- ==================== RESULTS ==================== -->
+  <div class="results" id="resultsCtn">
+    <div class="empty-hint" id="introEl">Write a prompt and press <b>Generate</b> — your images will appear here.</div>
+  </div>
+
+  <!-- ==================== PRIVATE GALLERY ==================== -->
+  <!-- Local to this browser on purpose: it uses the kv-plugin (IndexedDB), so
+       nothing here is uploaded, nothing costs server storage, and no code
+       update or server rebuild can ever take a saved picture away. -->
+  <div class="panel">
+    <label class="plabel">🔒 My gallery <span class="mcount" style="text-transform:none;letter-spacing:0">private · this browser only · tap a picture for its prompt &amp; seed</span></label>
+    <div class="mygal-head">
+      <span class="olbl" id="myGalCount">Nothing saved yet</span>
+      <button class="hbtn" id="myGalClearBtn" type="button" hidden>🗑 Remove all</button>
+    </div>
+    <div class="fgal-grid" id="myGalCtn"></div>
+  </div>
+</div>
+
+<!-- ==================== FLOATING SCROLL NAV ==================== -->
+<div class="scroll-dock" id="scrollDock">
+  <button class="sd-btn" id="sdTop" type="button" data-label="Back to top" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5"/><path d="M6 11l6-6 6 6"/></svg>
+  </button>
+  <button class="sd-btn sd-center" id="sdGen" type="button" data-label="Go to generator" aria-label="Go to generator">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.6"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+  </button>
+  <button class="sd-btn" id="sdBottom" type="button" data-label="Go to bottom" aria-label="Go to bottom">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="M6 13l6 6 6-6"/></svg>
+  </button>
+</div>
+
+<!-- ==================== HISTORY MODAL ==================== -->
+<div class="modal-back" id="historyModal" hidden>
+  <div class="modal">
+    <div class="mhead">
+      <h3>🖼 Generation history</h3>
+      <span class="mcount" id="histCount"></span>
+      <button class="mclose" id="histClose" type="button" aria-label="Close">✕</button>
+    </div>
+    <div class="mbody">
+      <div class="gal-grid" id="histGrid"></div>
+      <div class="gal-actions">
+        <button type="button" id="histRefreshBtn">Refresh</button>
+        <button class="danger" type="button" id="histClearBtn">Clear history</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="viewer" id="viewer" hidden></div>
+
+<!-- ==================== ACCOUNTS (login / sign up) ==================== -->
+<div class="modal-back" id="authBack" hidden>
+  <div class="modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <div class="mhead">
+      <h3 id="authTitle">Login</h3>
+      <button class="mclose" id="authClose" type="button" aria-label="Close">✕</button>
+    </div>
+    <div class="mbody">
+
+      <div id="authFormWrap">
+        <form id="authForm" novalidate>
+          <div class="afield" id="authNameField" hidden>
+            <label for="authName">Name <span class="opt">optional</span></label>
+            <input id="authName" type="text" maxlength="40" autocomplete="name" placeholder="Your name">
+          </div>
+          <div class="afield">
+            <label for="authEmail" id="authEmailLbl">Email or username</label>
+            <input id="authEmail" type="text" autocomplete="username" placeholder="you@example.com" required>
+          </div>
+          <div class="afield" id="authUserField" hidden>
+            <label for="authUser">Username <span class="opt">letters, numbers, _</span></label>
+            <input id="authUser" type="text" maxlength="20" autocomplete="off" placeholder="e.g. arjun_ai">
+          </div>
+          <div class="afield">
+            <label for="authPass">Password</label>
+            <input id="authPass" type="password" autocomplete="current-password" placeholder="At least 6 characters" required>
+          </div>
+          <div class="afield" id="authPass2Field" hidden>
+            <label for="authPass2">Confirm password</label>
+            <input id="authPass2" type="password" autocomplete="new-password" placeholder="Type it again">
+          </div>
+          <button class="auth-submit" id="authSubmit" type="submit">Login</button>
+          <div class="auth-err" id="authErr" hidden></div>
+        </form>
+
+        <div class="auth-or"><span>or</span></div>
+        <div class="gis-ctn" id="gisCtn" hidden></div>
+        <button class="gbtn" id="authGoogleBtn" type="button">
+          <svg class="gmark" viewBox="0 0 48 48" aria-hidden="true">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          <span>Continue with Google</span>
+        </button>
+        <div class="auth-setup" id="authSetup" hidden></div>
+
+        <div class="auth-alt">
+          <span id="authAltTxt">Don't have an account?</span>
+          <button class="auth-link" id="authSwitch" type="button">Sign up</button>
+        </div>
+        <div class="auth-note" id="authNote">Your account is kept only in this browser — nothing is sent to a server, and your password is never stored (only a salted hash of it).</div>
+      </div>
+
+      <div id="acctWrap" hidden>
+        <div class="acct-top">
+          <div class="acct-av" id="acctAv"></div>
+          <div class="acct-id">
+            <div class="acct-name" id="acctName"></div>
+            <div class="acct-mail" id="acctMail"></div>
+          </div>
+        </div>
+        <div class="acct-rows">
+          <div class="acct-row"><span>Username</span><b id="acctUser"></b></div>
+          <div class="acct-row"><span>Signed in with</span><b id="acctHow"></b></div>
+          <div class="acct-row"><span>Member since</span><b id="acctSince"></b></div>
+          <div class="acct-row"><span>Credits</span><b class="soon" id="acctCredits">Coming soon</b></div>
+        </div>
+        <button class="auth-submit ghost" id="acctLogout" type="button">Log out</button>
+        <button class="auth-link danger" id="acctDelete" type="button">Delete my account</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SHARE SHEET ==================== -->
+<div class="modal-back" id="shareBack" hidden>
+  <div class="modal share-modal" role="dialog" aria-label="Share">
+    <div class="mhead">
+      <h3>🔗 Share</h3>
+      <button class="mclose" id="shareCloseBtn" type="button" aria-label="Close">✕</button>
+    </div>
+    <div class="mbody">
+      <div class="share-prev" id="sharePrev"></div>
+      <div class="share-grid">
+        <a class="share-tile" id="shareWhatsapp" target="_blank" rel="noopener"><span>💬</span>WhatsApp</a>
+        <a class="share-tile" id="shareTelegram" target="_blank" rel="noopener"><span>✈️</span>Telegram</a>
+        <a class="share-tile" id="shareX" target="_blank" rel="noopener"><span>𝕏</span>X / Twitter</a>
+        <a class="share-tile" id="shareFacebook" target="_blank" rel="noopener"><span>📘</span>Facebook</a>
+        <a class="share-tile" id="shareReddit" target="_blank" rel="noopener"><span>👽</span>Reddit</a>
+        <button class="share-tile" id="shareNativeBtn" type="button" hidden><span>📲</span>More apps…</button>
+        <button class="share-tile" id="shareCopyBtn" type="button"><span>📋</span>Copy link</button>
+      </div>
+      <div class="hf-note">Anyone who opens the link lands here with the prompt already filled in, so they can hit Generate straight away.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ NOTE: the redirect funnel is switched OFF ============
+     Both redirect points (first visit and after-image) are disabled in the
+     CONFIG at the bottom of this page (2026-09-26, on request), so visitors
+     stay on the generator. The script itself is untouched — set
+     offerLive / imageRedirect back to true there to restore the old behaviour. -->
+
+<!-- ==================== STYLE MODAL ==================== -->
+<div class="modal-back" id="styleModal" hidden>
+  <div class="modal">
+    <div class="mhead">
+      <h3>🎨 Choose a style</h3>
+      <span class="mcount" id="styleCount"></span>
+      <button class="mclose" id="styleClose" type="button" aria-label="Close">✕</button>
+    </div>
+    <div class="mbody">
+      <div id="styleGroups"></div>
+    </div>
+  </div>
+</div>
+

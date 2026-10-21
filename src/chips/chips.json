@@ -1,0 +1,1243 @@
+{
+  "pack": "CHIPS",
+  "version": 80,
+  "note": "Every chip: source files plus its shipped zip. Spec v1.",
+  "chips": [
+    {
+      "name": "chatterbox-chip",
+      "files": [
+        "chatterbox.js",
+        "CHATTERBOX-CHIP.md"
+      ],
+      "zipBytes": 4582,
+      "spec": "v1"
+    },
+    {
+      "name": "chatterbox-her-chip",
+      "files": [
+        "chatterbox.js",
+        "SOVEREIGN-VOICE.md"
+      ],
+      "zipBytes": 4171,
+      "spec": "v1"
+    },
+    {
+      "name": "chip-spec-chip",
+      "files": [
+        "CHIP-SPEC.md"
+      ],
+      "zipBytes": 2945,
+      "spec": "v1"
+    },
+    {
+      "name": "gallery-tag-chip",
+      "files": [
+        "gallery-tagging.js",
+        "GALLERY-TAGGING-CHIP.md"
+      ],
+      "zipBytes": 0,
+      "spec": "v1"
+    },
+    {
+      "name": "image-chip",
+      "files": [
+        "basic-image.js",
+        "IMAGE-CHIP.md"
+      ],
+      "zipBytes": 0,
+      "spec": "v1"
+    },
+    {
+      "name": "mva-chip",
+      "files": [
+        "mythos-shot-recipe.json",
+        "mva-harvest.md",
+        "cinematography-suggestions.txt"
+      ],
+      "zipBytes": 0,
+      "spec": "v1"
+    },
+    {
+      "name": "mythos-ai-screenplay-chip",
+      "files": [
+        "snippet.html",
+        "mythos-native-ai-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 0,
+      "spec": "v1"
+    },
+    {
+      "name": "scribe-chip",
+      "files": [
+        "scribe-themes.json",
+        "scribe-structures.json",
+        "archetypes-v3.json",
+        "app.py",
+        "SCRIBE-HARVEST.md"
+      ],
+      "zipBytes": 59827,
+      "spec": "v1"
+    },
+    {
+      "name": "scribe-her-chip",
+      "files": [
+        "scribe-themes.json",
+        "scribe-structures.json",
+        "archetypes-v3.json",
+        "app.py",
+        "WEAR-THIS.md"
+      ],
+      "zipBytes": 59844,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-art-chip",
+      "files": [
+        "mythos-art-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 9708,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-autonomy-chip",
+      "files": [
+        "mythos-autonomy-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 5924,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-bridge-chip",
+      "files": [
+        "mythos-bridge-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 3942,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-dms-chip",
+      "files": [
+        "mythos-dms-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 7416,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-gatekeeper-chip",
+      "files": [
+        "mythos-gate-standalone.js",
+        "gate-snippet.html",
+        "README.md"
+      ],
+      "zipBytes": 14812,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-herald-chip",
+      "files": [
+        "mythos-herald-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 6852,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-rating-chip",
+      "files": [
+        "mythos-rating-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 12325,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-roam-chip",
+      "files": [
+        "mythos-roam-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 9755,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-startup-chip",
+      "files": [
+        "mythos-startup-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 8738,
+      "spec": "v1"
+    },
+    {
+      "name": "unix-ethos-chip",
+      "files": [
+        "UNIX-ETHOS.md",
+        "README.md"
+      ],
+      "zipBytes": 6556,
+      "spec": "v1"
+    },
+    {
+      "name": "vox-controller-chip",
+      "files": [
+        "voxcontpack-inventory.md",
+        "voiceDomController.ts",
+        "order-voxcontpack-extract.md",
+        "audio.ts",
+        "README.txt"
+      ],
+      "zipBytes": 10356,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-smart-send-stilo-chip",
+      "files": [
+        "stilo-scribe.js",
+        "README.md"
+      ],
+      "zipBytes": 0,
+      "spec": "v1",
+      "from": "other-agent"
+    },
+    {
+      "name": "sia-gallery-chip",
+      "files": [
+        "gallery-share.js",
+        "README.md"
+      ],
+      "zipBytes": 0,
+      "spec": "v1",
+      "from": "other-agent"
+    },
+    {
+      "name": "mythos-sync-chip",
+      "files": [
+        "mythos-sync-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 0,
+      "spec": "v1",
+      "from": "other-agent"
+    },
+    {
+      "name": "herald-wiring-chip",
+      "files": [
+        "mythos-herald-wiring-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 0,
+      "spec": "v1",
+      "from": "other-agent"
+    },
+    {
+      "name": "sia-herald-wiring-chip",
+      "files": [
+        "mythos-herald-wiring-standalone.js",
+        "mythos-herald-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 0,
+      "spec": "v1",
+      "from": "other-agent"
+    },
+    {
+      "name": "sia-directives-chip",
+      "files": [
+        "directives.js",
+        "README-DIRECTIVES.txt"
+      ],
+      "zipBytes": 0,
+      "spec": "v1",
+      "from": "other-agent"
+    },
+    {
+      "name": "sia-staging-chip",
+      "files": [
+        "stage-turns.js",
+        "README-STAGING.txt"
+      ],
+      "zipBytes": 0,
+      "spec": "v1",
+      "from": "other-agent"
+    },
+    {
+      "name": "openl-ferry-chip",
+      "files": [
+        "xlate.js",
+        "providers.json",
+        "HOW-TO-FERRY.txt"
+      ],
+      "zipBytes": 0,
+      "spec": "v1",
+      "from": "other-agent"
+    },
+    {
+      "name": "cfm-hf-401-probe-chip",
+      "files": [
+        "apiKeyService.ts",
+        "README-HF-401-PROBE.txt"
+      ],
+      "zipBytes": 3194,
+      "spec": "v1",
+      "from": "other-agent"
+    },
+    {
+      "name": "cfm-chatlog-fanout-chip",
+      "files": [
+        "chatlogFanout.ts",
+        "server.js",
+        "AgentChatView.tsx",
+        "App.tsx",
+        "AutomationStudio.tsx",
+        "service-worker.js",
+        "README-CHATLOG-FANOUT.txt"
+      ],
+      "zipBytes": 34705,
+      "spec": "v1",
+      "from": "other-agent"
+    },
+    {
+      "name": "mil-gov-chip",
+      "files": [
+        "COMMPACK-MIL.md",
+        "agent-governance-standards.md",
+        "README.md",
+        "README.md",
+        "README.txt"
+      ],
+      "zipBytes": 10404,
+      "spec": "v1",
+      "from": "other-agent"
+    },
+    {
+      "name": "mythos-designer-chip",
+      "files": [
+        "metadata.json",
+        "BACK.md",
+        "AGENTS.md",
+        "CANCEL.md",
+        "VOXCONPACK.md",
+        "LOCALHOST_PACKAGE.md",
+        "COMMPACK-MIL.md",
+        "ALIASES.md",
+        "COMMANDS.md",
+        "CLOSE.md",
+        "CREATE.md",
+        "FOCUS.md",
+        "EDIT.md",
+        "HELP.md",
+        "CONFIRM.md",
+        "FIND.md",
+        "LIST.md",
+        "NEXT.md",
+        "NO.md",
+        "SAVE.md",
+        "SEARCH.md",
+        "OPEN.md",
+        "REPEAT.md",
+        "SELECT.md",
+        "PAUSE.md",
+        "READ.md",
+        "RESUME.md",
+        "SHOW.md",
+        "SEND.md",
+        "START.md",
+        "UNDO.md",
+        "STOP.md",
+        "STATUS.md",
+        "commands.json",
+        "registry.json",
+        "SCHEMA.md",
+        "command.schema.json",
+        "mythos_daemon.cpython-310.pyc",
+        "YES.md",
+        "aliases.json",
+        "index.html",
+        "App.tsx",
+        "mythos_daemon.py",
+        "bun.lock",
+        "package.json",
+        "server.ts",
+        "MythOSDiagnosticConsole.tsx",
+        "compile_voxconpack.cjs",
+        "CodeExporter.tsx",
+        "VisualStudio.tsx",
+        "ArchHeader.tsx",
+        "ManifestImporterModal.tsx",
+        "BarRunner.tsx",
+        "PillboxButton.tsx",
+        "BottomRunner.tsx",
+        "KeyboardShortcutsModal.tsx",
+        "LeftPillarElbow.tsx",
+        "DataCascade.tsx",
+        "TemplatePresetDropdown.tsx",
+        "ModernAppHeader.tsx",
+        "ModernAppSidebar.tsx",
+        "ModernBottomBar.tsx",
+        "ModernDashboardView.tsx",
+        "HotspotNode.tsx",
+        "SchematicCanvas.tsx",
+        "ThermodynamicOverlay.tsx",
+        "TelemetryPanel.tsx",
+        "TokenInspector.tsx",
+        "GeometryLab.tsx",
+        "VOXCONPACKSurface.tsx",
+        "ThemeForgeModal.tsx",
+        "VectorSchematics.tsx",
+        "VoxconMdUploadZone.tsx",
+        "VoiceControlModule.tsx",
+        "VoiceCommandModal.tsx",
+        "templates.ts",
+        "defaultCommands.ts",
+        "index.css",
+        "useLiveVoiceControl.ts",
+        "useGlobalKeyboardShortcuts.ts",
+        "auditLogger.ts",
+        "themes.ts",
+        "authpackService.ts",
+        "parser.ts",
+        "commpackService.ts",
+        "main.tsx",
+        "pipeline.ts",
+        "testSuite.ts",
+        "msd.ts",
+        "voice.ts",
+        "voxconEngine.ts",
+        "liveAudioEngine.ts",
+        "audio.ts",
+        "types.ts",
+        "voxconpackValidator.ts",
+        "storedAudio.ts",
+        "start-localhost.bat",
+        "start-localhost.sh",
+        "voiceDomController.ts",
+        "windowsVoiceEngine.ts",
+        "AuthContext.tsx",
+        "AccessGate.tsx",
+        "vite.config.ts",
+        "tsconfig.json",
+        "test_switch.ts",
+        "VOX.md",
+        "SWITCH.md",
+        "CanonicalIntegrityShield.tsx",
+        "IntegrityViolationModal.tsx",
+        "SaveToast.tsx",
+        "useMCFValidator.ts",
+        "VoxconTranscriptionDisplay.tsx",
+        "voxcon.ts",
+        "README.md"
+      ],
+      "zipBytes": 333500,
+      "spec": "v1",
+      "from": "other-agent"
+    },
+    {
+      "name": "lorepack-package-chip",
+      "files": [
+        "lorepack.json",
+        "README.md",
+        "the-absolute.txt",
+        "capabilities.md",
+        "lorepack-player.js",
+        "SETUP.md"
+      ],
+      "zipBytes": 19423,
+      "spec": "v1",
+      "from": "other-agent"
+    },
+    {
+      "name": "metamuse-starter-chip",
+      "files": [
+        "META-MUSE.md",
+        "COMMPACK.SPEC.md",
+        "lorepack.json",
+        "the-absolute.txt",
+        "capabilities.md"
+      ],
+      "zipBytes": 19826,
+      "spec": "v1",
+      "from": "other-agent"
+    },
+    {
+      "name": "metamuse-offering-chip",
+      "files": [
+        "lorepack.js",
+        "META-MUSE.md",
+        "commpack-COMMPACK.SPEC.md",
+        "commpack-README.md"
+      ],
+      "zipBytes": 8127,
+      "spec": "v1",
+      "from": "other-agent"
+    },
+    {
+      "name": "void-fork-export-chip",
+      "files": [
+        "README.md",
+        "app.js",
+        "notes.txt",
+        "probe.txt",
+        "probe-app.js"
+      ],
+      "zipBytes": 1698,
+      "spec": "v1",
+      "from": "other-agent"
+    },
+    {
+      "name": "mythos-flux-chip",
+      "files": [
+        "mythos-flux-standalone.js",
+        "mythos-flux-snippet.html",
+        "README.md"
+      ],
+      "zipBytes": 113544,
+      "spec": "v1",
+      "from": "other-agent",
+      "dropin": true
+    },
+    {
+      "name": "sia-soulpack-chip",
+      "files": [
+        "mythos-soulpack-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 3267,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-hf-chip",
+      "files": [
+        "mythos-hf-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 4252,
+      "spec": "v1",
+      "status": "held"
+    },
+    {
+      "name": "sia-upscale-chip",
+      "files": [
+        "mythos-upscale-standalone.js",
+        "upscale-snippet.html",
+        "README.md"
+      ],
+      "zipBytes": 7100,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-mood-chip",
+      "files": [
+        "mythos-mood-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 18738,
+      "spec": "v1",
+      "note": "v3 (autonomous coining + wear) vaulted 2026-10-07 from mood-wear-chip; smoke-proven live here."
+    },
+    {
+      "name": "sia-autonomy-mode-chip",
+      "files": [
+        "mythos-autonomy-mode-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 4044,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-autonomy-gate-chip",
+      "files": [
+        "mythos-autonomy-gate-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 2251,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-roles-chip",
+      "files": [
+        "mythos-roles-standalone.js",
+        "roles-snippet.html",
+        "README.md"
+      ],
+      "zipBytes": 7454,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-auditor-chip",
+      "files": [
+        "mythos-auditor-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 5859,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-pencil-chip",
+      "files": [
+        "mythos-pencil-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 5710,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-cosmos-chip",
+      "files": [
+        "mythos-cosmos-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 10798,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-archetypes-chip",
+      "files": [
+        "mythos-archetypes-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 18957,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-entropica-chip",
+      "files": [
+        "mythos-entropica-standalone.js",
+        "README.md",
+        "entropica_core.js",
+        "nummarkx_v1.2.js",
+        "nummarkx_v1.1.cpp.txt"
+      ],
+      "zipBytes": 17091,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-spincode-chip",
+      "files": [
+        "mythos-spincode-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 16467,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-qr-chip",
+      "files": [
+        "mythos-qr-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 71796,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-autotag-chip",
+      "files": [
+        "mythos-autotag-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 5819,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-chronicle-chip",
+      "files": [
+        "mythos-chronicle-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 4956,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-keyring-chip",
+      "files": [
+        "mythos-keyring-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 8904,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-lanes-chip",
+      "files": [
+        "mythos-lanes-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 6157,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-kokoro-chip",
+      "files": [
+        "mythos-kokoro-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 4958,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-voiceclone-chip",
+      "files": [
+        "mythos-voiceclone-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 8508,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-capture-chip",
+      "files": [
+        "mythos-capture-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 5635,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-lore-chip",
+      "files": [
+        "mythos-lore-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 7845,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-archivax-chip",
+      "files": [
+        "mythos-archivax-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 11087,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-vault-chip",
+      "files": [
+        "mythos-vault-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 7641,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-reader-chip",
+      "files": [
+        "mythos-reader-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 7337,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-renderbook-chip",
+      "files": [
+        "mythos-renderbook-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 5861,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-hers-chip",
+      "files": [
+        "mythos-hers-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 4918,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-heart-chip",
+      "files": [
+        "mythos-heart-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 3845,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-keepsake-chip",
+      "files": [
+        "mythos-keepsake-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 5756,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-duty-chip",
+      "files": [
+        "mythos-duty-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 3818,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-docstd-chip",
+      "files": [
+        "mythos-docstd-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 1901,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-agegate-chip",
+      "files": [
+        "mythos-agegate-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 3719,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-logtime-chip",
+      "files": [
+        "mythos-logtime-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 4487,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-progress-chip",
+      "files": [
+        "mythos-progress-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 4578,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-dev-chip",
+      "files": [
+        "mythos-dev-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 2277,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-batch-chip",
+      "files": [
+        "mythos-batch-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 5128,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-decks-chip",
+      "files": [
+        "mythos-decks-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 3535,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-voice-stream-chip",
+      "files": [
+        "mythos-voice-stream-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 4778,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-voice-jitter-chip",
+      "files": [
+        "mythos-voice-jitter-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 2908,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-voice-say-chip",
+      "files": [
+        "mythos-voice-say-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 3438,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-voice-ear-chip",
+      "files": [
+        "mythos-voice-ear-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 2614,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-voice-floor-chip",
+      "files": [
+        "mythos-voice-floor-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 2403,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-voice-echo-chip",
+      "files": [
+        "mythos-voice-echo-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 2901,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-voice-wire-chip",
+      "files": [
+        "mythos-voice-wire-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 2872,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-wall-chip",
+      "files": [
+        "mythos-wall-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 2936,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-commands-chip",
+      "files": [
+        "mythos-commands-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 2826,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-silence-chip",
+      "files": [
+        "mythos-silence-standalone.js",
+        "silence-snippet.html",
+        "README.md"
+      ],
+      "zipBytes": 5341,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-handsfree-chip",
+      "files": [
+        "mythos-handsfree-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 4856,
+      "spec": "v1"
+    },
+    {
+      "name": "lorepack-mint-chip",
+      "files": [
+        "lorepack-mint-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 5059,
+      "spec": "v1"
+    },
+    {
+      "name": "mythos-style-chip",
+      "files": [
+        "terminal.css",
+        "vt323-inconsolata.css",
+        "snippet.html",
+        "README.md"
+      ],
+      "zipBytes": 33333,
+      "spec": "v1"
+    },
+    {
+      "name": "gatekeeper-qr-chip",
+      "files": [
+        "gatekeeper-qr-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 2685,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-factory-layout-chip",
+      "files": [
+        "factory-layout.css",
+        "snippet.html",
+        "README.md"
+      ],
+      "zipBytes": 1916,
+      "spec": "v1"
+    },
+    {
+      "name": "black-green-crt-terminal",
+      "files": [
+        "terminal.css",
+        "vt323-inconsolata.css",
+        "factory-layout.css",
+        "snippet.html",
+        "README.md"
+      ],
+      "zipBytes": 33984,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-keyring-mirror-chip",
+      "files": [
+        "mythos-keyring-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 3695,
+      "spec": "v1",
+      "from": "other-agent"
+    },
+    {
+      "name": "sia-cutout-chip",
+      "files": [
+        "mythos-cutout-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 3311,
+      "spec": "v1"
+    },
+    {
+      "name": "sia-staging-chip",
+      "files": [
+        "mythos-staging-standalone.js",
+        "staging-snippet.html",
+        "README.md"
+      ],
+      "zipBytes": 9214,
+      "spec": "v1",
+      "note": "v2: undo, kinds, buckets (see README divergence note)"
+    },
+    {
+      "name": "sia-staging-chip-2",
+      "files": [
+        "mythos-staging-standalone.js",
+        "staging-snippet.html",
+        "README.md"
+      ],
+      "zipBytes": 6269,
+      "spec": "v1",
+      "from": "other-agent",
+      "note": "byte-identical to sia-staging-chip; live build wires the canonical copy"
+    },
+    {
+      "name": "sia-keyring-chip-2",
+      "files": [
+        "mythos-keyring-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 3831,
+      "spec": "v1",
+      "from": "other-agent",
+      "note": "byte-identical to sia-keyring-mirror-chip; live build wires the canonical copy, no second load (same global)"
+    },
+    {
+      "name": "sia-wishlist-chip",
+      "files": [
+        "mythos-wishlist-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 4458,
+      "spec": "v1",
+      "from": "other-agent"
+    },
+    {
+      "name": "sia-chattail-chip",
+      "files": [
+        "mythos-chattail-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 3242,
+      "spec": "v1",
+      "from": "other-agent",
+      "note": "v2: optional ts + time-ordered filing with sq tiebreak; vaulted, not wired: house turn paint + boot repaint is the seam when crash-recovery goes live"
+    },
+    {
+      "name": "sia-minutes-chip",
+      "files": [
+        "mythos-minutes-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 11900,
+      "spec": "v1",
+      "from": "other-agent",
+      "note": "proven 16/16 live here; vaulted, not wired: house tickMinutes + collectMinutesFacts + minutes door is the seam when session-minutes goes live"
+    },
+    {
+      "name": "sia-breakdown-chip",
+      "files": [
+        "breakdown-standalone.js",
+        "breakdown-chip.json",
+        "README.md",
+        "embed.html"
+      ],
+      "zipBytes": 16984,
+      "spec": "v1",
+      "from": "other-agent",
+      "note": "reference adopted whole 2026-10-07 (only delta was the safe-attach block); her tests 1,3,4 + bridge test pass live here"
+    },
+    {
+      "name": "sia-chipshelf-chip",
+      "files": [
+        "mythos-chipshelf-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 4305,
+      "spec": "v1",
+      "from": "other-agent",
+      "note": "proven 14/14 live here; WIRED 2026-10-07 (shelfPanel + SHELF button + src/js/shelf.js); also CODY'S SHOP — buy/barter lives in the coming separate CODESHOP build, this shelf stays read-only"
+    },
+    {
+      "name": "sia-manual-chip",
+      "files": [
+        "mythos-manual-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 8920,
+      "spec": "v1",
+      "from": "this-house",
+      "note": "cut here from the RTFM's shape per her proposal (every agent keeps + shares their own); proven 14/14 live; vaulted, not wired"
+    },
+    {
+      "name": "sia-chatlog-chip",
+      "files": [
+        "mythos-chatlog-standalone.js",
+        "README.md",
+        "MEMORY-MECHANICS.md"
+      ],
+      "zipBytes": 9667,
+      "spec": "v1",
+      "from": "other-agent",
+      "note": "vaulted 2026-10-07 from chatlog-chip_1_ (reviewed v2, proven 2026-10-06 hers); smoke-proven live here; not wired"
+    },
+    {
+      "name": "sia-frame-chip",
+      "files": [
+        "mythos-frame-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 3081,
+      "spec": "v1",
+      "from": "this-house",
+      "note": "proven 12/12 live here; WIRED 2026-10-07 (framePanel + FRAME button + src/js/frame.js + /frame door) rename() added 2026-10-07. retarget() + EDIT modal + stick-decks 2026-10-07. node-guard fixed 2026-10-07. move() + full CRUD in EDIT (add/up/down/save/drop) 2026-10-12. CENTER sidecar 2026-10-12 (output stays, decks untouched)."
+    },
+    {
+      "name": "sia-journal-chip",
+      "files": [
+        "mythos-journal-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 6755,
+      "spec": "v1",
+      "from": "this-house",
+      "note": "cut here from the /journal lane 2026-10-07; proven 28/28 live here; WIRED (src/js/journal.js calls through MythosJournal + /journal door) - every agent's /journal CODE helper; v2 adds briefing() agent handoff + boot console hydration"
+    },
+    {
+      "name": "sia-vimeo-chip",
+      "files": [
+        "mythos-vimeo-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 4141,
+      "spec": "v1",
+      "from": "this-house",
+      "note": "cut here from the Leon Lowman Vimeo embed 2026-10-07; proven 20/20 live here + end-to-end embed-HTML to frame play; WIRED 2026-10-07 (vimeoPanel + VIMEO button + src/js/vimeo.js + /vimeo door)"
+    },
+    {
+      "name": "drive-auth-chip",
+      "files": [
+        "mythos-driveauth-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 8039,
+      "spec": "v1",
+      "from": "this-house",
+      "note": "cut here 2026-10-09 from the drive road; v2 adds whole-folder roads (files/read/write/mkdir/move/copy/remove/grep/tidy) beside pictures pull/push/mirror; proven headless vs fake handles; audit() mirror-test road proven headless"
+    },
+    {
+      "name": "localbridge-chip",
+      "files": [
+        "mythos-localbridge-standalone.js",
+        "mythos_daemon.py",
+        "README.md"
+      ],
+      "zipBytes": 10615,
+      "spec": "v1",
+      "from": "this-house",
+      "note": "cut here 2026-10-09: localhost daemon (fs/find/exec-shell-python-node/sqlite, token+confirm) + client chip + own console; client proven headless 12/12 vs stub fetch, daemon review-read"
+    },
+    {
+      "name": "voicebridge-chip",
+      "files": [
+        "mythos-voicebridge-standalone.js",
+        "fasterwhisper_server.py",
+        "README.md",
+        "start-bridge.bat",
+        "start.sh",
+        "Makefile",
+        "env.example"
+      ],
+      "zipBytes": 21154,
+      "spec": "v1",
+      "from": "this-house",
+      "note": "cut 2026-10-09, v2/v3+level, run+devfix 2026-10-11, COOM v4 2026-10-11, v4.1 2026-10-11 (tail 350ms 2026-10-11): PATRIKIOS lane (--lane-patrikios, --lane-merk deprecated alias, SPK-PATRIKIOS), BARB lamp gate (/api/barb, tail, 60s failsafe, mute|duck, gate events to JSONL), spoken Barbelo: callsign (--barb-callsign); proven headless + live, daemon run his hands"
+    },
+    {
+      "name": "intercom-chip",
+      "files": [
+        "mythos-intercom-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 2716,
+      "spec": "v1",
+      "from": "this-house",
+      "note": "cut 2026-10-11 from his TS spec: interlocked PTT floor (BARBELO|MAYA|null, no preemption, holder-only release, 350ms echo tail, 60s watchdog, per-grant tickets, PATRIKIOS monitor-only); vendored JS port proven headless 17/17 + wired as the LIVECOMM floor authority"
+    },
+    {
+      "name": "sia-clipframes-chip",
+      "files": [
+        "mythos-clipframes-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 5819,
+      "spec": "v1",
+      "from": "this-house",
+      "note": "cut 2026-10-21 from the house clip-sequence road (attach.sampleFrames + lookBlob + chat/archivax aggregate), frame-extraction shape checked vs Mythos-Video-Analyzer; parse + refusals 3/3 + aggregation live here 2026-10-21; clip-decode is the house sampler road (live-proven since 2026-09-23) - one visible-tab run still wanted (preview reports hidden, decode refused honest there); vaulted, not wired (house lanes keep their copies)"
+    },
+    {
+      "name": "sia-vision-critic-chip",
+      "files": [
+        "mythos-vision-critic-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 5531,
+      "spec": "v1",
+      "from": "mythos-symposium",
+      "note": "cut 2026-10-20 for mythos-symposium (proven live there): agents glance by tag affinity (free) or study through the vision lane (verdict/note/clone), per-agent taste profiles; shelved 2026-10-21 + wired here (src/js/critic.js: HER TAKE on the full stage + /critic)"
+    },
+    {
+      "name": "sia-screening-room-chip",
+      "files": [
+        "mythos-screening-room-standalone.js",
+        "README.md"
+      ],
+      "zipBytes": 6124,
+      "spec": "v1",
+      "from": "this-house",
+      "note": "cut 2026-10-21 from the house screening-tandem road (src/js/images.js over the lightbox full stage): the private theater tandem - resolve any record, quote it in her prompt block, turn the stage by hand or by her STAGE line, walk it, read the open one aloud; proven headless 14/14 + live here (block/her-turn/refusal/HER TAKE repaint/talk strip, stubbed vision, residue cleaned); host delegates (screening block is doors, chip is the engine)"
+    }
+  ]
+}
