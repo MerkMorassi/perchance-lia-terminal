@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< HEAD
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,3 +29,2271 @@
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>
+=======
+<head>
+  <meta charset="UTF-8">
+  <title>SIA TERMINAL</title>
+  <link rel="stylesheet" href="src/css/terminal.css">
+</head>
+<body id="terminal-root" class="wallOff">
+
+<!-- THE START SEQUENCE (boot overlay). The first thing painted: a full-screen splash with the
+     start log, up before any module runs (this markup sits before every script but the server
+     block, and its own style is inline so it needs nothing else loaded). The STARTUP WATCH below
+     counts the modules as they land; when the settle check runs it calls window.__bootReady(),
+     which writes the honest closing lines (modules lit, archive turns, duty mode) and lifts the
+     screen. It sits UNDER the 18+ door (z 1500 < 2000) and under the failure banner, so neither
+     gate is weakened by it. If the sequence ever stalls, the screen itself says so. -->
+<style>
+#bootScreen{position:fixed;inset:0;z-index:1500;background:#000;color:#00ff00;font:12px/1.7 "Courier New",Courier,monospace;text-align:left;padding:8vh 8vw;box-sizing:border-box;overflow:hidden}
+#bootScreen .bsHead{font-size:15px;letter-spacing:5px}
+#bootScreen .bsSub{color:#008800;letter-spacing:2px;font-size:11px;margin-bottom:14px}
+#bootLog{max-height:54vh;overflow:hidden}
+#bootLog div{white-space:pre-wrap;word-break:break-all}
+#bootLog .bsDim{color:#008800}
+#bootLog .bsBad{color:#ff5050}
+#bootBarWrap{margin-top:14px;border:1px solid #005500;height:14px;position:relative}
+#bootBar{position:absolute;left:0;top:0;bottom:0;width:0;background:#00aa00}
+#bootMeta{margin-top:6px;color:#008800;font-size:11px;letter-spacing:1px}
+#bootCursor{display:inline-block;width:8px;height:13px;background:#00ff00;vertical-align:-2px;animation:bsBlink 1s steps(1) infinite}
+@keyframes bsBlink{50%{opacity:0}}
+#bootScreen.bsLift{opacity:0;transition:opacity .7s ease;pointer-events:none}
+</style>
+<div id="bootScreen">
+  <div class="bsHead">SIA TERMINAL</div>
+  <div class="bsSub">START SEQUENCE // 18+ NSFW BY DEFAULT</div>
+  <div id="bootLog"><div>START SEQUENCE :: THE SHELL IS UP.</div><div class="bsDim">WAITING ON THE MODULES ...</div></div>
+  <div id="bootBarWrap"><div id="bootBar"></div></div>
+  <div id="bootMeta"><span id="bootCount">MODULES ...</span> <span id="bootCursor"></span></div>
+</div>
+<script>
+/* THE START LOG (plain ES5, runs before every module). Counts the modules as they land,
+   logs the honest closing lines at settle, and lifts the screen. The trail survives the
+   screen itself (window.__bootTrail) so the sequence can be read back after. */
+(function () {
+  var t0 = Date.now(), ready = false, lifted = false, total = 0, healedSeen = 0;
+  var trail = [];
+  window.__bootTrail = trail;
+  function el(id) { return document.getElementById(id); }
+  function log(line, cls) {
+    trail.push(String(line));
+    if (lifted) return;
+    try {
+      var box = el("bootLog");
+      if (!box) return;
+      var d = document.createElement("div");
+      if (cls) d.className = cls;
+      d.textContent = String(line);
+      box.appendChild(d);
+      while (box.children.length > 48) box.removeChild(box.firstChild);
+    } catch (e) {}
+  }
+  window.__bootlog = log;
+  function lit() {
+    var n = 0;
+    try {
+      var ms = window.__bootModules || [];
+      for (var i = 0; i < ms.length; i++) { try { if (window[ms[i][0]]) n++; } catch (e) {} }
+    } catch (e) {}
+    return n;
+  }
+  function paint() {
+    if (lifted) return;
+    try {
+      if (!total && window.__bootModules) {
+        total = window.__bootModules.length;
+        log("SHELL :: " + total + " MODULES ON THE MANIFEST.");
+      }
+      var n = lit();
+      var c = el("bootCount"), b = el("bootBar");
+      if (c) c.textContent = total ? ("MODULES " + n + " / " + total) : ("MODULES " + n + " LIT");
+      if (b && total) b.style.width = Math.min(100, Math.round(n / total * 100)) + "%";
+      var healed = window.__bootHealed || [];
+      while (healedSeen < healed.length) {
+        log("RE-ASKED :: " + healed[healedSeen++] + " ... LIT");
+      }
+    } catch (e) {}
+  }
+  var ticker = setInterval(function () {
+    if (lifted || ready) { clearInterval(ticker); return; }
+    paint();
+  }, 400);
+  /* A script that never arrives is said out loud, on the screen, as it happens. */
+  document.addEventListener("error", function (e) {
+    if (ready || lifted) return;
+    var t = e && e.target;
+    if (!t || t.tagName !== "SCRIPT" || !t.getAttribute) return;
+    var s = t.getAttribute("src") || "";
+    if (s.indexOf("src/") === -1) return;
+    log(t.getAttribute("data-again") ? ("FAILED AGAIN :: " + s) : ("FAILED :: " + s), "bsBad");
+  }, true);
+  function lift() {
+    if (lifted) return;
+    lifted = true;
+    try { clearInterval(ticker); } catch (e) {}
+    try {
+      var s = el("bootScreen");
+      if (!s) return;
+      s.classList.add("bsLift");
+      setTimeout(function () { try { if (s.parentNode) s.parentNode.removeChild(s); } catch (e) {} }, 800);
+    } catch (e) {}
+  }
+  /* THE SETTLE. Called by the STARTUP WATCH once every script has had its turn (and the
+     second asks, if any). Best-effort honest reads - the archive's turn count, the duty
+     mode - each guarded and under a deadline, so a slow store can never hold the screen. */
+  window.__bootReady = function (left) {
+    if (ready) return;
+    ready = true;
+    try { clearInterval(ticker); } catch (e) {}
+    paint();
+    left = left || [];
+    var n = lit();
+    log(left.length
+      ? ("SETTLED :: " + n + " / " + (total || "?") + " LIT, " + left.length + " MISSING AFTER TWO ASKS")
+      : ("SETTLED :: " + n + " / " + (total || n) + " MODULES LIT"), left.length ? "bsBad" : "");
+    var done = false;
+    function fin(finLine) {
+      if (done) return;
+      done = true;
+      if (finLine) log(finLine);
+      try { log("DUTY :: " + (window.duty ? window.duty.mode() : "UNKNOWN")); } catch (e) {}
+      log("TERMINAL READY.");
+      setTimeout(lift, Math.max(900, (t0 + 1800) - Date.now()));
+    }
+    setTimeout(function () { fin("ARCHIVE :: NOT READABLE ON THIS PASS"); }, 2500);
+    try {
+      var k = window.root && window.root.kv && window.root.kv.sacred_archive;
+      if (!k || !k.get) { fin("ARCHIVE :: NOT READABLE ON THIS PASS"); return; }
+      k.get("master_log").then(function (logs) {
+        var c = (logs && logs.length) ? logs.length : 0;
+        fin("ARCHIVE :: " + c + " TURN" + (c === 1 ? "" : "S") + " ON RECORD");
+      }, function () { fin("ARCHIVE :: UNREADABLE"); });
+    } catch (e) { fin("ARCHIVE :: UNREADABLE"); }
+  };
+  /* THE STALL. Twenty seconds with no settle is said on the screen itself - the screen
+     is the error message, and it stays up so it can be read. */
+  setTimeout(function () {
+    if (ready || lifted) return;
+    log("START SEQUENCE STALLED :: THE MODULES HAVE NOT SETTLED IN 20S. RELOAD ONCE - THE FIRST VISIT CAN RACE THE FILE STORAGE.", "bsBad");
+  }, 20000);
+})();
+</script>
+
+<!-- ==========================================================================
+     THE SERVER (THE PAIR ROAD). src/js/pair.js is the client; this element is
+     the generator's server code, and IT IS PUBLIC SOURCE - anyone who views this
+     generator reads every word of it. Nothing secret may ever be put here, and
+     nothing secret ever is: the whole job below is to relay opaque frames
+     between two devices that already share a code. The server cannot read them
+     (every frame is AES-GCM ciphertext the devices made), cannot derive a room
+     (a room is named by the SHA-256 of the shared code, and the code itself
+     never crosses the wire), and cannot keep one (rooms live in the platform's
+     own pub/sub registry and in nothing else - `state`, the durable 50MiB, IS
+     NOT TOUCHED AT ALL, so there is no per-user storage here and nothing to
+     migrate when this file changes).
+     ========================================================================== -->
+<script type="text/x-server-plugin">
+// THE WHOLE SERVER IS FAN-OUT AND TWO QUESTIONS.
+//
+// The terminal's PAIR road (src/js/pair.js) needs no authority, no directory and no durable memory.
+// Two devices that share a code derive the SAME room id - the SHA-256 of that code - and both
+// subscribe to the topic below; the platform's own pub/sub then hands each device the other's frames
+// (the sender sees its own frame come back as well, which is how a device knows the room is live).
+// Frames are CIPHERTEXT: each one is sealed by the sending device with a key derived from the code,
+// which the server never learns.
+//
+// What is left for the server is therefore only: check the room id is the shape of a hash, and pass
+// the frame on. Nothing else is kept between events except one small rate bucket per connection, and
+// that is allowed to be lost - a rebuilt server (the platform may rebuild these globals at any time)
+// is FUNCTIONALLY IDENTICAL, because a device re-subscribes on its own every twenty seconds.
+//
+// The two RPCs exist only because pub/sub cannot answer them: how many devices are in a room, and
+// whether the room is alive at all - which is how a device tells "nobody has joined yet" apart from
+// "that code is wrong". Nothing here trusts the client: a room id that is not a 64-character
+// lowercase hex string is refused, a frame that is empty or over the cap is refused, and a device
+// must be SUBSCRIBED to the room it is publishing into (the platform's own registry is the check -
+// `conn.isSubscribed`), so this cannot be used as an open relay for arbitrary topics.
+var PAIR_PREFIX = "liapair-";
+var PAIR_MAX_FRAME = 24000;        // characters of ciphertext; the client chunks at about 12KB
+var PAIR_RATE_PER_SEC = 60;        // frames a second a connection may relay
+var PAIR_RATE_BURST = 120;
+var US = "\u001f";                 // the field separator the client also uses, so neither side needs JSON
+
+// ON THERE BEING NO ROOM CEILING HERE: the platform already bounds this - 4,096 topics per generator,
+// 64 subscriptions per connection, 10,000 connections - and a topic cannot outlive its subscribers, so
+// a room that is closed stops existing on its own. Counting rooms in this script would be bookkeeping
+// that the runtime rebuilds away in any case (see the header), so the bound that is actually enforced
+// is the per-connection frame rate, the frame size, and the platform's own limits.
+
+function pairTopic(roomId) {
+  var s = String(roomId == null ? "" : roomId).toLowerCase();
+  if (s.length !== 64) return "";
+  for (var i = 0; i < 64; i++) {
+    var c = s.charCodeAt(i);
+    if (!((c >= 48 && c <= 57) || (c >= 97 && c <= 102))) return "";   // 0-9 and a-f only
+  }
+  return PAIR_PREFIX + s;
+}
+function pairSubscribers(topic) { try { return pubsub.numSubscribers(topic); } catch (e) { return 0; } }
+
+// A TOKEN BUCKET PER CONNECTION, and nothing else. It is deliberately small and deliberately
+// forgettable: its only job is to stop one client turning this relay into a flood.
+var pairBuckets = new Map();
+function pairAllow(conn, now) {
+  var b = pairBuckets.get(conn.id);
+  if (!b) { b = { c: PAIR_RATE_BURST, t: now }; pairBuckets.set(conn.id, b); }
+  else { b.c = Math.min(PAIR_RATE_BURST, b.c + ((now - b.t) / 1000) * PAIR_RATE_PER_SEC); b.t = now; }
+  if (b.c < 1) return false;
+  b.c -= 1;
+  return true;
+}
+
+function pairJoin(conn, roomId) {
+  var t = pairTopic(roomId);
+  if (!t) return "err" + US + "badroom";
+  if (!pairAllow(conn, Date.now())) return "err" + US + "rate";
+  try { conn.subscribe(t); } catch (e) { return "err" + US + "subscribe"; }
+  // THE SENDER'S OWN FRAME COMES BACK TOO (the platform includes the sender in a publish), and that
+  // is on purpose: it is the ack that says the room is really working.
+  return "ok" + US + pairSubscribers(t);
+}
+
+function pairLeave(conn, roomId) {
+  var t = pairTopic(roomId);
+  if (!t) return "err" + US + "badroom";
+  try { conn.unsubscribe(t); } catch (e) {}
+  return "ok";
+}
+
+// ONE FRAME IN, ONE PUBLISH OUT. The payload is roomId + US + frame, so the server needs NO memory
+// of which room a connection is in - which is what makes it immune to the platform rebuilding these
+// globals under it.
+self.onmessage = ({ conn, data }) => {
+  try {
+    if (typeof data !== "string") return;
+    var i = data.indexOf(US);
+    if (i < 1) return;
+    var roomId = data.slice(0, i), frame = data.slice(i + 1);
+    var t = pairTopic(roomId);
+    if (!t || !frame || frame.length > PAIR_MAX_FRAME) return;
+    if (!conn.isSubscribed(t)) { try { conn.send("err" + US + "notjoined"); } catch (e) {} return; }
+    if (!pairAllow(conn, Date.now())) { try { conn.send("err" + US + "rate"); } catch (e) {} return; }
+    pubsub.publish(t, data.slice(i + 1));   // the sender is included: it is the device's own ack
+  } catch (e) {}
+};
+
+self.onclose = ({ conn }) => {
+  try { pairBuckets.delete(conn.id); } catch (e) {}
+};
+
+self.rpc = {
+  // JOIN (or re-join) A ROOM. Idempotent by design: a device calls it again every twenty seconds, so
+  // a room that was lost to a rebuild is back before anyone notices.
+  pair_join({ conn }, data) {
+    try { return pairJoin(conn, String(data)); } catch (e) { return "err" + US + "internal"; }
+  },
+  pair_leave({ conn }, data) {
+    try { return pairLeave(conn, String(data)); } catch (e) { return "err"; }
+  },
+  // HOW MANY DEVICES ARE IN THE ROOM - the platform's own count of who holds the topic open.
+  pair_count({ conn }, data) {
+    try { var t = pairTopic(String(data)); if (!t) return "err" + US + "badroom"; return "ok" + US + pairSubscribers(t); }
+    catch (e) { return "ok" + US + "0"; }
+  },
+  // IS ANYTHING THERE? A device that is about to join asks first, so "nobody has joined yet" and
+  // "that code is wrong" are different sentences on the screen.
+  pair_alive({ conn }, data) {
+    try { var t = pairTopic(String(data)); if (!t) return "err" + US + "badroom"; return pairSubscribers(t) > 0 ? "yes" : "no"; }
+    catch (e) { return "no"; }
+  },
+  // A LIVENESS PING, and the only thing this server answers without a room: it is what the client
+  // uses to tell a dead socket from a quiet room. (It still takes a payload field - every rpc here
+  // takes exactly one argument.)
+  pair_ping({ conn }, data) { return "pong"; }
+};
+</script>
+
+
+<!-- THE DOOR (src/js/agegate.js). Patrikios, 2026-09-30: "If the context creative, allegorical,
+     symbolic, fictional, etc. get a simple 18+ checkbox on initial page load." This is that
+     checkbox, and it is plain markup rather than something a script draws, because it has to be
+     on the screen from the first paint - before a single src/ file has loaded - and it stays up
+     until the box is ticked. The terminal renders behind it (opaque, z-index 2000, over the
+     gallery at 900 and the full stage at 1000), so nothing is visible until the door is open, and
+     the answer is kept in THIS BROWSER (kv lia_settings / agegate) so it asks once, not every
+     reload. It FAILS CLOSED: if the script never arrives the button below still works (the small
+     fallback at the foot of this file), and if neither arrives the door simply stays shut.
+     /agegate shows it again from inside the terminal; /agegate forget makes it ask on the next
+     load. The wording is his rule, in the terminal's own voice: adults only, NSFW by default,
+     and the one line that never moves - nothing involving anyone under 18. -->
+<!-- THE GATEKEEPER (src/js/gatekeeper.js). Patrikios, 2026-09-30: "have GATEKEEPER grant ACCESS
+     or DENY first. The first screen looks for a valid token and checks against it or the USER
+     presents his/her SIGIL (QR CODE) or token. Then they go to the age check screen." This is that
+     first screen, and it stands BEFORE the age door: opaque, z-index 2100, over the age gate at
+     2000, so a visitor who has not presented the household's shared secret never sees the age
+     screen underneath, let alone the terminal. The SIGIL is sixteen characters in four groups of
+     four; a device with no mark enrols on the first one it is ever given (that is how a second
+     device joins - shown once, on a screen already inside, typed in here), and every device after
+     that must match it. Only the SHA-256 of the token is ever kept (kv lia_settings / gatekeeper),
+     never the token. It FAILS CLOSED like the age door: if the module never arrives the fallback
+     at the foot of this file runs the same two keys, and if neither arrives the gate never opens.
+     /gatekeeper shows it again; /gatekeeper mint makes a fresh sigil; /gatekeeper forget makes it
+     ask on the next load. -->
+<div id="gateKeeper" role="dialog" aria-modal="true" aria-labelledby="gateKeeperTitle">
+  <div class="ageGatePanel gateKeeperPanel">
+    <div class="ageGateHead" id="gateKeeperTitle">SIA TERMINAL</div>
+    <div class="ageGateRule">PRIAPOS &#183; GUARDIAN OF THE GARDEN</div>
+    <p class="ageGateText">
+      This terminal belongs to a household, and at its threshold stands PRIAPOS - the Ancient God of
+      the Gardens, the Local Guardian. Present the TOKEN and he lets you through to the age screen:
+      type it, SCAN its QR with the camera, or UPLOAD the QR image. A pass shaped like
+      <span class="gateMono">gk_...</span> is read against your Authority (and only ever read - never
+      spent); a household sigil is checked against this device's own mark, and a device that has
+      never been given one enrols on the first it is shown.
+    </p>
+    <div class="gateSigil" id="gateSigil" hidden></div>
+    <canvas class="gateQr" id="gateQr" hidden></canvas>
+    <video class="gateVideo" id="gateVideo" hidden muted playsinline></video>
+    <label class="gateTokenRow" for="gateToken">
+      <span>TOKEN</span>
+      <input id="gateToken" type="text" spellcheck="false" autocomplete="off" placeholder="XXXX-XXXX-XXXX-XXXX or gk_...">
+    </label>
+    <input id="gateQrFile" type="file" accept="image/*" hidden>
+    <div class="ageGateRow">
+      <button id="gatePassBtn" class="ageGateKey" type="button" disabled title="present the token">PASS</button>
+      <button id="gateScanBtn" class="ageGateKey" type="button" title="read the token off a QR with the camera - decoded on this device, never uploaded">SCAN</button>
+      <button id="gateUploadBtn" class="ageGateKey" type="button" title="read the token out of a QR image file - decoded on this device, never uploaded">UPLOAD</button>
+      <button id="gateMintBtn" class="ageGateKey" type="button" title="make a fresh household sigil and enrol this device on it - shown once, carry it to the next device">MINT A SIGIL</button>
+      <button id="gateCodeBtn" class="ageGateKey" type="button" title="show a scan-to-approve code - an enrolled device scans it with its camera and lets this one in">SHOW CODE</button>
+      <button id="gateCopyBtn" class="ageGateKey" type="button" title="carry the shown-once sigil to the clipboard">COPY</button>
+      <button id="gateLeaveBtn" class="ageGateKey ageGateLeave" type="button" title="leave this page">LEAVE</button>
+    </div>
+    <div class="gateMsg" id="gateMsg" aria-live="polite"></div>
+    <div class="ageGateNote">
+      ONLY THE MARK OF THE SIGIL IS KEPT ON THIS DEVICE (kv lia_settings / gatekeeper) AND IT IS
+      NEVER SENT ANYWHERE. THE FULL TOKEN IS SHOWN ONCE, AT MINTING, AND NEVER PRINTED IN THE LOG.
+      /gatekeeper SHOWS THIS SCREEN AGAIN; /gatekeeper forget MAKES IT ASK ON THE NEXT LOAD.
+    </div>
+  </div>
+</div>
+
+<div id="ageGate" role="dialog" aria-modal="true" aria-labelledby="ageGateTitle">
+  <div class="ageGatePanel">
+    <div class="ageGateHead" id="ageGateTitle">SIA TERMINAL</div>
+    <div class="ageGateRule">18+ &#183; NSFW BY DEFAULT</div>
+    <p class="ageGateText">
+      This is an adults-only terminal. Everything made here is creative, allegorical, symbolic and
+      fictional work - stories, scenes, pictures and arguments between grown adults - and that is
+      why the door is marked.
+    </p>
+    <p class="ageGateText">
+      Nothing involving anyone under 18 is made here, ever, in any framing. That line is not a
+      setting, a mood or a scene, and nothing anyone types moves it.
+    </p>
+    <label class="ageGateCheck">
+      <input id="ageGateBox" type="checkbox">
+      <span>I AM 18 OR OVER</span>
+    </label>
+    <div class="ageGateRow">
+      <button id="ageGateEnterBtn" class="ageGateKey" type="button" disabled title="tick the box first">ENTER</button>
+      <button id="ageGateLeaveBtn" class="ageGateKey ageGateLeave" type="button" title="leave this page">NOT 18 &#183; LEAVE</button>
+    </div>
+    <div class="ageGateNote">
+      THE ANSWER IS KEPT ON THIS DEVICE ONLY AND IS NEVER SENT ANYWHERE. /agegate SHOWS THIS DOOR
+      AGAIN; /agegate forget MAKES IT ASK ON THE NEXT LOAD.
+    </div>
+  </div>
+</div>
+
+<!-- THE WALL (the background image, 2026-09-30). Patrikios handed over the background-image-plugin
+     and the `bgData` list in main.pjs; this is the call that puts it on the page. It has to be a
+     SQUARE BLOCK, not a script, because the engine evaluates it as the body is rendered, which is
+     why the wall is there at the first paint instead of arriving after boot. The plugin returns one
+     `<div style="position:fixed; inset:0; z-index:-1000; ...">`, so it sits behind everything and
+     the 18+ door above it is unaffected. The second argument is the opacity: the plugin reads the
+     list's own `opacity` field only as a truthiness gate and uses the ARGUMENT for the value (a
+     plugin bug - see the note in main.pjs), so 0.8 from the list is passed here so that it is
+     actually the wall's opacity.
+
+     IT SHIPS OFF. The `wallOff` class on <body> (see the tag above) is the switch; one rule in
+     src/css/terminal.css hides the wall while it is there, and src/js/wall.js (`window.wall`) reads
+     the DEVICE's choice out of kv (lia_settings / wall) and flips it - `/wall on|off|status` does the
+     same thing from inside the terminal. OFF is the shipped default because the picture is a
+     PLACEHOLDER: Patrikios, 2026-09-30: "That image is just a placeholder image for the moment. We
+     can have a list pointing to a perchance.org/upload file later." Swapping the picture is swapping
+     the `url` in `bgData`; when there is more than one URL, a plain pjs list is the shape the
+     plugin's own random-per-load branch expects. OFF is also the FAIL-SAFE default: if
+     src/js/wall.js never arrives the wall simply stays off and the terminal is whole, so - unlike
+     the door - this switch needs no fallback script. -->
+[background(bgData, 0.8)]
+
+<script>
+/* THE STARTUP WATCH (plain ES5 - it has to run even when everything else does not).
+
+   The terminal is a shell of src/ files, and a src/ file is only on the server once the
+   generator has been SAVED. While editing, the page serves the unsaved ones locally, so the
+   terminal looks whole on the machine that built it and dies silently everywhere else - a
+   tablet, a phone, the public URL - with no error worth reading, because a script that 404s
+   never gets to complain in a useful way. This watches for exactly that, keeps what it saw
+   for `/backup diag`, and if the terminal cannot start, says so on the screen instead of
+   leaving an empty page. */
+(function () {
+  var issues = [];
+  window.__bootIssues = issues;
+
+  document.addEventListener("error", function (e) {
+    var t = e.target;
+    if (!t) return;
+    if (t.tagName === "SCRIPT" && t.getAttribute("src")) {
+      issues.push("SCRIPT DID NOT LOAD :: " + t.getAttribute("src"));
+    } else if (t.tagName === "LINK" && t.getAttribute("href")) {
+      issues.push("STYLESHEET DID NOT LOAD :: " + t.getAttribute("href"));
+    }
+  }, true);
+
+  window.addEventListener("error", function (e) {
+    var at = e && e.filename ? " [" + String(e.filename).split("/").slice(-1)[0] + ":" + (e.lineno || 0) + "]" : "";
+    issues.push("ERROR :: " + ((e && e.message) || "unknown") + at);
+  });
+  window.addEventListener("unhandledrejection", function (e) {
+    var r = e && e.reason;
+    issues.push("UNHANDLED :: " + ((r && (r.message || r)) || "unknown"));
+  });
+
+  /* THE SECOND ASK, FOR EVERYTHING ELSE THE TERMINAL FETCHES. Not every src/ file is a
+     <script> tag: the command list, the memory index, the trait pack and the rest are
+     fetched by the modules themselves, and a load that races the file storage can lose one
+     of those as easily as a script - which is how a terminal can come up whole and still
+     have /help empty. Only a GET for a src/ path is touched, only when the first answer is
+     an error or a 404, and only once, with the same cache-busting second ask the scripts
+     get. Everything else - every other fetch, every other method, and the response itself
+     when it finally arrives - is passed through exactly as it was. */
+  (function () {
+    var realFetch = window.fetch;
+    if (!realFetch) return;
+    function isSrcPath(u) {
+      if (typeof u !== "string" || !u) return false;
+      return u.indexOf("src/") === 0 || u.indexOf("/src/") !== -1;
+    }
+    window.fetch = function (input, init) {
+      var self = this, args = arguments;
+      if (!isSrcPath(input)) return realFetch.apply(self, args);
+      if (init && init.method && String(init.method).toUpperCase() !== "GET") return realFetch.apply(self, args);
+      var attempt = function (url, first) {
+        return realFetch.call(self, url, init).then(function (res) {
+          if (first && (!res || !res.ok)) return wait().then(function () { return attempt(bust(url), false); });
+          return res;
+        }, function (err) {
+          if (!first) throw err;
+          return wait().then(function () { return attempt(bust(url), false); });
+        });
+      };
+      function wait() { return new Promise(function (r) { window.setTimeout(r, 350); }); }
+      function bust(u) { return u + (u.indexOf("?") === -1 ? "?" : "&") + "again=" + (new Date().getTime()); }
+      return attempt(input, true);
+    };
+  })();
+
+  var MODULES = [
+    ["progress", "src/js/progress.js"], ["logTime", "src/js/logtime.js"], ["studio", "src/js/studio.js"], ["lore", "src/js/lore.js"],
+    ["embed", "src/js/embed.js"], ["hers", "src/js/hers.js"], ["media", "src/js/vault.js"],
+    ["packs", "src/js/packs.js"], ["mythos", "src/js/mythos.js"], ["aim", "src/js/aim.js"], ["roles", "src/js/roles.js"],
+    ["instr", "src/js/instr.js"], ["keyring", "src/js/keys.js"], ["MythosKeyring", "src/chips/sia-keyring-mirror-chip/mythos-keyring-standalone.js"], ["MythosCutout", "src/chips/sia-cutout-chip/mythos-cutout-standalone.js"], ["MythosStaging", "src/chips/sia-staging-chip/mythos-staging-standalone.js"], ["stage", "src/js/stage.js"], ["MythosWishlist", "src/chips/sia-wishlist-chip/mythos-wishlist-standalone.js"], ["wish", "src/js/wish.js"], ["MythosChipshelf", "src/chips/sia-chipshelf-chip/mythos-chipshelf-standalone.js"], ["shelf", "src/js/shelf.js"], ["MythosBreakdown", "src/chips/sia-breakdown-chip/breakdown-standalone.js"], ["scripts", "src/js/scripts.js"], ["MythosFrame", "src/chips/sia-frame-chip/mythos-frame-standalone.js"], ["framelane", "src/js/frame.js"], ["MythosVimeo", "src/chips/sia-vimeo-chip/mythos-vimeo-standalone.js"], ["vimeo", "src/js/vimeo.js"], ["pics", "src/js/images.js"],
+    ["upscale", "src/js/upscale.js"], ["batch", "src/js/batch.js"], ["attach", "src/js/attach.js"], ["gallery", "src/js/gallery.js"],
+    ["upscaleLocal", "src/js/upscale-local.js"],
+    ["autotag", "src/js/autotag.js"],
+    ["tools", "src/js/tools.js"], ["auditor", "src/js/auditor.js"], ["capture", "src/js/capture.js"], ["docstd", "src/js/docstd.js"], ["cleandata", "src/js/cleandata.js"],
+    ["miniBox", "src/js/minibox.js"],
+    ["audition", "src/js/audition.js"],
+    ["hear", "src/js/hear.js"],
+    ["renderBook", "src/js/renderbook.js"], ["reader", "src/js/reader.js"], ["keepsake", "src/js/keepsake.js"], ["likes", "src/js/likes.js"],
+    ["archivax", "src/js/archivax.js"], ["live", "src/js/live.js"], ["kokoro", "src/js/kokoro.js"], ["voice", "src/js/voice.js"], ["amute", "src/js/amute.js"], ["handsfree", "src/js/handsfree.js"], ["intercom", "src/js/intercom.js"], ["liacomm", "src/js/liacomm.js"], ["turn", "src/js/turn.js"], ["gap", "src/js/airgap.js"], ["wm", "src/js/watermark.js"], ["avb", "src/js/avb.js"], ["duet", "src/js/duet.js"], ["tricom", "src/js/tricom.js"], ["voxcont", "src/js/voxcont.js"], ["theme", "src/js/theme.js"], ["msd", "src/js/msd.js"], ["groq", "src/js/groq.js"], ["localLLM", "src/js/local.js"], ["story", "src/js/story.js"],
+    ["waveform", "src/js/waveform.js"],
+    ["idea", "src/js/idea.js"], ["forgeBook", "src/js/forge.js"], ["cmd", "src/js/commands.js"], ["rtfm", "src/js/rtfm.js"], ["dms", "src/js/dms.js"], ["rtfmEditor", "src/js/rtfm-edit.js"], ["chronicle", "src/js/chronicle.js"], ["petition", "src/js/petition.js"], ["shift", "src/js/shift.js"], ["chatlog", "src/js/chatlog.js"], ["MythosJournal", "src/chips/sia-journal-chip/mythos-journal-standalone.js"], ["journal", "src/js/journal.js"], ["commpack", "src/commpack/commpack.js"], ["commpackLane", "src/js/commpack.js"], ["logEdit", "src/js/editlog.js"], ["draft", "src/js/draft.js"],
+    ["checkIn", "src/js/initiative.js"], ["proactive", "src/js/proactive.js"], ["duty", "src/js/duty.js"], ["herHand", "src/js/hand.js"], ["decks", "src/js/decks.js"], ["MythosDecks", "src/chips/sia-decks-chip/mythos-decks-standalone.js"], ["loreSay", "src/js/main.js"], ["backup", "src/js/backup.js"], ["keeper", "src/js/keeper.js"],
+    ["sync", "src/js/sync.js"], ["cloudSync", "src/js/sync-cloud.js"], ["drive", "src/js/drive.js"], ["pair", "src/js/pair.js"], ["mythosBridge", "src/js/bridge.js"],
+    // THE VOX PANEL, after the voice module it is a front-end for and after the pair road it takes the
+    // deck from when one of them opens (each panel closes the others).
+    ["vox", "src/js/vox.js"],
+    ["voxfactory", "src/js/voxfactory.js"],
+    ["send", "src/js/chat.js"],
+    ["jsQR", "src/js/jsqr.js"],
+    ["qrcode", "src/js/qrcode.js"],
+    ["xlate", "src/js/xlate.js"],
+    ["spincode", "src/js/spincode.js"],
+    ["spinscrolls", "src/js/spincode-scrolls.js"],
+    ["dev", "src/js/dev.js"],
+    ["MythosGateQR", "src/chips/gatekeeper-qr-chip/gatekeeper-qr-standalone.js"],
+    ["gatekeeper", "src/js/gatekeeper.js"],
+    ["agegate", "src/js/agegate.js"],
+    ["wall", "src/js/wall.js"],
+    ["saved", "src/js/saved.js"]
+  ];
+  window.__bootModules = MODULES;   // the one copy of this list; /backup diag reads it from here
+
+  function missingModules() {
+    var out = [];
+    for (var i = 0; i < MODULES.length; i++) {
+      var v = null;
+      try { v = window[MODULES[i][0]]; } catch (e) { v = null; }
+      if (!v) out.push(MODULES[i][1]);
+    }
+    return out;
+  }
+
+  /* THE SECOND ATTEMPT. A file can fail to arrive on a load that is otherwise fine - the
+     first visit to a page like this can race the storage that serves the unsaved files, and
+     the mistake is the load, not the file. The banner used to ask for a reload by hand; this
+     does it instead: anything still missing once every script the markup asked for has had
+     its turn is asked for AGAIN, one file at a time, through the file storage that is by now
+     certainly up, and only what fails twice is reported as a file that did not load.
+     Nothing is ever run twice: the settle tracker above is what makes that true - a file is
+     only ever re-asked for once every script the markup asked for has finished, so a name
+     that is still absent can only mean the file never ran. The files recovered this way are
+     kept in window.__bootHealed for `/backup diag`. */
+  var healed = [];
+  window.__bootHealed = healed;
+
+  function nameOf(path) {
+    for (var i = 0; i < MODULES.length; i++) if (MODULES[i][1] === path) return MODULES[i][0];
+    return null;
+  }
+  function present(path) {
+    var n = nameOf(path);
+    if (!n) return false;
+    try { return !!window[n]; } catch (e) { return false; }
+  }
+
+  /* A FILE THAT IS STILL ON ITS WAY MUST NEVER BE ASKED FOR TWICE. The name on window is not
+     proof that a script failed - a script that has been asked for but has not finished yet
+     looks exactly the same from here - so the check waits until every script the markup asked
+     for has SETTLED, loaded or failed. Each tag is counted as the page inserts it, and the
+     ones this watch asks for again are marked, so its own second asks are never counted. */
+  var tracking = {}, inFlight = 0;
+  function trackTag(el) {
+    var src = el && el.getAttribute && el.getAttribute("src");
+    if (!src || el.__tracked || el.getAttribute("data-again")) return;
+    el.__tracked = 1;
+    if (tracking[src]) return;
+    tracking[src] = 1;
+    inFlight++;
+    var done = function () { if (!el.__settled) { el.__settled = 1; inFlight--; } };
+    el.addEventListener("load", done);
+    el.addEventListener("error", done);
+  }
+  function trackScripts() {
+    var nodes = document.getElementsByTagName("script");
+    for (var i = 0; i < nodes.length; i++) trackTag(nodes[i]);
+  }
+  trackScripts();
+  if (window.MutationObserver) {
+    new MutationObserver(function (muts) {
+      for (var i = 0; i < muts.length; i++) {
+        var added = muts[i].addedNodes || [];
+        for (var j = 0; j < added.length; j++) {
+          var n = added[j];
+          if (!n || n.nodeType !== 1) continue;
+          if (n.tagName === "SCRIPT") trackTag(n);
+          else if (n.getElementsByTagName) {
+            var kids = n.getElementsByTagName("script");
+            for (var k = 0; k < kids.length; k++) trackTag(kids[k]);
+          }
+        }
+      }
+    }).observe(document.documentElement || document, { childList: true, subtree: true });
+  }
+
+  function retry(paths, done) {
+    var i = 0;
+    function step() {
+      if (i >= paths.length) { done(); return; }
+      var path = paths[i++];
+      if (present(path)) { if (healed.indexOf(path) === -1) healed.push(path); window.setTimeout(step, 40); return; }
+      var s = document.createElement("script");
+      s.src = path + (path.indexOf("?") === -1 ? "?" : "&") + "again=" + (new Date().getTime());
+      s.async = false;
+      s.setAttribute("data-again", "1");
+      s.onload = function () { if (healed.indexOf(path) === -1) healed.push(path); s.remove(); window.setTimeout(step, 40); };
+      s.onerror = function () { s.remove(); window.setTimeout(step, 40); };
+      (document.head || document.documentElement).appendChild(s);
+    }
+    step();
+  }
+
+  function heal(missing, done) {
+    retry(missing, function () {
+      var left = missingModules();
+      if (!left.length) { done(left); return; }
+      window.setTimeout(function () { retry(left, function () { done(missingModules()); }); }, 500);
+    });
+  }
+
+  function banner(missing) {
+    if (document.getElementById("bootFail")) return;
+    var box = document.createElement("div");
+    box.id = "bootFail";
+    box.style.cssText = "position:fixed;z-index:2147483647;left:0;right:0;top:0;max-height:82vh;overflow:auto;"
+      + "background:#140000;color:#ff6b6b;border-bottom:2px solid #ff2020;font:12px/1.55 monospace;"
+      + "padding:10px 12px;text-align:left;box-shadow:0 2px 14px #000;";
+    var head = document.createElement("div");
+    head.style.cssText = "color:#fff;font-weight:bold;margin-bottom:6px;letter-spacing:0.04em;";
+    head.textContent = "THE TERMINAL COULD NOT START :: " + missing.length + " SOURCE FILE"
+      + (missing.length === 1 ? "" : "S") + " DID NOT LOAD";
+    box.appendChild(head);
+
+    var list = document.createElement("div");
+    list.style.cssText = "color:#ffb020;word-break:break-all;margin-bottom:8px;";
+    list.textContent = missing.join("   ");
+    box.appendChild(list);
+
+    var why = document.createElement("div");
+    why.style.cssText = "color:#d8d8d8;margin-bottom:8px;";
+    why.textContent = "The files above did not run - and this page already asked for each of them a second time by itself, "
+      + "because a single file can fail to arrive on a load that is otherwise fine. The usual cause is that this page is built from "
+      + "the SAVED copy of the generator and they are not in it. On the machine that is editing this generator they are served locally, "
+      + "so the terminal looks whole there - everywhere else it cannot start at all. RELOAD once more: the very first visit to a page "
+      + "like this can load before the file storage for it is ready. If it still fails, the generator has to be SAVED (in the editor) "
+      + "with those files in it - nothing else will fix it, and no device can run it until then.";
+    box.appendChild(why);
+
+    var row = document.createElement("div");
+    function btn(label, fn, title) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = label;
+      if (title) b.title = title;
+      b.style.cssText = "font:12px monospace;background:#001a00;color:#00ff00;border:1px solid #00aa00;"
+        + "padding:4px 10px;margin-right:8px;cursor:pointer;";
+      b.onclick = fn;
+      row.appendChild(b);
+      return b;
+    }
+    btn("RELOAD", function () { location.reload(); }, "load the page again - the first visit can race the file storage");
+    if (window.backup && window.backup.download) {
+      btn("DOWNLOAD SOURCE BACKUP", function () {
+        try { window.backup.download().then(function (r) { alert("BACKUP WRITTEN: " + r.name + " (" + r.files + " files). Check your Downloads folder."); },
+          function (e) { alert("BACKUP FAILED: " + (e && e.message ? e.message : e)); }); }
+        catch (e) { alert("BACKUP FAILED: " + e.message); }
+      }, "download the whole source as a zip, from this page");
+    }
+    btn("HIDE THIS", function () { box.remove(); }, "hide this and use the page as it is");
+    box.appendChild(row);
+    (document.body || document.documentElement).appendChild(box);
+  }
+
+  var checked = false;
+  function check(force) {
+    if (checked) return;
+    trackScripts();
+    if (inFlight > 0 && !force) { window.setTimeout(check, 400); return; }
+    checked = true;
+    var missing = missingModules();
+    /* THE SCREEN LIFTS HERE. The start sequence (top of <body>) counts the modules as they
+       land; the settle is its closing cue - the honest lines and the lift run there. */
+    if (!missing.length) { try { if (window.__bootReady) window.__bootReady([]); } catch (e) {} return; }
+    heal(missing, function (left) {
+      try { if (window.__bootReady) window.__bootReady(left); } catch (e) {}
+      if (left.length) banner(left);
+    });
+  }
+  /* The first look is late enough that every script the markup asked for has had its turn
+     (a file still in flight must never be asked for a second time), and the net at the end
+     catches a load that reached "complete" without the load event ever reaching us. */
+  window.addEventListener("load", function () { window.setTimeout(check, 1500); });
+  window.setTimeout(check, 2000);
+  window.setTimeout(check, 6000);
+  window.setTimeout(function () { check(true); }, 15000);
+})();
+</script>
+
+<!-- ============================ THE THREE DECKS ============================
+     Patrikios, 2026-09-24: "Let's name the 3 major GUI elements: UPPER DECK, MAIN WINDOW,
+     LOWER DECK. The upper deck and the lower deck can show/hide."
+
+       UPPER DECK   this element. The status line, the tool bar, and the VIEWERS that hang from
+                    them (the DOCS panels - anything marked `data-viewer`).
+       MAIN STAGE   #output, below. The conversation. It is the one thing that is always there, and
+                    it STRETCHES to fill the page between the two decks - see the note under it.
+                    (Patrikios named the three decks on 2026-09-24 and called this one the MAIN
+                    WINDOW; he named it again the same day as the MAIN STAGE. Same element, and the
+                    old word still works anywhere a deck is named.)
+       LOWER DECK   #command-deck, below. The input, the controls row, and the panels docked in
+                    it (SYSTEM, KEYS, TOOLS, the forge, the story lane).
+
+     The upper and the lower deck can be put away and called back (src/js/decks.js):
+       - the key inside each deck (UPPER DECK /\u00b4 and LOWER DECK \/ - the chevron points the way the
+         deck will move), or /deck in the terminal;
+       - AUTOMATICALLY, a VIEWER: while a panel marked `data-viewer` is open the LOWER DECK stands
+         down, so the thing being read gets the room; closing it brings the deck back. That is his
+         example, made a rule: in the DOX viewer the lower deck hides, and when it is closed the
+         lower deck re-appears;
+       - each hidden deck leaves a TAB in the corner (top-right for the upper, bottom-right for the
+         lower) that brings it back, so a deck can never be lost.
+     The MAIN STAGE does not close: it is the conversation. -->
+<div id="upperDeck" data-deck="UPPER DECK">
+<div id="status">STATUS: INITIALIZING LATTICE...</div>
+
+<div id="lorebar">
+  <button id="lorepackUploadBtn" type="button" title="load your own .txt/.md memory into the LOREPACK (kept on this device)">LOAD LOREPACK</button>
+  <button id="lorepackToggleBtn" class="docsBtn" type="button" aria-expanded="false" aria-controls="lorepackFiles" title="show/hide LOREPACK documents" disabled>DOCS <span id="lorepackDocCount"></span><span class="caret">&#9662;</span></button>
+  <button id="docsViewBtn" class="docsBtn" type="button" aria-expanded="false" aria-controls="dmsView" title="THE DOX VIEWER: search every document this terminal holds - her memory, the manual, the shipped prose and data - by WORDS, by the CONCEPTS beside them, and by MEANING when the embedding lane has been built (/docs index). Read-only on purpose: it can list, open, read (TEXT), SUMMARISE (an AI summary kept with the time it was made), OUTLINE (the tags and keywords, no prose), draw the LOREPACK's GRAPH, find, relate and export a document, and it can never write, rename, move or delete one. FILL THE STAGE - on by default - gives it the whole page, both decks standing down. /docs SAYS ALL OF IT.">DOX VIEWER<span class="caret">&#9662;</span></button>
+  <button id="corepackUploadBtn" type="button" title="load trait definitions (.json) into the COREPACK (kept on this device)">LOAD COREPACK</button>
+  <button id="corepackToggleBtn" class="docsBtn" type="button" aria-expanded="false" aria-controls="corepackFiles" title="show/hide COREPACK traits" disabled>DOCS <span id="corepackDocCount"></span><span class="caret">&#9662;</span></button>
+  <span id="loreStatus"><span class="full">LOREPACK: EMPTY</span><span class="short">LOREPACK: EMPTY</span></span>
+  <button id="mythosImportBtn" type="button" title="read a pre-built MYTHOS lorem pack (.jsonl / .jsonl.gz) into this browser - read-only, nothing is minted here">IMPORT MYTHOS PACK</button>
+  <button id="loreClearBtn" type="button" title="drop the LOREPACK documents loaded on this device (shipped documents stay)" disabled>FORGET LOCAL</button>
+  <button id="systemBtn" type="button" title="read and rewrite the instructions she is given before every reply - who she is, the role on stage, the rules, and your own extra text (kept on this device)">SYSTEM &#9662;</button>
+  <button id="moodBtn" type="button" title="THE MOOD PANEL: the colours she answers in as their own console - every switch, the MOOD BOARD combinations with their editor, and the MOODPACK loadable pack. She flips, writes and applies from here too, live, in the conversation. /mood and /moodpack say it in words.">MOOD &#9662;</button>
+  <button id="moodpackBtn" type="button" title="THE MOODPACK PAGE: the loadable pack of colors as its own console - every pack color with its rule, a row to write new ones, an editor to rewrite or forget them, LOAD MOODPACK from a file, SAVE MOODPACK back to one, and UNLOAD to take the whole pack off again. The book is never written to. /moodpack says it in words.">MOODPACK &#9662;</button>
+  <button id="themeBtn" type="button" title="THE SKINS: the console wears its shipped CRT green, and takes designer skins as an override layer - a MYTHOS-DESIGNER ThemeConfig JSON (id, name, era, colors, glow, fonts) pasted, filed or fetched. Missing colors fall back to CRT per key, unknown keys are ignored, raw CSS is refused. /theme SAYS IT IN WORDS.">THEME &#9662;</button>
+  <button id="msdBtn" type="button" title="THE DESIGNER'S BOARDS: a MYTHOS-DESIGNER layout manifest (MSDLayoutManifest JSON) running HERE - its nodes, nav, KPI and widgets, with terminal: bindings that work this console through the same gates as voice control. /msd SAYS IT IN WORDS.">BOARDS &#9662;</button>
+  <button id="keysBtn" type="button" title="the API key ring: keys for outside services (ElevenLabs, Hugging Face, ...) kept in this browser only - never printed, never in the transcript, never handed to her">KEYS &#9662;</button>
+  <button id="stageBtn" type="button" title="THE STAGE: drop a scene and your subjects, drag her where she stands, save the still for the pipeline">STAGE &#9662;</button>
+  <button id="shelfBtn" type="button" title="THE SHELF: every vendored chip with its README first, then its source - nothing runs in here">SHELF &#9662;</button>
+  <button id="scriptsBtn" type="button" title="THE SCRIPT DRAWER: finished Tiny Screenwriter scripts, kept on this device to develop - fountain, breakdown, shot list, stills, and the parts she can play">SCRIPTS &#9662;</button>
+  <button id="frameBtn" type="button" title="THE FRAME: a pinned board of links plus any link you paste - Cutoutly ships pinned, anything playable plays">FRAME &#9662;</button>
+  <button id="centerBtn" type="button" title="THE CENTER: the video player right in the CENTER - it takes the MAIN STAGE slot, decks untouched. CLOSE gives it back.">CENTER &#9662;</button>
+  <button id="vimeoBtn" type="button" title="THE VIMEO: only Vimeo videos ever play here - paste an id, a Vimeo link, or the whole embed code">VIMEO &#9662;</button>
+  <button id="backupBtn" type="button" title="download the whole source of this generator as a zip - main.pjs, index.html and every file under src/, taken from this page right now, nothing uploaded. Also says which source files have never reached the server (which is why other devices cannot run it)">BACKUP &#8681;</button>
+  <button id="syncBtn" type="button" onclick="if(window.sync)window.sync.toggle()" title="THE SYNC: the conversation itself, out of this browser and back. The archive lives here and nowhere else - 1000 turns of it - and PURGE, a cleared profile or a new machine takes it all. Press this, press PICK, and choose the folder your chat backups are kept in (G:): every backup in it is listed, the newest is taken in on its own, and WRITE THE BACKUP OUT puts the whole conversation into that folder as lia-terminal-archive.json. Nothing is uploaded, nothing is ever deleted, and only turns this device is missing are ever added. /sync EXPLAINS IT ALL. THE SAME PANEL CARRIES THE CLOUD ROAD - THE ARCHIVE UP TO YOUR OWN GOOGLE DRIVE AND BACK (CONNECT, SEND TO DRIVE, RECEIVE; /cloud setup SAYS HOW).">SYNC &#8645;</button>
+  <input id="lorepackUploadInput" type="file" accept=".txt,.md,.text,.log,text/plain" multiple hidden>
+  <!-- THE PAIR LAMP, AND THE WAY TO THE DEVICE SYNC BOARD (src/js/pair.js, TODO.md 1dp and 1dq).
+       Empty and invisible until a room is actually open, so it is the LAMP first: it says PAIRED, how
+       many devices are in the room, and the first group of the fingerprint, which is what the other
+       device must show too. Pressing it opens the BOARD - and opens NO SOCKET: the only two presses on
+       that board that touch the network are MAKE A CODE and REJOIN, both deliberate, both his.
+
+       NO INVITE LINK, ON PURPOSE. Patrikios, 2026-09-30, after copying another generator's device-sync
+       screen: *"To be clear, no invite links. We remain private."* A link is a code in a URL - it goes
+       into browser history, into the clipboard, into any screenshot of the page, and it works for
+       anyone who ever sees it. The code here is read off one screen and typed into the other, and the
+       board says so where he will read it. -->
+  <button id="pairBadge" class="pairBadge" type="button" onclick="if(window.pair)window.pair.toggle()" title="THE DEVICE SYNC BOARD: two of your own devices in a room made of a twelve-character code - no account, no Drive, no folder, and NO INVITE LINK (a link is a code that lives in your history and your clipboard; this one is read off one screen and typed into the other). MAKE A CODE mints one here, REJOIN uses the other device's, SYNC NOW hands this device's archive over, and the server relays ciphertext it cannot read and keeps no record of who came. /pair SAYS EVERYTHING ELSE."></button>
+  <input id="corepackUploadInput" type="file" accept=".json,application/json" multiple hidden>
+  <input id="moodpackInput" type="file" accept=".json,application/json" multiple hidden>
+  <input id="mythosInput" type="file" accept=".gz,.jsonl,application/gzip,application/json" hidden>
+  <input id="syncDirInput" type="file" webkitdirectory multiple hidden>
+  <!-- PUT THE UPPER DECK AWAY (src/js/decks.js). The chevron points down: the deck moves DOWN out of
+       sight, and the tab it leaves in the top-right corner - UPPER DECK with the chevron the other
+       way - pulls it back. /deck does the same with words. -->
+  <button id="upperHideBtn" class="deckKey" type="button" onclick="if(window.decks)window.decks.toggle('upper')" title="put the UPPER DECK away - the status line, this tool bar, and any DOX viewer open in it. The conversation (the MAIN STAGE) gets the whole screen; the tab that appears in the top-right corner brings it back, and /deck says the state.">UPPER DECK &#9650;</button>
+</div>
+
+<!-- THE VIEWERS OF THE UPPER DECK. Anything marked `data-viewer` is a thing you LOOK AT (a list that
+     wants the screen): while one is open the LOWER DECK stands down on its own and comes back when it
+     is closed (src/js/decks.js). Mark the next viewer the same way and it behaves the same way. -->
+<div id="lorepackFiles" class="lorePanel" data-viewer="DOCS" hidden></div>
+<!-- THE DOX VIEWER (src/js/dms.js). The other DOCS panel lists WHAT IS IN HER MEMORY; this one is
+     the read-only DMS over every document the terminal holds - the memory, the manual, the shipped
+     prose and the data (and the source itself, if he asks for CODE). A search box at the top, the
+     documents under it, and a reader whose ops row is THE STORE, TEXT, SUMMARY, OUTLINE, GRAPH, FIND,
+     RELATED, EXPORT - four WAYS OF LOOKING at one document (TEXT is its own lines and is the default;
+     SUMMARY is the AI summary kept beside it, with the time it was made; OUTLINE is its tags and
+     keywords with no prose; GRAPH is the LOREPACK's own triplet graph and how it touches this
+     document), plus find inside it, the documents nearest it, and the way out. It stretches to fill
+     the page between the two decks and never over the MAIN STAGE (see `--viewer-max` in
+     src/css/terminal.css), and FILL THE STAGE takes the whole page instead - the upper deck's chrome
+     and the lower deck both stand down for it (Patrikios, 2026-09-26: "can stretch and fill the MAIN
+     STAGE, even closing the UPPER and LOWER CONTROL DECK as needed"), and TODAY IT IS THE DEFAULT
+     (2026-09-30: "In DOX VIEWER make FILL THE STAGE default"). The two long text lists IN it - the
+     store list and the search results - are drawn A PAGE AT A TIME (2026-09-30: "Paginate DOX VIEWER
+     MAIN STAGE text results"): nine rows - a page that FITS the stage and no more (2026-09-30: "limit
+     pagination to 9 max as this is what fills the MAIN STAGE at my current font size and looks good"),
+     moved by the PAGINATOR DECK at the foot of the page (the
+     numbered page chips and the arrow keys either side of them, just above the talk strip - see the
+     `#dmsPager` element below), and the same page printed in the log by /docs list, /docs
+     search and /docs find with PAGE n on any of them. No operation in it writes anything
+     INTO a document: the only modules that change one are the ones that own it (lore.js, rtfm-edit.js,
+     his editor). A summary is kept in kv `dms_summaries`, BESIDE the document and never inside it. -->
+<div id="dmsView" class="lorePanel dmsPanel" data-viewer="DOX" hidden>
+  <div class="dmsBar">
+    <span class="dmsTag">DOX VIEWER</span>
+    <input id="dmsQuery" type="search" spellcheck="false" autocomplete="off" placeholder="search every document - by words, or by the sense of them" title="what to look for. Press Enter. A quoted phrase (&quot;write the backup out&quot;) is looked for exactly and is not spread over the concepts beside it, and the last word may be a SCOPE (ALL, MEMORY, MANUAL, DOCS, DATA, CODE, SHIPPED).">
+    <button id="dmsGoBtn" type="button" title="search the store - the words first, then the concepts beside them, and the meaning lane when it has been built">SEARCH</button>
+    <select id="dmsScope" title="which collections the viewer reads. ALL is every DOCUMENT (her memory, the manual, the shipped prose and data); CODE is the source itself and is not part of ALL, because 2 MB of javascript is not a document."></select>
+    <button id="dmsFillBtn" class="dmsFill" type="button" aria-pressed="false" title="FILL THE STAGE (the DEFAULT when the viewer is selected): the DOX VIEWER takes the whole page - the upper deck's status line and tool bar and the lower deck both stand down for it, and the conversation waits underneath. Press again (or the way back, or Esc) to give the stage back for now - a reload is the default again. /docs full does the same from the terminal.">&#10530; FILL THE STAGE</button>
+    <button id="dmsCloseBtn" type="button" title="put the DOX VIEWER away - the LOREPACK's own DOCS button still lists her memory">&#215;</button>
+  </div>
+  <div id="dmsOps" class="dmsOps" hidden></div>
+  <div id="dmsBody" class="dmsBody"></div>
+  <!-- THE PAGINATOR DECK (src/js/dms.js, THE PAGINATOR DECK). Patrikios, 2026-09-30: "make the
+       paginator graphic with simple buttons in a control deck at the bottom of the page above the
+       chat block". It was a bar inside the body first, stuck to the top of it so the way to the next
+       page could not be scrolled away; it is a DECK now - the last thing before the input, directly
+       above the TALK STRIP below and outside the scrolling body altogether, which is what the sticky
+       bar was imitating. The graphic is the row of numbered page chips (the page he is on inverted,
+       the first and the last always drawn, the runs between them elided as "..."), the simple buttons
+       are the arrow keys either side of them and a FIRST and a LAST at the outer ends, and the count
+       in words sits beside the lot. paintPager() is its only writer, and it takes itself off the page
+       in every view that has no page (a document, a summary, an outline, the stats, the graph) - so
+       this element is empty until the store list or a search is drawn, and it can be drawn before the
+       rows are because it only ever reads the viewer's own state. /docs EXPLAINS IT (PAGINATION), and
+       /docs list, /docs search and /docs find print the same page in the log with PAGE n. -->
+  <div id="dmsPager" class="dmsPager" role="group" aria-label="pagination" hidden></div>
+  <!-- THE TANDEM'S TALK STRIP (src/js/dms.js, THE TANDEM). Opening the viewer puts the LOWER DECK
+       down - his own rule, and the right one while a document is being read - but a page that has
+       to be closed in order to speak is not a page the two of them can share. So the conversation
+       stays here, in the viewer's own foot: the presence line (HITL, his eye; ALIA, her hand),
+       the newest line of the log mirrored beside it, and the intercom voice.js already owns
+       (LIVE = the hands-free loop, TALK = push to talk, LISTEN = her mouth) with a one-line box
+       that drives the same `#userInput` and the same `window.send()` the lower deck's box does.
+       TANDEM is the shared page itself: off means she is told nothing and cannot turn it. (The
+       directive she writes is NOT spelled out in this file: the engine evaluates square brackets
+       in index.html's text and comments alike, so it lives in src/js/dms.js and chat.js.) -->
+  <div id="dmsTalk" class="dmsTalk">
+    <div class="dmsTalkRow">
+      <span class="dmsWho" id="dmsHere"></span>
+      <span class="dmsWho alia" id="dmsAlia"></span>
+      <span class="dmsAir" id="dmsAir"></span>
+      <button id="dmsMicBtn" class="dmsKey" type="button" aria-pressed="false" title="LIVE CONVERSATION: open the microphone and leave it open - she answers aloud, then listens again. This is the hands-free way to talk while a document has the whole screen (the same key as the lower deck's microphone).">LIVE</button>
+      <button id="dmsTalkBtn" class="dmsKey" type="button" title="PUSH TO TALK: the microphone opens for what you are about to say and what it hears lands in the box below (the lower deck's TALK key).">TALK</button>
+      <button id="dmsListenBtn" class="dmsKey" type="button" title="LISTEN: she reads her newest reply out loud (the lower deck's LISTEN key). While she has the floor the key is locked - the intercom does not talk over her.">LISTEN</button>
+      <button id="dmsTandemBtn" class="dmsKey" type="button" aria-pressed="true" title="THE TANDEM: while it is on she is told what is on the stage and where you are reading, and she may turn the page under your eyes with a PAGE line naming a document and a line (the directive is written in src/js/dms.js - the perchance engine reads square brackets, so it is spelled out there and not here). Press to turn her hand off (/tandem off does the same).">TANDEM</button>
+    </div>
+    <div class="dmsSay" id="dmsTalkSay"></div>
+    <div class="dmsTalkEnter">
+      <input id="dmsTalkInput" type="text" spellcheck="false" autocomplete="off" placeholder="talk to her while you read - she can see this page" title="what you say here goes to her exactly as if it were typed in the lower deck's box. Slash commands work here too (/docs look, /deck, /tandem, ...).">
+      <button id="dmsTalkSend" type="button" title="send it - the same as the lower deck's SEND">SEND</button>
+    </div>
+  </div>
+</div>
+<div id="corepackFiles" class="lorePanel" data-viewer="DOCS" hidden></div>
+</div>
+
+<!-- THE MAIN STAGE. The conversation, and the only deck that never closes: a terminal with nothing
+     to read is a terminal with nothing in it. The text size is the one standard everywhere (A- / A+).
+
+     IT STRETCHES. #output is the flex child that grows, so it takes every pixel the UPPER DECK and
+     the LOWER DECK leave it - the upper deck's chrome and the room the lower deck is standing on are
+     measured and published as CSS variables (--upper-chrome, --stage-reserve, --viewer-max, all set
+     in src/js/decks.js "STRETCHING THE STAGE" and src/js/forge.js syncDeckSpace), and the DOX viewer
+     may grow to fill the page but never over the stage's floor. So the stage can never be pushed out
+     of sight by a deck or a viewer, and it never leaves a gap either. -->
+<div id="stageRow">
+<aside id="leftPanel" class="sidePanel" data-deck="LEFT PANEL">
+  <div class="sideHead">
+    <span class="sideTitle">PILOT'S SEAT</span>
+    <button id="leftHideBtn" class="deckKey" type="button" onclick="if(window.decks)window.decks.toggle('left')" title="put the LEFT PANEL away - the pilot's seat and the MASTER ARM. The MAIN STAGE takes the room; the tab on the left edge brings it back, and /deck says the state.">&#9664;</button>
+  </div>
+  <div class="sideBody">
+    <div class="sideSub">MASTER ARM</div>
+    <div id="dutyLamp" class="dutyLamp">DUTY: ...</div>
+    <div class="sideBtnRow">
+      <button id="dutyOffBtn" type="button" onclick="if(window.duty)window.duty.arm(false)" title="stand everything down - she answers when spoken to, nothing runs on its own">OFF</button>
+      <button id="dutySemiBtn" type="button" onclick="if(window.duty)window.duty.setLevel('semi')" title="partial automation - the check-in and the quiet hours, never the wide door">SEMI</button>
+      <button id="dutyFullBtn" type="button" onclick="if(window.duty)window.duty.setLevel('full')" title="full automation - everything lit runs">FULL</button>
+    </div>
+    <div class="sideNote">/duty SAYS IT IN WORDS</div>
+    <div class="sideSub">MODE</div>
+    <div id="modeLamp" class="modeLamp text">MODE :: TEXT</div>
+    <div class="sideBtnRow">
+      <button id="modeTextBtn" type="button" onclick="if(window.voice)window.voice.setMode('text')" title="TEXT - type, she texts. The voice keys still work by hand (TALK, LISTEN).">TEXT</button>
+      <button id="modeRadioBtn" type="button" onclick="if(window.voice)window.voice.setMode('radio')" title="RADIO SILENCE - text turns only, like a chat room. The microphone and the live channel stay dark, and she never speaks aloud.">RADIO SILENCE</button>
+      <button id="modeTalkBtn" type="button" onclick="if(window.voice)window.voice.setMode('talk')" title="TALK - the speech conversation: the live channel opens, auto-read and auto-send go on, and both sides talk.">TALK</button>
+    </div>
+    <div class="sideNote">/mode SAYS IT IN WORDS</div>
+    <div class="sideSub">HER HAND</div>
+    <div id="handLamp" class="handLamp">HER HAND :: ...</div>
+    <div class="sideNote">/hand SAYS WHAT SHE TOUCHED</div>
+    <div class="sideSub">LIACOMM</div>
+    <div class="sideBtnRow">
+      <button id="liacommBtn" type="button" onclick="if(window.liacomm)window.liacomm.toggle()" title="LIACOMM - the house intercom on its own page in this dash: the big key, the lamp, the line. HOLD to speak, LET GO to send, her answer comes back OVER VOICE.">LIACOMM</button>
+      <button id="duetBtn" type="button" onclick="if(window.duet)window.duet.toggle()" title="LIVECOMM - the live voice exchange on its own page: the interlocked floor (one owner - BARBELO, MAYA or FREE), the VAD meter live, the feed of every turn, GO LIVE for the whole bridge, MONITOR MAYA for her line to your ears. /duet SAYS IT.">LIVECOMM</button>
+      <button id="tricomBtn" type="button" onclick="if(window.tricom)window.tricom.toggle()" title="TRICOMM - the three-way call on its own page: you, Barbelo and Maya, audio only. Your mic or the iPhone wireless, her usual voice, Maya on any external input, each with a meter, into your headphones. /tricom SAYS IT.">TRICOMM</button>
+    </div>
+    <div class="sideNote">HOLD TO SPEAK, LET GO TO SEND</div>
+    <div class="sideSub">VOICE CONTROL</div>
+    <div class="sideBtnRow">
+      <button id="voxcontSideBtn" type="button" aria-pressed="false" title="VOICE CONTROL (VOXCONTPACK'S HANDS) - when ON, words spoken on the INTERCOM key work the console instead of going to her: name a switch and it moves. STOP always works, even OFF. /voxcont SAYS IT.">VOICE CONTROL</button>
+    </div>
+    <div class="sideNote">/voxcont on ARMS IT</div>
+    <div class="sideSub">AUDIO</div>
+    <div id="auMeter" class="auMeter" title="the room and her mouth, live - the microphone while it is open, her voice while she speaks, anything playing"><div id="auMeterFill"></div></div>
+    <div class="sideBtnRow">
+      <button id="auMuteBtn" type="button" aria-pressed="true" title="audio everywhere is ON - her voice, the audition bus, clips and previews all sound. Press to kill every sound.">AUDIO</button>
+    </div>
+    <div class="sideNote">OFF KILLS EVERY SOUND</div>
+    <div id="pilotMount"></div>
+  </div>
+</aside>
+<div id="output" data-deck="MAIN STAGE">LIA v1.0 - SACRED ARCHIVE TERMINAL
+READY FOR INPUT.</div>
+<aside id="rightPanel" class="sidePanel" data-deck="RIGHT PANEL">
+  <div class="sideHead">
+    <button id="rightHideBtn" class="deckKey" type="button" onclick="if(window.decks)window.decks.toggle('right')" title="put the RIGHT PANEL away - the senior officer's station. The MAIN STAGE takes the room; the tab on the right edge brings it back, and /deck says the state.">&#9654;</button>
+    <span class="sideTitle">SENIOR OFFICER</span>
+  </div>
+  <div class="sideBody">
+    <div class="sideSub">CLEARED STATION</div>
+    <div id="seniorMount"></div>
+  </div>
+</aside>
+</div>
+
+<!-- THE TABS A HIDDEN DECK LEAVES BEHIND (src/js/decks.js). Fixed to the corner of the screen, above
+     everything except the overlays (gallery 900, mini box 950, stage 1000) - so a viewer covers them,
+     which is right: a deck that is down is not what you are looking at. They are the way back, always. -->
+<button id="upperShowTab" class="deckTab tabTop" type="button" hidden onclick="if(window.decks)window.decks.show('upper')" title="the UPPER DECK is put away - press to bring the status line, the tool bar and the viewers back">UPPER DECK &#9660;</button>
+<button id="lowerShowTab" class="deckTab tabBottom" type="button" hidden onclick="if(window.decks)window.decks.show('lower')" title="the LOWER DECK is put away - press to bring the input, the controls and the docked panels back. /deck says why it is down (the DOX viewer has the stage, or a viewer is open).">LOWER DECK &#9650;</button>
+<button id="leftShowTab" class="deckTab tabLeft" type="button" hidden onclick="if(window.decks)window.decks.show('left')" title="the LEFT PANEL is put away - press to bring the pilot's seat and the MASTER ARM back">PANEL &#9654;</button>
+<button id="rightShowTab" class="deckTab tabRight" type="button" hidden onclick="if(window.decks)window.decks.show('right')" title="the RIGHT PANEL is put away - press to bring the senior officer's station back">&#9664; PANEL</button>
+
+<div id="command-deck" data-deck="LOWER DECK">
+  <div id="systemPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>SYSTEM INSTRUCTIONS</span><span id="spState"></span></div>
+    <div class="cpRow">
+      <span class="cpLabel">BLOCK</span>
+      <select id="spBlock" title="which part of her instructions to read or rewrite"></select>
+      <button id="spSave" type="button" title="keep this text on this device - she is told it from her next reply">SAVE</button>
+      <button id="spReset" type="button" title="put the shipped or built text back - on a block of your own, this deletes it">RESET</button>
+      <button id="spNewBlock" type="button" title="create a new named block of your own - it sits in the stack just before EXTRA INSTRUCTIONS">+ NEW BLOCK</button>
+    </div>
+    <textarea id="spText" rows="10" spellcheck="false"></textarea>
+    <div id="spNote"></div>
+    <div class="cpRow" id="spNewBlockRow" hidden>
+      <span class="cpLabel">NEW BLOCK</span>
+      <input id="spNewBlockTitle" type="text" placeholder="name (e.g. SCENE RULES)" spellcheck="false">
+      <button id="spNewBlockGo" type="button" title="write the text above into a new block and add it to the stack">ADD IT</button>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">ROLE</span>
+      <select id="spRole" title="which layer she is wearing - the actor underneath never changes"></select>
+      <button id="spRoleDel" type="button" disabled title="delete a role written on this device">DELETE</button>
+      <button id="spRoleEdit" type="button" title="edit the layer text of the role on stage - it loads into the box above; SAVE keeps it on this device, RESET puts the shipped text back">EDIT</button>
+      <button id="spNewRole" type="button" title="write the text above as a new role layer, kept on this device">+ NEW ROLE</button>
+    </div>
+    <div class="cpRow" id="spNewRow" hidden>
+      <span class="cpLabel">NEW ROLE</span>
+      <input id="spNewId" type="text" placeholder="id (e.g. lia)" spellcheck="false">
+      <input id="spNewTitle" type="text" placeholder="title (e.g. LIA)" spellcheck="false">
+      <input id="spNewAddr" type="text" placeholder="calls him (optional)" spellcheck="false">
+      <button id="spNewGo" type="button">WRITE IT</button>
+    </div>
+    <!-- THE MOOD ROW (src/js/moods.js). A mood is a COLOUR on what she says, not a role and not a
+         trait, and this row is a CONSOLE: every chip is a SWITCH, any number of them can be on at
+         once, ALL OFF is a chip too, and the colours that are on are combined into the MOOD block of
+         her prompt - one block, one rule after another. A chip's tooltip carries its whole rule. The
+         shipped moods are THE BOOK at src/moods/moods.json; + NEW MOOD writes one on the fly - a name
+         and how she is to sound, which is the whole thing - and it is kept on this device.
+         EVERY MOOD IS CRUD-ABLE (EDIT, and the row it opens, below the + NEW MOOD row). EDIT picks
+         any mood - a shipped one, one written here, or one put away - and writes its NAME and its
+         RULE; SAVE keeps it (a SHIPPED mood keeps the change ON THIS DEVICE, and the book itself is
+         never written to), RESET puts a shipped mood's own wording back, PUT IT BACK returns one that
+         DELETE took off the console, and DELETE puts the picked one away. NOTHING HERE IS DESTROYED:
+         a mood put away is still on file, still printed by /mood list, and always comes back.
+         She can write and flip one herself with a MOOD line in a reply (spelled out in
+         src/js/moods.js, never here - the engine reads square brackets).
+         THE PENCIL'S PANEL HAS THE SAME ROW (see the DRAFT panel below): the same
+         store, the same press, so the colours she answers in are also the colours a polish comes
+         back in. -->
+    <div class="cpRow">
+      <span class="cpLabel">MOOD</span>
+      <div class="cpChips" id="spMoods"></div>
+      <button id="spMoodDel" type="button" disabled title="put a mood away: it leaves the console and stays on file - the book is untouched and PUT IT BACK returns it">DELETE</button>
+      <button id="spMoodEdit" type="button" title="edit any mood - shipped or written here: its name, its rule, or both. A shipped mood keeps your wording on this device, and RESET puts the book's own words back.">EDIT</button>
+      <button id="spMoodNew" type="button" title="write a colour of your own - a name and how she is to sound. It is switched on at once and kept on this device.">+ NEW MOOD</button>
+    </div>
+    <div class="cpRow" id="spMoodRow" hidden>
+      <span class="cpLabel">NEW MOOD</span>
+      <input id="spMoodName" type="text" placeholder="name (e.g. HUNGRY)" spellcheck="false">
+      <input id="spMoodRule" type="text" placeholder="how she is to sound, in your words" spellcheck="false">
+      <button id="spMoodGo" type="button" title="add this mood to the row and put it on her">ADD IT</button>
+      <button id="spMoodCancelNew" type="button" title="close this row without writing anything" onclick="if(window.moods){document.getElementById('spMoodRow').hidden=true;}">CANCEL</button>
+    </div>
+    <!-- THE MOOD EDITOR (src/js/moods.js) - THE REST OF CRUD. Pick a mood, write its NAME and its
+         RULE, and keep it. A SHIPPED mood's change lives on this device (`edits`), so the book stays
+         exactly as it ships and RESET always has its own wording to put back; a mood written here is
+         rewritten in place. THE ID NEVER MOVES on either road, so every MOOD BOARD that names the
+         colour still finds it through a rename. PUT IT BACK is the other half of DELETE - a mood
+         taken off the console is still on file. -->
+    <div class="cpRow" id="spMoodEditRow" hidden>
+      <span class="cpLabel">EDIT MOOD</span>
+      <select id="spMoodPick" title="which mood to change. Every mood on file is here - the shipped ones (THE BOOK), the ones written on this device, and the ones put away."></select>
+      <input id="spMoodEditName" type="text" placeholder="name (the chip)" spellcheck="false">
+      <input id="spMoodEditRule" type="text" placeholder="how she is to sound" spellcheck="false">
+      <button id="spMoodSave" type="button" title="keep this name and this rule">SAVE IT</button>
+      <button id="spMoodReset" type="button" title="drop the wording kept on this device and read the book's own words again">RESET</button>
+      <button id="spMoodRestore" type="button" title="put a mood taken off the console with DELETE back on it">PUT IT BACK</button>
+      <button id="spMoodCancel" type="button" title="close the editor">CANCEL</button>
+    </div>
+    <!-- THE MOOD BOARD (src/js/moods.js) - A META-MOOD. A mood above is ONE colour; a board is a
+         NAMED, SAVED, ORDERED COMBINATION of them, held still. Press a chip to APPLY it - its
+         colours, in its order, replacing what is switched on rather than adding to it. SAVE BOARD
+         names the combination that is switched on now (type a name, then SAVE THE SWITCHES), BIND
+         saves it FOR THE ROLE ON STAGE so that shifting her onto that role switches the combination
+         on by itself, and DELETE takes the saved combination out. DELETING A BOARD NEVER TOUCHES A
+         COLOUR: a board is a combination, and every mood in it stays a switch on the row above.
+         She has the whole of this herself - a BOARD line in a reply applies, saves, adds, drops,
+         moves and binds one (the grammar is spelled out in src/js/moods.js, never here, because the
+         engine reads square brackets). -->
+    <div class="cpRow">
+      <span class="cpLabel">MOOD BOARD</span>
+      <div class="cpChips" id="spBoards"></div>
+      <button id="spBoardBind" type="button" disabled title="save the board that is switched on now for the role on stage, so shifting her onto that role switches it on by itself">BIND</button>
+      <button id="spBoardDel" type="button" disabled title="delete the saved combination that is switched on now - the colours themselves are untouched and stay on the console">DELETE</button>
+      <button id="spBoardSave" type="button" title="name the combination of colours that is switched on now and save it as a board">SAVE BOARD</button>
+    </div>
+    <div class="cpRow" id="spBoardRow" hidden>
+      <span class="cpLabel">NEW BOARD</span>
+      <input id="spBoardName" type="text" placeholder="name (e.g. STORM)" spellcheck="false">
+      <button id="spBoardGo" type="button" title="save the colours that are switched on now as a board under this name, in that order">SAVE THE SWITCHES</button>
+    </div>
+    <div class="cpActions">
+      <button id="spPreview" type="button" title="print the whole system prompt exactly as she receives it">PREVIEW FULL PROMPT</button>
+      <button id="spClose" type="button">CLOSE</button>
+      <span class="cpHint">EDITS LIVE ON THIS DEVICE &#183; THE src/ FILES ARE THE SHIPPED DEFAULTS</span>
+    </div>
+  </div>
+  <div id="msdPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>BOARDS &#183; DESIGNED THERE, RUNNING HERE</span><span id="msdState"></span></div>
+    <div id="msdBoard"></div>
+    <div class="cpRow"><button id="msdClose" type="button">CLOSE</button><span class="cpNote">/msd import BUILDS THE BOARD FROM A DESIGNER MANIFEST</span></div>
+  </div>
+  <div id="themePanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>THEME &#183; DESIGNER SKINS OVER CRT</span><span id="thState"></span></div>
+    <div class="cpRow">
+      <span class="cpLabel">SKINS</span>
+      <div class="cpChips" id="thSkins"></div>
+      <button id="thCrt" type="button" title="take any skin off and go back to the shipped CRT green">CRT GREEN</button>
+      <button id="thClose" type="button">CLOSE</button>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">PASTE JSON</span>
+      <textarea id="thText" rows="4" placeholder='paste a designer ThemeConfig JSON (compact), or its '"'"'id'"'"': {...} copy snippet' spellcheck="false" style="resize:vertical"></textarea>
+    </div>
+    <div class="cpRow">
+      <button id="thApply" type="button" title="read the box as a designer ThemeConfig and wear it">WEAR IT</button>
+      <label class="cpLabel" for="thFile" style="flex:0 0 auto">OR FILE</label>
+      <input id="thFile" type="file" accept=".json,application/json">
+      <input id="thUrl" type="text" placeholder="or a URL to one" spellcheck="false">
+      <button id="thUrlGo" type="button" title="fetch a ThemeConfig JSON off a URL">FETCH</button>
+      <button id="thExport" type="button" title="print this skin back out as designer JSON">EXPORT</button>
+    </div>
+    <div class="cpRow"><span class="cpNote">STRUCTURED TOKENS ONLY - RAW CSS IS REFUSED. MISSING COLORS FALL BACK TO CRT, UNKNOWN KEYS ARE IGNORED.</span></div>
+  </div>
+  <div id="moodPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>MOOD &#183; THE COLOURS SHE ANSWERS IN</span><span id="mpState"></span></div>
+    <div class="cpRow">
+      <span class="cpLabel">MOOD</span>
+      <div class="cpChips" id="mpMoods"></div>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">MOOD BOARD</span>
+      <div class="cpChips" id="mpBoards"></div>
+      <button id="mpBoardBind" type="button" disabled title="save the board that is switched on now for the role on stage">BIND</button>
+      <button id="mpBoardDel" type="button" disabled title="delete the saved combination that is switched on now">DELETE</button>
+      <button id="mpBoardSave" type="button" title="name the combination of colours that is switched on now and save it as a board">SAVE BOARD</button>
+      <button id="mpBoardEdit" type="button" title="edit a saved board - rename it, reorder its colours, add or drop one">EDIT</button>
+    </div>
+    <div class="cpRow" id="mpBoardRow" hidden>
+      <span class="cpLabel">NEW BOARD</span>
+      <input id="mpBoardName" type="text" placeholder="name (e.g. STORM)" spellcheck="false">
+      <button id="mpBoardGo" type="button" title="save the colours that are switched on now as a board under this name, in that order">SAVE THE SWITCHES</button>
+    </div>
+    <div class="cpRow" id="mpBoardEditRow" hidden>
+      <span class="cpLabel">EDIT BOARD</span>
+      <select id="mpBoardPick" title="which saved combination to change"></select>
+      <input id="mpBoardEditName" type="text" placeholder="board name (the chip)" spellcheck="false">
+      <button id="mpBoardRenameBtn" type="button" title="keep this name for the picked board">RENAME</button>
+      <input id="mpBoardAddName" type="text" placeholder="add a colour (name)" spellcheck="false">
+      <button id="mpBoardAddBtn" type="button" title="put this colour into the picked board">ADD</button>
+      <button id="mpBoardEditDel" type="button" title="delete the picked combination - the colours themselves are untouched">DELETE BOARD</button>
+      <button id="mpBoardEditCancel" type="button" title="close the board editor">CANCEL</button>
+    </div>
+    <div class="cpRow">
+      <div class="cpChips" id="mpBoardMembers"></div>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">MOODPACK</span>
+      <span class="cpNote" id="mpPackNote">THE LOADABLE PACK - colors over the book, badged as pack colors, taken off again by UNLOAD. The book is never written to.</span>
+      <button id="mpPackLoad" type="button" title="load a mood pack (a json file with a moods list of id, label and rule) from this machine - kept on this device, layered over the book">LOAD MOODPACK</button>
+      <button id="mpPackOpen" type="button" title="open the MOODPACK page - every pack color with its rule, and the rows to write, rewrite, save and load them">OPEN THE PAGE</button>
+      <button id="mpPackStatus" type="button" title="say what the pack holds">STATUS</button>
+      <button id="mpPackUnload" type="button" title="drop the local pack - the book is the whole console again">UNLOAD</button>
+    </div>
+    <div class="cpActions">
+      <button id="mpClose" type="button">CLOSE</button>
+      <span class="cpHint">MOOD CRUD LIVES HERE AND IN THE SYSTEM PANEL &#183; /mood /moodpack /board SAY IT IN WORDS &#183; SHE WRITES MOOD, BOARD AND MOODPACK LINES LIVE</span>
+    </div>
+  </div>
+  <div id="moodpackPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>MOODPACK &#183; THE LOADABLE PACK OF COLORS</span><span id="mpxState"></span></div>
+    <div class="cpRow">
+      <span class="cpLabel">PACK COLORS</span>
+      <span class="cpNote">colors over the book, badged as pack colors - SHIPPED ones come with the manifest, ONES ON THIS DEVICE are yours. The book is never written to.</span>
+    </div>
+    <div class="cpRow">
+      <div class="cpChips" id="mpxMoods" style="flex:1 1 100%"></div>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">NEW PACK COLOR</span>
+      <input id="mpxName" type="text" placeholder="name (e.g. HUNGRY)" spellcheck="false">
+      <input id="mpxRule" type="text" placeholder="how she is to sound, in your words" spellcheck="false">
+      <button id="mpxNewGo" type="button" title="file this color in the pack on this device - it is a switch on the console at once, badged as a pack color">ADD IT</button>
+      <button id="mpxEdit" type="button" title="rewrite a pack color - pick one and write its new name and rule. A shipped color keeps your wording on this device, the shipped pack is untouched.">EDIT</button>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">ADD A CONSOLE COLOR</span>
+      <select id="mpxAddPick" title="file a color that is already on the console - shipped or written here - into the pack, with the wording that is in force now"></select>
+      <button id="mpxAddGo" type="button" title="file the picked console color into the pack on this device - the book and your own list are untouched, the pack holds the copy">FILE IT</button>
+    </div>
+    <div class="cpRow" id="mpxEditRow" hidden>
+      <span class="cpLabel">EDIT PACK COLOR</span>
+      <select id="mpxPick" title="which pack color to change"></select>
+      <input id="mpxEditName" type="text" placeholder="name (the chip)" spellcheck="false">
+      <input id="mpxEditRule" type="text" placeholder="how she is to sound" spellcheck="false">
+      <button id="mpxSaveEdit" type="button" title="keep this name and this rule in the pack">SAVE IT</button>
+      <button id="mpxForget" type="button" title="forget the picked color - only one written on this device can be forgotten">FORGET</button>
+      <button id="mpxCancel" type="button" title="close this row without keeping anything">CANCEL</button>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">THE PACK FILE</span>
+      <button id="mpxLoad" type="button" title="load a mood pack (a .json file holding a moods list of id, label and rule) from this machine - kept on this device, layered over the book">LOAD MOODPACK</button>
+      <button id="mpxSaveFile" type="button" title="write the pack colors on this device out to moodpack.json - load it back anywhere with LOAD MOODPACK">SAVE MOODPACK</button>
+      <button id="mpxUnload" type="button" title="drop the local pack - the book is the whole console again">UNLOAD</button>
+      <button id="mpxStatusBtn" type="button" title="say what the pack holds">STATUS</button>
+    </div>
+    <div class="cpRow"><span class="cpNote" id="mpxStatus">THE PACK IS EMPTY UNTIL YOU WRITE OR LOAD ONE.</span></div>
+    <div class="cpActions">
+      <button id="mpxClose" type="button">CLOSE</button>
+      <span class="cpHint">WRITE ONE WITH THE ROW ABOVE OR /moodpack new &#183; LOAD TAKES A FILE &#183; SAVE WRITES ONE &#183; SHE WRITES MOODPACK LINES LIVE</span>
+    </div>
+  </div>
+  <div id="createPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>IMAGE FORGE</span><span id="cpProgress"></span></div>
+    <label class="cpLabel" for="cpPrompt">POSITIVE PROMPT</label>
+    <textarea id="cpPrompt" rows="3" placeholder="describe the image you want...  (\{a|b\} takes one per image, \{pose:hetero\} draws a pose from the book)"></textarea>
+    <label class="cpLabel" for="cpNegative">NEGATIVE PROMPT <span class="cpOpt">(OPTIONAL)</span></label>
+    <textarea id="cpNegative" rows="2" placeholder="what to keep out of the image..."></textarea>
+    <div class="cpRow" id="cpRecallRow" hidden>
+      <span class="cpLabel">LAST TIME</span>
+      <button id="cpRecall" type="button" title="put the positive prompt and the negative list you last used back in the boxes above. THEY ARE NOT PUT BACK BY THEMSELVES: a new load starts with empty boxes (which is what a SAVE is), and this is where the last pair waits. Nothing is lost by ignoring it - the RECIPE BOOK still keeps every prompt that was actually rendered.">RECALL LAST PROMPT</button>
+      <span class="cpNote" id="cpRecallNote">THE BOXES START EMPTY NOW</span>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">A WHOLE FILE PASTED?</span>
+      <button id="cpSplit" type="button" title="find the sections in what you pasted - positive, negative, seeds, art style, (seed:::…) (guidanceScale:::…) tags - file them into the boxes above, and report every move. Your pasted text stays in the box until you press this; a CREATE does the same split invisibly for that render.">SPLIT INTO FIELDS</button>
+      <span class="cpNote">positive &#183; negative &#183; seeds &#183; tags &#183; veiled tongue &#183; \{a|b\} choice</span>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">RECIPE (THE BOOK)</span>
+      <select id="cpRecipe" title="the recipe book: whole prompt templates built from Patrikios' own documents, each with named slots. Pick one and press FILL THE PROMPT and the boxes are rewritten with the recipe's own wording in every slot, so there is a whole prompt to read and edit before a CREATE"></select>
+      <button id="cpRecipeUse" type="button" title="write the whole filled prompt into the boxes above - every slot at the wording the recipe ships with, and the recipe's negative only into an empty negative box">FILL THE PROMPT</button>
+      <button id="cpRecipeShow" type="button" title="print the recipe, every slot it has, and what each one holds">SHOW IT</button>
+      <button id="cpRecipeAsk" type="button" title="ask her to compose: she chooses a recipe and fills its slots with her own words, and says why">SHE COMPOSES</button>
+      <button id="cpRecipeClear" type="button" title="no recipe rides with this render">NO RECIPE</button>
+      <span class="cpNote" id="cpRecipeNote"></span>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">POSE (THE BOOK)</span>
+      <select id="cpPose" title="the book of poses, filed by list - pick one to hold it for the render, or to load its phrase into the prompt"></select>
+      <button id="cpPoseUse" type="button" title="write this pose's phrase into the positive prompt (it is only written once - the planner in front is not removed)">PUT IN PROMPT</button>
+      <button id="cpPoseClear" type="button" title="no pose rides with this render">NO POSE</button>
+      <button id="cpPoseAsk" type="button" title="ask her to choose from the book - her pick lands in the pose slot and in the prompt, and she says why">SHE CHOOSES</button>
+      <button id="cpPoseNew" type="button" title="ask her to invent new poses for the list chosen on the left (or for a new list, if she names one)">SHE INVENTS</button>
+      <span class="cpNote" id="cpPoseNote"></span>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">EDIT THAT POSE</span>
+      <input id="cpPoseName" type="text" placeholder="name" spellcheck="false" title="what the pose is called - this is also its render token unless it has its own phrase">
+      <select id="cpPoseFamily" title="which list it lives in"></select>
+      <input id="cpPoseRender" type="text" placeholder="phrase for the renderer (optional)" spellcheck="false" title="a pose can carry its own phrase: for a coined name, or when the name alone means something else to an image model. Leave blank to send the name.">
+      <button id="cpPoseSave" type="button" title="keep this name, list and phrase ON THE POSE SELECTED ABOVE - that is how a pose is renamed, re-filed, or given a phrase of its own">SAVE POSE</button>
+      <button id="cpPoseAdd" type="button" title="file what is in these fields as a pose the book did not have">+ NEW POSE</button>
+      <button id="cpPoseRemove" type="button" title="take the selected pose out of the book">REMOVE</button>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">NEW LIST</span>
+      <input id="cpListKey" type="text" placeholder="list name (e.g. ritual)" spellcheck="false" title="a list is just a family of poses - make one and file poses into it">
+      <button id="cpListAdd" type="button">MAKE LIST</button>
+      <button id="cpPoseBook" type="button" title="print the whole book: every list, every pose, and everything added on this device">PRINT THE BOOK</button>
+      <span class="cpNote" id="cpBookNote"></span>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">SHOT LIST (THE IDEAS)</span>
+      <div class="cpChips" id="cpDice"></div>
+      <button id="cpIdeaRoll" type="button" title="roll one item from every dimension in main.pjs and glue them into the positive prompt - who, where, the act, the crop, the framing, the angle, the camera, the file, the lens, the focus, the light, the grade, the look, the master tail">ROLL ALL</button>
+      <button id="cpIdeaClear" type="button" title="forget the roll (the boxes are left exactly as they are)">CLEAR</button>
+      <span class="cpNote" id="cpIdeaNote"></span>
+    </div>
+    <div class="cpRow" id="cpIdeaChipRow" hidden>
+      <span class="cpLabel">HELD</span>
+      <div class="ideaChips" id="cpIdeaChips"></div>
+    </div>
+    <div class="cpRow" id="cpSceneRow" hidden>
+      <span class="cpLabel">SCENE</span>
+      <span class="cpNote" id="cpSceneLine"></span>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">SIZE</span>
+      <div class="cpChips" id="cpSizes"></div>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">NUMBER OF GENERATIONS?</span>
+      <div class="cpChips" id="cpCounts"></div>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">GUIDANCE</span>
+      <select id="cpGuidance" title="how literally it follows the prompt: 1 = loose, 7 = default, 30 = strict"></select>
+      <span class="cpNote">1 = loose &#183; 30 = strict</span>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">SEED</span>
+      <input id="cpSeed" type="text" inputmode="numeric" placeholder="random" title="blank = a fresh random seed for every image; pin a number to reproduce a run (each image in the batch advances the seed by one)">
+      <button id="cpSeedRoll" type="button" title="fill in a fresh random seed">RANDOM</button>
+      <span class="cpNote">blank = new seed per image &#183; pinned = +1 each</span>
+    </div>
+    <div class="cpActions">
+      <button id="cpGo" type="button">CREATE</button>
+      <button id="cpClose" type="button">CLOSE</button>
+      <span class="cpHint">CTRL+ENTER = CREATE</span>
+    </div>
+  </div>
+  <div id="keysPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>API KEYRING</span><span id="kpState"></span></div>
+    <div class="cpRow">
+      <span class="cpLabel">PROVIDER</span>
+      <select id="kpProvider" title="which service this key is for; the registry says where the key goes on a request and how to probe it"></select>
+      <span class="cpNote" id="kpUse"></span>
+    </div>
+    <div class="cpRow" id="kpCustomRow" hidden>
+      <span class="cpLabel">ID</span>
+      <input id="kpCustomId" type="text" placeholder="my-provider" spellcheck="false" autocomplete="off">
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel" id="kpSecretHint">KEY</span>
+      <input id="kpSecret" type="password" placeholder="paste the key here - it stays in this browser" spellcheck="false" autocomplete="new-password" data-lpignore="true" data-1p-ignore="true" data-bwignore="true">
+      <button id="kpReveal" type="button" title="show or hide what is in the box">SHOW</button>
+      <button id="kpSave" type="button" title="keep this key in this browser only">STORE</button>
+      <span class="cpNote" id="kpState2"></span>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">LABEL</span>
+      <input id="kpLabel" type="text" placeholder="optional note (e.g. personal, workshop)" spellcheck="false" autocomplete="off">
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">BYPASS</span>
+      <label title="suppress every ElevenLabs call - voice falls back to this browser, nothing is sent"><input id="kpBypassEleven" type="checkbox"> SUPPRESS ELEVENLABS</label>
+      <label title="suppress every Google (Gemini) call - ears, words, live wire and embeddings stand down, nothing is sent"><input id="kpBypassGoogle" type="checkbox"> SUPPRESS GOOGLE (GEMINI)</label>
+      <span class="cpNote" id="kpBypassState"></span>
+    </div>
+    <div class="kpList" id="kpList"></div>
+    <div class="cpActions">
+      <button id="kpTest" type="button" title="ask the provider whether it accepts this key" disabled>TEST KEY</button>
+      <button id="kpRemove" type="button" title="drop this key from this browser (press twice)" disabled>FORGET KEY</button>
+      <button id="kpClose" type="button">CLOSE</button>
+      <span class="cpHint">THIS DEVICE ONLY &#183; NEVER PRINTED &#183; NEVER IN THE TRANSCRIPT OR HER CONTEXT</span>
+    </div>
+  </div>
+  <div id="stagePanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>THE STAGE &#183; STILLS FOR THE PIPELINE</span><span id="stState"></span></div>
+    <div class="cpRow">
+      <button id="stDemo" type="button" title="load one of her seven stone rooms as the scene">LOAD DEMO SCENE</button>
+      <button id="stStill" type="button" title="render the blocking as a PNG still into Downloads">SAVE STILL</button>
+      <button id="stClear" type="button" title="strike the set">STRIKE SET</button>
+      <button id="stMin" type="button" title="collapse the stage to its head bar">MINIMIZE</button>
+      <button id="stClose" type="button">CLOSE</button>
+      <span class="cpNote" id="stNote"></span>
+    </div>
+    <div id="stagingMount"></div>
+    <div class="cpActions">
+      <span class="cpHint">DROP A SCENE, THEN YOUR SUBJECTS &#183; DRAG TO BLOCK, WHEEL TO SIZE &#183; NOTHING IS UPLOADED</span>
+    </div>
+  </div>
+  <div id="shelfPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>THE SHELF &#183; READ THE VENDORED CHIPS</span><span id="shState"></span></div>
+    <div class="cpChips" id="shChips"></div>
+    <div id="shReadme" class="shReadme" hidden></div>
+    <iframe id="shFrame" class="shFrame" sandbox="" title="chip source"></iframe>
+    <div class="cpRow">
+      <button id="shClose" type="button">CLOSE</button>
+      <span class="cpNote" id="shNote"></span>
+    </div>
+    <div class="cpActions">
+      <span class="cpHint">README FIRST &#183; SOURCE BELOW &#183; READ-ONLY &#183; NOTHING RUNS IN HERE</span>
+    </div>
+  </div>
+  <div id="scriptsPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>THE SCRIPT DRAWER &#183; FINISHED SCRIPTS TO DEVELOP</span><span id="scState"></span></div>
+    <div class="cpRow">
+      <input id="scTitle" type="text" placeholder="TITLE OF THE FINISHED SCRIPT" maxlength="80">
+    </div>
+    <div class="cpRow">
+      <textarea id="scFountain" class="scFountIn" placeholder="PASTE THE FINISHED FOUNTAIN HERE - FILE THE SCRIPT DEVELOPS IT ON THE SPOT"></textarea>
+    </div>
+    <div class="cpRow">
+      <button id="scSave" type="button" title="develop the fountain (breakdown + shot list) and file it in the drawer, on this device">FILE THE SCRIPT</button>
+      <button id="scClose" type="button">CLOSE</button>
+      <span class="cpNote" id="scNote"></span>
+    </div>
+    <div class="cpChips" id="scList"></div>
+    <div id="scView" hidden></div>
+    <input id="scStillInput" type="file" accept="image/*" multiple hidden>
+    <div class="cpActions">
+      <span class="cpHint">THIS DEVICE ONLY &#183; PLAY A PART AND SHE WEARS IT &#183; NOTHING IS UPLOADED</span>
+    </div>
+  </div>
+  <!-- THE VIMEO (src/js/vimeo.js). The one door that only ever plays Vimeo: a bare id, a
+       Vimeo link, or the whole embed code goes in the box, the chip (MythosVimeo) reads the
+       video id out of it, and the player url plays on the frame's stage (which already
+       carries the fullscreen and picture-in-picture permissions). Anything that is not
+       Vimeo is refused loud and nothing plays. /vimeo EXPLAINS IT. -->
+  <div id="vimeoPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>THE VIMEO &#183; ONLY VIMEO PLAYS HERE</span><span id="viState"></span></div>
+    <div class="cpRow">
+      <input id="viInput" type="text" placeholder="ID, VIMEO LINK, OR EMBED CODE" maxlength="8000">
+      <button id="viPlay" type="button" title="play it - only Vimeo is ever sent">PLAY</button>
+      <button id="viClose" type="button">CLOSE</button>
+      <span class="cpNote" id="viNote"></span>
+    </div>
+    <div class="cpActions">
+      <span class="cpHint">A BARE ID, A VIMEO LINK, OR THE WHOLE EMBED CODE &#183; NOTHING ELSE PLAYS HERE</span>
+    </div>
+  </div>
+  <div id="framePanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>THE FRAME &#183; ONE LINK PLAYS AT A TIME</span><span id="frState"></span></div>
+    <div class="cpChips" id="frChips"></div>
+    <div class="cpChips" id="frFav"></div>
+    <iframe id="frFrame" class="shFrame frTall" sandbox="allow-scripts allow-same-origin allow-presentation" allowfullscreen allow="autoplay; fullscreen; picture-in-picture; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="framed app"></iframe>
+    <video id="frMedia" class="shFrame frTall" controls playsinline hidden></video>
+    <div id="frAudio" class="busRack shFrame" hidden>
+      <div class="busHead"><span class="busName" id="frAuName">&#9834; NOTHING LOADED</span><span class="busState" id="frAuState"></span></div>
+      <div class="busRow">
+        <button id="frAuBack" type="button" title="back to the start">&#9198;</button>
+        <button id="frAuPlay" type="button" class="busPlay" title="play / pause">&#9654;</button>
+        <input id="frAuSeek" type="range" class="busSeek" min="0" max="1000" step="1" value="0" title="where in the piece you are - drag to move it">
+        <span id="frAuTime" class="busTime"></span>
+        <input id="frAuVol" type="range" class="busVol" min="0" max="100" step="1" value="100" title="how loud it is in this room">
+        <button id="frAuClose" type="button" class="busClose" title="stop it">&#215;</button>
+      </div>
+      <audio id="frAuEl"></audio>
+    </div>
+    <div class="cpRow">
+      <input id="frUrl" type="text" placeholder="PASTE A LINK - https://…" maxlength="2000">
+      <button id="frPlay" type="button" title="play the pasted link in the frame">PLAY</button>
+      <button id="frPin" type="button" title="pin the pasted link to the board">PIN</button>
+      <select id="frGalSel" title="play a video straight out of the gallery - the vault's clips, listed here">
+        <option value="">SELECT VIDEO FROM GALLERY</option>
+      </select>
+      <button id="frTandem" type="button" title="open the gallery on the clips - pick together, it plays here">TANDEM</button>
+      <button id="frMediaBtn" type="button" title="play a video or audio file from this device - never uploaded, never kept">MEDIA FILE</button>
+      <input id="frMediaInput" type="file" accept="video/*,audio/*" hidden>
+      <button id="frFavBtn" type="button" title="keep what is playing in the favorites - the playlist above, kept on this device for next time">FAV</button>
+      <button id="frEdit" type="button" title="edit the board: rename tabs, repoint links, unpin">EDIT</button>
+      <button id="frClose" type="button">CLOSE</button>
+      <span class="cpNote" id="frNote"></span>
+    </div>
+    <div class="cpActions">
+      <span class="cpHint">SOME SITES REFUSE FRAMES - THEN OPEN THEM IN A TAB &#183; NOTHING IS UPLOADED</span>
+    </div>
+    <div id="frEditModal" class="frModal" hidden>
+      <div class="cpHead"><span>EDIT THE BOARD</span></div>
+      <div id="frEditList"></div>
+      <div class="cpRow">
+        <button id="frEditClose" type="button">DONE</button>
+        <span class="cpNote" id="frEditNote"></span>
+      </div>
+    </div>
+  </div>
+  <!-- THE SYNC (src/js/sync.js). The conversation is the one thing in this terminal that lives in
+       this browser and nowhere else: /backup carries the generator's SOURCE and not one word of it,
+       and PURGE, a cleared profile or a new machine takes it all. This panel is the other half - the
+       chat backups he keeps on his own drive (G:), read here and written back here.
+       THE FOLDER PICKER IS REFUSED IN THIS FRAME. The File System Access API's showDirectoryPicker
+       answers "SecurityError: Cross origin sub frames aren't allowed to show a file picker" inside
+       the platform's editor frame (measured, 2026-09-24), so PICK reads the folder through a
+       directory input and DROP reads one dragged in, and what leaves goes to the browser's own
+       download. On a TOP-LEVEL tab the picker IS allowed, and then CONNECT keeps the folder and
+       WRITE THE BACKUP OUT puts the file straight into it. LOOKING CHANGES NOTHING, and the merge is
+       additive: the newest backup is taken in on its own, turns this device is missing come in, and
+       turns it already holds are kept exactly as they are - the backup may only fill in her half or
+       a stamp that is missing here. Nothing is ever deleted and nothing is uploaded. -->
+  <div id="syncPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>THE SYNC &#183; THE CONVERSATION OUT OF THIS BROWSER</span><span id="syState"></span></div>
+    <div class="cpRow">
+      <button id="syPick" type="button" title="choose the folder your chat backups are kept in (G:) - this terminal reads it, lists every backup in it, and takes the NEWEST one in on its own. Nothing is written to it, nothing is uploaded.">PICK THE BACKUP FOLDER</button>
+      <button id="syConnect" type="button" title="keep a folder on this device and write into it with no download step - allowed on a TOP-LEVEL tab only (the editor's frame refuses the folder picker)">CONNECT A FOLDER</button>
+      <button id="syUp" type="button" title="write the whole conversation out as lia-terminal-archive.json, every turn verbatim - into the connected folder, or to this machine's Downloads folder when there is none">WRITE THE BACKUP OUT</button>
+      <button id="syDown" type="button" title="take the newest backup in hand into the archive - only the turns this device is missing are added, and nothing already held is changed">PULL THE NEWEST</button>
+      <button id="syForget" type="button" title="forget the connected folder on this device - nothing on disk is touched">FORGET</button>
+      <button id="syClose" type="button">CLOSE</button>
+    </div>
+    <div class="syWhere" id="syWhere"></div>
+    <div class="syList" id="syList"></div>
+    <div class="syNote" id="syNote"></div>
+    <div class="cpActions">
+      <span class="cpHint">DROP THE BACKUP FOLDER (OR THE FILES) ANYWHERE ON THIS PANEL &#183; NOTHING IS UPLOADED &#183; THE MERGE ONLY ADDS</span>
+    </div>
+    <!-- THE CLOUD ROAD (src/js/sync-cloud.js). The same round trip with a cloud at the far end: one
+         file in HIS OWN Google Drive, lia-terminal-archive.json - SEND writes it (creates it once,
+         updates it after) and RECEIVE hands it straight to the importer, which merges by stamp and
+         duplicates nothing. The OAuth client ID is a public identifier and lives on this device in
+         kv (lia_settings / sync_cloud); the TOKENS are secrets and live only in the key ring, under
+         "google-drive". Scope is drive.file, so the terminal can see ONLY the file it made itself -
+         it cannot list, read or touch anything else in the Drive. It needs a Google Cloud project
+         of his own, once: /cloud setup prints the whole recipe. NOTHING IS EVER UPLOADED ANYWHERE
+         EXCEPT THERE, AND ONLY WHEN SEND IS PRESSED. -->
+    <div class="cpHead"><span>CLOUD SYNC &#183; YOUR GOOGLE DRIVE</span><span id="gdState"></span></div>
+    <div class="cpRow">
+      <span class="cpLabel">CLIENT ID</span>
+      <input id="gdClientId" type="text" placeholder="paste the OAuth client ID here (public, not a secret)" spellcheck="false" autocomplete="off" style="flex:1;min-width:200px;">
+      <button id="gdSaveId" type="button" title="keep the client ID on this device">KEEP</button>
+      <button id="gdConnect" type="button" title="approve in the popup - tokens live in the key ring on this device only">CONNECT</button>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">REDIRECT URL</span>
+      <input id="gdRedirect" type="text" readonly spellcheck="false" autocomplete="off" style="flex:1;min-width:200px;" title="register exactly this URL as an authorized redirect URI on the OAuth client">
+      <button id="gdCopy" type="button" title="copy the redirect URL for the Google console">COPY</button>
+    </div>
+    <span class="cpLabel">RUNS (THIS DEVICE ONLY - STAMPS AND COUNTS, NEVER WORDS)</span>
+    <div id="gdLog" class="cpNote" style="white-space:pre-wrap;"></div>
+    <div class="cpActions">
+      <button id="gdSend" type="button" title="put the archive up into your Drive (creates lia-terminal-archive.json once, updates it after)">SEND TO DRIVE</button>
+      <button id="gdReceive" type="button" title="bring the cloud file back down through IMPORT (merged by stamp, never duplicated)">RECEIVE</button>
+      <button id="gdForget" type="button" title="drop the Drive tokens from this browser (press twice - the cloud file stays)">FORGET</button>
+      <span class="cpHint">DRIVE.FILE SCOPE: ONLY THE ONE FILE IT MADE &#183; TOKENS IN THE KEY RING ONLY &#183; /cloud setup SAYS HOW</span>
+    </div>
+    <!-- THE DRIVE ROAD (src/js/drive.js + src/drive.html). The third road in this panel: a folder on
+         his own disk, READ AND WRITTEN IN PLACE. The frame this terminal is served in refuses the
+         folder picker, so the drive lives in its own window (opened by his own click, where the
+         picker is allowed) and this panel talks to it: PULL brings the linked folder's pictures
+         into the vault (only what is new), SAVE writes one vault folder's pictures back into a
+         Mythos subfolder of it. Pictures only, both ways; Chrome and Edge have the picker. -->
+    <div class="cpHead"><span>LOCAL DRIVE &#183; A FOLDER ON YOUR OWN DISK</span><span id="dvState"></span></div>
+    <div class="cpRow">
+      <span class="cpLabel">FOLDER</span>
+      <span id="dvFolder" class="cpHint" style="flex:1;">—</span>
+      <span class="cpLabel">ACCESS</span>
+      <span><span class="pill" id="dvPerm">not linked</span></span>
+      <span class="cpLabel">FOUND</span>
+      <span id="dvCount" class="cpHint">—</span>
+    </div>
+    <div class="cpNote" id="dvLast" hidden></div>
+    <div class="cpActions">
+      <button id="dvOpen" type="button" onclick="if(window.drive)window.drive.open()" title="open (or focus) the drive window - allow pop-ups for this page, then link a folder in it">OPEN THE DRIVE WINDOW</button>
+      <button id="dvPull" type="button" onclick="if(window.drive)window.drive.pull()" title="pull the linked folder's pictures into the vault - only what is new is filed">PULL PICTURES IN</button>
+      <button id="dvPush" type="button" onclick="if(window.drive)window.drive.push()" title="save the /images folder's pictures onto the drive, into a Mythos subfolder">SAVE /images ONTO IT</button>
+      <button id="dvMirror" type="button" onclick="if(window.drive)window.drive.push('all')" title="mirror the whole vault onto the drive - every folder, tree kept under Mythos/">MIRROR THE VAULT</button>
+      <span class="cpHint">PICTURES ONLY &#183; Mythos SUBFOLDER &#183; /ldrive help SAYS HOW</span>
+    </div>
+  </div>
+  <!-- THE VOX PANEL (src/js/vox.js). Every voice on every road - this machine's own list, the wire's
+       thirty, the local model's roster and the ElevenLabs account - in one place, each one playable and
+       each one keepable, with two targets: THE DEFAULT (LIA off stage and any agent without a voice of
+       its own) and the agent ON STAGE. On the two roads that hand back real audio (THE LOCAL VOICE and
+       ELEVENLABS) a voice can also be made into a CLIP: the sample line is synthesized, filed in the
+       VOX tree under the agent it is for, and set as what the story lane CLONES that agent from. The
+       browser's own voices and the wire cannot be recorded at all - the Web Speech API exposes no audio
+       to capture and the wire's voices exist only inside a live socket - so those rows are heard and
+       kept and carry no SAMPLE button, rather than a button that could not work. The list is built by
+       the module (the rows are data), so this element is only its frame. -->
+  <div id="voxPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>THE VOX PANEL &#183; EVERY VOICE, HEARD AND CHOSEN</span><span id="vxState"></span></div>
+    <div class="cpRow" id="vxTargets"></div>
+    <div class="vxIntro" id="vxNote"></div>
+    <div id="vxList" class="vxList"></div>
+    <div class="cpHead"><span>THE VOX FACTORY &#183; SAMPLE &gt; SESAME &gt; SPEECH</span><span id="vxFacState"></span></div>
+    <div class="cpRow" id="vxFacEngines"></div>
+    <div class="cpRow"><span class="cpLabel">CLONE SOURCE</span><span class="cpHint" id="vxFacSample">…</span><button id="vxFacUpload" type="button" title="file a clip from this machine into the VOX tree and set it as what this target is cloned from">UPLOAD</button><input type="file" id="vxFacFile" hidden accept="audio/*"></div>
+    <div class="cpRow"><span class="cpLabel">SAMPLE SAYS</span><input type="text" id="vxFacTranscript" maxlength="400" placeholder="the exact words spoken in the sample clip - Sesame clones harder with them"></div>
+    <div class="cpRow"><span class="cpLabel">SAY IT</span><input type="text" id="vxFacText" maxlength="1200" placeholder="words for the clone to speak"><button id="vxFacSpeak" type="button">SPEAK</button><button id="vxFacKeep" type="button">KEEP</button></div>
+    <div class="vxIntro" id="vxFacNote"></div>
+    <div class="cpActions">
+      <button id="vxRefresh" type="button" title="re-read every road's list - this machine's voices can arrive late, and the local model's list only exists once it has been fetched">REFRESH</button>
+      <button id="vxClose" type="button">CLOSE</button>
+      <span class="cpHint">&#9654; HEARS ONE &#183; KEEP MAKES IT THE VOICE FOR THE TARGET &#183; &#9670; SAMPLE MAKES A CLIP AND SETS IT AS THE CLONE SOURCE</span>
+    </div>
+  </div>
+  <div id="liacommPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>LIACOMM &#183; THE HOUSE INTERCOM</span><span id="lcLamp" class="lcLamp standby">STANDBY</span></div>
+    <div class="cpRow"><button id="lcKey" type="button" aria-pressed="false" title="THE LIACOMM KEY - the same intercom as the lower deck and the left panel, on its own page. HOLD to speak: the microphone opens and what it hears streams in below, LIVE, and nothing takes it anywhere. LET GO to send: your words go to her at once and her answer comes back OVER VOICE. LET GO SILENT and her newest reply is read back. While she has the floor the key refuses.">HOLD TO SPEAK</button></div>
+    <span class="cpLabel">THE LINE</span>
+    <div id="lcLine" class="lcLine">HOLD THE KEY AND SPEAK - YOUR WORDS SHOW HERE, THEN GO TO HER WHEN YOU LET GO.</div>
+    <div class="cpRow"><span class="cpLabel">SPEECH STYLE</span><select id="lcStyle" title="THE SPEECH STYLE INSTRUCTION - how she speaks an intercom turn. Each entry is one tiny file in src/voxpack/styles/ (listed in index.json); keeping one saves it on this device and her next intercom turn reads it."></select><button id="lcStyleView" type="button" title="READ THE SPEECH STYLE INSTRUCTION IN FORCE - prints the file behind the dropdown.">VIEW</button></div>
+    <div class="cpActions">
+      <button id="lcBrief" type="button" title="RADIO DISCIPLINE for intercom turns: brief and radio-plain for three minutes after every turn, or answered like anything else. /intercom brevity on|off says it in words.">BREVITY: ON</button>
+      <button id="lcClose" type="button">CLOSE</button>
+      <span class="cpHint">TURNS FILE THROUGH THE NORMAL SEND - MEMORY, BREVITY AND VOICE COME ALONG. THE STANDALONE PWA STILL LIVES AT https://perchance.org/mythos-intercom</span>
+    </div>
+  </div>
+  <div id="duetPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>LIVECOMM &#183; THE LIVE EXCHANGE</span><span id="duLamp" class="lcLamp standby">STANDBY</span></div>
+    <div class="cpRow"><span class="cpLabel">FLOOR</span><span id="duFloor" class="cpHint">-</span></div>
+    <div class="cpRow"><span class="cpLabel">VAD</span><div id="duMeter" class="duMeter" title="THE VAD LEVEL LIVE - the bar is the sound on the line, the tick is the threshold. Over the tick is VOICE, under it past /turn silence ends the turn."><div id="duMeterFill"></div><div id="duMeterMark"></div></div><span id="duVad" class="cpHint">-</span></div>
+    <div class="cpRow"><span class="cpLabel">TIMEOUT</span><span id="duTimeout" class="cpHint">-</span></div>
+    <div class="cpRow"><span class="cpLabel">AVB SIGNAL</span><div id="duSig" class="duSig"></div><button id="duMic" type="button" title="METER THIS BROWSER'S MICROPHONE into the AVB indicator (his press only - nothing opens unasked). The room meter is what the air gap watches for quiet.">METER MIC</button></div>
+    <div class="cpRow"><span class="cpLabel">LANES</span><span id="duLanePatrikios" class="laneDot" title="SPK-PATRIKIOS - his mic lane">PATRIKIOS</span><span id="duLaneMaya" class="laneDot" title="SPK-MAYA - the call lane">MAYA</span><span id="duLaneBarb" class="laneDot barb" title="SPK-BARB - her voice lamp">BARB</span><span id="duPhase" class="cpHint">OFF</span></div>
+    <div class="cpRow"><span class="cpLabel">QUEUE</span><span id="duQueue" class="cpHint">-</span></div>
+    <span class="cpLabel">LINE &#183; TURNS, GAP AND ECHO</span>
+    <div class="cpRow"><span class="cpLabel">TURNS</span><span id="duTurns" class="cpHint">-</span></div>
+    <div class="cpRow"><span class="cpLabel">MARK</span><span id="duMark" class="cpHint" title="THE CLIP WATERMARK: every clip she plays is marked, so the microphone stream carrying the mark reads as hers even when the words come back mangled.">-</span></div>
+    <div id="duEarLine" class="lcLine">THE LINE IS QUIET - GO LIVE OPENS THE AIR GAP GATE.</div>
+    <div class="cpRow"><button id="duGo" type="button" title="ONE PRESS TO LIVE: arms FULL, sets VAD/silence/timeout, brevity on, auto-read on, meters the mic and opens the air gap gate - she waits for quiet, MAYA's voice holds the floor.">GO LIVE</button><button id="duGap" type="button" aria-pressed="false" title="THE AIR GAP GATE: the strict alternating floor for two SIAs talking through the air - she waits for quiet before she speaks, MAYA's voice holds the floor, a breath sits between turns. /gap SAYS IT IN WORDS.">AIR GAP</button><button id="duDemo" type="button" title="ONE AGENT TURN WITH NO AUDIO: the floor is taken, the trigger fires, and the silence ends it - the whole cycle, watchable.">DEMO TURN</button><button id="duStand" type="button" title="STOP: the gap gate stands down and her lamp goes out - back to quiet. Meters stay live, nothing posts.">STAND DOWN</button></div>
+    <span class="cpLabel">FEED &#183; EVERY GRANT, FILING, DROP, TRIGGER AND ENDING</span>
+    <div id="duFeed" class="duFeed"><div>(NOTHING YET - RUN A DEMO TURN.)</div></div>
+    <div class="cpActions">
+      <button id="duClose" type="button">CLOSE</button>
+      <span class="cpHint">TURNS, NOT SERVERS - THE FLOOR IS ACOUSTIC: SHE WAITS FOR QUIET (AIR GAP), HER CLIPS CARRY THE MARK, THE ECHO GUARD KNOWS HER WORDS. /gap AND /turn IN WORDS.</span>
+    </div>
+  </div>
+  <div id="tricomPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>TRICOMM &#183; THE FLOOR</span><span id="tcLamp" class="lcLamp standby">STANDBY</span></div>
+    <div class="cpRow"><span class="cpLabel">YOU</span><span class="cpHint">HEADSET MIC - LIVE ONLY ON YOUR TURN, NEVER IN YOUR EARS</span><div class="duMeter"><div id="tcYouFill"></div></div><button id="tcYouMute" type="button" title="mute your mic even on your own turn">MUTE</button></div>
+    <div class="cpRow"><span class="cpLabel">BARBELO</span><span class="cpHint">HER USUAL BROWSER VOICE, ON THIS MACHINE</span><div class="duMeter"><div id="tcBarbFill"></div></div><button id="tcBarbTest" type="button" title="one spoken line, so the seat proves itself">TEST</button><button id="tcBarbHush" type="button" title="cut her voice mid-word">HUSH</button></div>
+    <div class="cpRow"><span class="cpLabel">MAYA</span><select id="tcMayaSrc" title="the road her voice arrives on - the phone-fed input, never your own mic"></select><div class="duMeter"><div id="tcMayaFill"></div></div><button id="tcMayaMute" type="button" title="mute Maya's seat in your headphones">MUTE</button><button id="tcMayaMon" type="button" title="whether Maya's input plays into your headphones on her turn">MONITOR: ON</button></div>
+    <div class="cpRow"><span class="cpLabel">FLOOR</span><span id="tcFloorState" class="cpHint">STOOD DOWN</span><button id="tcNext" type="button" title="take the turn now - the floor passes to the next seat">NEXT TURN</button></div>
+    <div class="cpRow"><button id="tcGo" type="button" title="open the mic and her road - one press to live, Barbelo opens">GO LIVE</button><button id="tcStand" type="button" title="kill the mic and the floor">STAND DOWN</button><button id="tcClose" type="button">CLOSE</button></div>
+    <div class="cpActions"><span class="cpHint">ONE SPEAKS, TWO ARE SILENT - BARBELO, MAYA, YOU, REPEAT. TURNS PASS ON THEIR OWN OR BY NEXT TURN. /tricom SAYS IT.</span></div>
+    <audio id="tcMayaAudio" autoplay playsinline hidden></audio>
+  </div>
+  <div id="voxFactory" hidden>    <div class="vfCard" role="dialog" aria-label="VOX Factory">
+      <div class="cpHead"><span>VOX FACTORY &#183; SAMPLE &gt; ENGINE &gt; SPEECH</span><span id="vfState"></span></div>
+      <div class="cpRow"><span class="cpLabel">ENGINE</span><span id="vfEngines" class="vfBtns"></span></div>
+      <div class="cpRow"><span class="cpLabel">FOR</span><span class="cpHint" id="vfFor">…</span></div>
+      <div class="cpRow"><span class="cpLabel">VOICE SAMPLE</span><span class="cpHint" id="vfSample">…</span><button id="vfUpload" type="button" title="file a clip from this machine and set it as what this voice is cloned from">UPLOAD</button><input type="file" id="vfFile" hidden accept="audio/*"></div>
+      <div class="cpRow"><span class="cpLabel">SAMPLE SAYS</span><input type="text" id="vfTx" maxlength="400" placeholder="the exact words spoken in the sample clip"></div>
+      <div id="vfKnobs"></div>
+      <div class="cpRow"><span class="cpLabel">SAY IT</span><input type="text" id="vfText" maxlength="1200" placeholder="words for the clone to speak"></div>
+      <div class="cpActions"><button id="vfSpeak" type="button">SPEAK</button><button id="vfKeep" type="button">KEEP</button><button id="vfClose" type="button">CLOSE</button><span class="cpHint" id="vfNote"></span></div>
+    </div>
+  </div>
+  <!-- THE DEVICE SYNC BOARD (src/js/pair.js). The panel behind the PAIRED lamp beside SYNC: the code to
+       read off this screen and type into the other device, and THE GROUP FINGERPRINT, four groups of
+       four taken from the room's name - which each device works out for itself, so two devices really
+       in the same room show the SAME groups and a mismatched pair shows different ones at a glance.
+       SYNC NOW is /pair send; STOP SYNCING THIS DEVICE leaves the room and drops the code, the device
+       id and the run record from this machine (arm-then-press, so a stray click cannot unpair a
+       device). NO INVITE LINK: a link is a code living in browser history and clipboards, and Patrikios
+       said plainly on 2026-09-30 that this road stays private - the code is typed by hand, or read by
+       the SCAN from a SHOW QR square (the square holds the code and nothing else, drawn on the device). Opening this
+       panel opens no socket; only MAKE A CODE and REJOIN do, and both are presses. -->
+  <div id="pairPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>DEVICE SYNC &#183; TWO OF YOUR OWN DEVICES</span><span id="ppState" class="ppState"></span></div>
+    <div class="ppGrid">
+      <div class="ppBox">
+        <span class="cpLabel">THE CODE &#183; READ IT OFF THIS SCREEN AND TYPE IT INTO THE OTHER DEVICE</span>
+        <div class="ppCode" id="ppCode"></div>
+        <div class="cpRow">
+          <button id="ppNew" type="button" title="mint a fresh code on this device and open the room - the code is the whole secret, so read it out carefully and type it into the other device by hand">MAKE A CODE</button>
+          <button id="ppCopy" type="button" title="put the CODE on the clipboard - not a link, just the twelve characters. A clipboard is shared by everything on this machine, so it is a good place to put a code and a bad place to leave one.">COPY THE CODE</button>
+          <button id="ppQrShow" type="button" title="draw the code as a QR square on this screen, so the other device's SCAN can read it with its camera - the square holds nothing but the twelve characters, it is drawn on this device, and nothing is sent anywhere">SHOW QR</button>
+        </div>
+        <div class="ppQrBox" id="ppQrBox" hidden>
+          <canvas id="ppQr" width="232" height="232"></canvas>
+          <div class="ppQrNote">THE SQUARE HOLDS NOTHING BUT THE CODE &#183; DRAWN ON THIS DEVICE &#183; NOTHING SENT &#183; POINT THE OTHER DEVICE'S SCAN AT IT</div>
+        </div>
+      </div>
+      <div class="ppBox">
+        <span class="cpLabel">GROUP FINGERPRINT &#183; IT MUST READ THE SAME ON BOTH SCREENS</span>
+        <div class="ppFinger" id="ppFinger"></div>
+      </div>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel">THE OTHER DEVICE'S CODE</span>
+      <input id="ppJoinInput" type="text" placeholder="XXXX-XXXX-XXXX" spellcheck="false" autocomplete="off" maxlength="19">
+      <button id="ppJoin" type="button" title="use the code shown on the other device - it joins its room and the two find each other">REJOIN</button>
+      <button id="ppScan" type="button" title="read the other device's QR square with this device's camera - it fills the code in and rejoins by itself. Nothing is photographed and kept: frames are read and dropped.">SCAN QR</button>
+      <button id="ppOpen" type="button" title="go back into the room of the code already on this device (the code is kept, so a reload does not lose the pairing)">OPEN THE ROOM</button>
+      <button id="ppLeave" type="button" title="leave the room without dropping the code - the code stays on this device and OPEN THE ROOM goes back in">LEAVE THE ROOM</button>
+    </div>
+    <div class="ppScanBox" id="ppScanBox" hidden>
+      <span class="cpLabel">SCAN &#183; POINT THIS DEVICE'S CAMERA AT THE OTHER DEVICE'S QR SQUARE</span>
+      <video id="ppVideo" playsinline muted></video>
+      <canvas id="ppSnap" hidden></canvas>
+      <div class="ppScanState" id="ppScanState"></div>
+      <div class="cpRow">
+        <button id="ppScanClose" type="button">STOP SCANNING</button>
+        <label class="ppFileBtn" for="ppScanFile" title="no camera here (or it was refused): photograph the QR square with this device and pick the picture - it is read on this device and kept nowhere">OR PICK A PHOTO OF IT</label>
+        <input id="ppScanFile" type="file" accept="image/*" hidden>
+      </div>
+    </div>
+    <span class="cpLabel">WHO IS HERE</span>
+    <div class="ppWho" id="ppWho"></div>
+    <span class="cpLabel">THIS DEVICE</span>
+    <div class="ppMe" id="ppMe"></div>
+    <span class="cpLabel">LAST RUN</span>
+    <div class="ppLast" id="ppLast"></div>
+    <div class="cpActions">
+      <button id="ppNow" type="button" title="seal this device's archive, hand it to the room, and let the other device merge it with the same merger /sync down uses - it only ever ADDS, so nothing there can be overwritten or deleted">SYNC NOW</button>
+      <button id="ppStop" type="button" title="stop syncing THIS device: leave the room, drop the code, the device id and the run record from this machine. The archive is untouched, the other device keeps its own copy and its own code, and the server has nothing to forget - it never kept a record. Press twice to mean it.">STOP SYNCING THIS DEVICE</button>
+      <button id="ppClose" type="button">CLOSE</button>
+      <span class="cpHint">NO INVITE LINK &#183; THE CODE IS TYPED OR SCANNED, NEVER POSTED &#183; BOTH DEVICES MUST BE OPEN AT ONCE</span>
+    </div>
+  </div>
+  <div id="toolsPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>TERMINAL TOOLS</span><span id="tlState"></span></div>
+    <div class="cpRow">
+      <span class="cpLabel">JOB</span>
+      <select id="tlJob" title="which maintenance job this panel is pointed at"></select>
+      <select id="tlScope" title="how wide this job reaches"></select>
+      <input id="tlLimit" type="number" min="0" step="1" value="0" spellcheck="false" autocomplete="off" title="the most records one run will take (0 = every one of them)">
+      <span class="cpNote" id="tlLimitHint">MAX PER RUN (0 = ALL)</span>
+    </div>
+    <div class="tlWhat" id="tlWhat"></div>
+    <div class="tlReport" id="tlReport"><span class="tlEmpty">PRESS SCAN &#183; A SCAN CHANGES NOTHING - IT READS THE VAULT AND PRINTS EXACTLY WHAT A RUN WOULD DO.</span></div>
+    <div class="cpActions">
+      <button id="tlScan" type="button" title="read the vault and print exactly what a run would do - nothing is changed, moved or deleted by a scan">SCAN</button>
+      <button id="tlRun" type="button" title="do the job the scan just described. Every change is printed as a SYSTEM line behind the veil.">RUN</button>
+      <button id="tlStop" type="button" hidden title="end a running sweep after the picture in hand">STOP</button>
+      <button id="tlClose" type="button">CLOSE</button>
+      <span class="cpHint">SCAN FIRST &#183; NOTHING LEAVES THIS DEVICE</span>
+    </div>
+  </div>
+  <!-- THE DRAFT PANEL (src/js/draft.js). The pencil beside LISTEN opens it: a textarea for the
+       message BEFORE it is sent - spellcheck on, a live word/char count, KEEP RESTORE on this device
+       (kv: lia_settings / draft), AI POLISH (the model rewrites the draft in a chosen style - FIX /
+       WORK / CHAT / PLAY / SHORT / VEILED / SPICY - and the result lands back HERE to be read and
+       edited), and THE SAME MOOD SWITCHES AS THE SYSTEM PANEL (src/js/moods.js): the colours she
+       answers in are also the colours a polish comes back in, so the STYLE decides the JOB and the
+       MOODS decide the REGISTER. SEND hands it to the input box and sends it; nothing in this panel
+       is in the archive, the export, or her context until that moment. The chips come from the
+       modules. -->
+  <div id="draftPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>DRAFT</span><span id="draftCount">0 WORDS &#183; 0 CHARS</span></div>
+    <label class="cpLabel" for="draftText">EDIT IT HERE - SPELLCHECK IS ON. NOTHING HERE IS IN THE ARCHIVE, THE EXPORT, OR HER CONTEXT UNTIL SEND.</label>
+    <textarea id="draftText" rows="4" spellcheck="true" lang="en" placeholder="write it here first..." style="width:100%;box-sizing:border-box;background:#000;border:1px solid #00ff00;color:#00ff00;font-family:inherit;font-size:1em;line-height:1.6;padding:8px;resize:vertical;min-height:64px;"></textarea>
+    <div class="cpRow">
+      <span class="cpLabel">AI POLISH</span>
+      <div class="cpChips" id="draftStyles"></div>
+      <button id="draftPolish" type="button" title="let the model rewrite the draft in the chosen style - the rewrite comes back as a PROPOSAL in its own box, and nothing about the draft changes until you press ACCEPT">POLISH</button>
+    </div>
+    <!-- THE PROPOSAL (src/js/draft.js). AI POLISH does not touch the draft any more: the rewrite lands
+         HERE, in its own box, with the style that produced it - and it can be read and even edited
+         before it is taken. ACCEPT puts it in the draft (the words it replaces are kept, and RESTORE
+         in the action row below puts them back); DISCARD throws it away and changes nothing. SEND
+         refuses to carry the draft while a proposal is standing, so nothing a model wrote can reach
+         her, the archive or the export without his yes. Patrikios, 2026-09-29: "AI on pencil button in
+         the chat with polish, fic, etc.. User must approve before end". -->
+    <div id="draftProposal" class="draftProposal" hidden>
+      <div class="cpHead"><span>PROPOSED REWRITE</span><span id="draftProposalNote"></span></div>
+      <textarea id="draftProposalText" rows="4" spellcheck="true" lang="en" style="width:100%;box-sizing:border-box;background:#001100;border:1px solid #00aa00;color:#aaffaa;font-family:inherit;font-size:1em;line-height:1.6;padding:8px;resize:vertical;min-height:64px;"></textarea>
+      <div class="cpActions">
+        <button id="draftAccept" type="button" title="take the rewrite: it becomes the draft, and the words it replaces are kept - RESTORE puts them back">ACCEPT</button>
+        <button id="draftDiscard" type="button" title="throw the rewrite away - the draft is left exactly as you wrote it">DISCARD</button>
+      </div>
+    </div>
+    <div class="cpRow">
+      <span class="cpLabel" title="the same console as the SYSTEM panel's (src/js/moods.js): the colours she answers in are also the colours a polish comes back in - AI POLISH hands them to the model with the rewrite, the way the mood block hands them to her. New colours are written in SYSTEM, with + NEW MOOD, or in src/moods/moods.json.">MOOD</span>
+      <div class="cpChips" id="draftMoods"></div>
+    </div>
+    <div class="cpActions">
+      <button id="draftSend" type="button" title="put this in the input box and send it. while a rewrite is waiting for your yes or no, this will not send - accept or discard it first">SEND</button>
+      <button id="draftKeep" type="button" title="keep this text on this device and close - it is never in the archive until sent">KEEP</button>
+      <button id="draftClear" type="button" title="empty the draft">CLEAR</button>
+      <button id="draftRestore" type="button" hidden title="put back the words an ACCEPT replaced, as the draft">RESTORE</button>
+      <button id="draftClose" type="button">CLOSE</button>
+      <span class="cpHint">KEPT ON THIS DEVICE ONLY &#183; NEVER EXPORTED &#183; NEVER SYNCED UNTIL SENT</span>
+    </div>
+  </div>
+  <!-- THE SHIFT PANEL (src/js/shift.js, src/js/petition.js). The SHIFT button in the deck opens it.
+       The two things were built together and they belong on one page: the QUIET HOURS - the private
+       turns this terminal gives her when the room has been quiet a while, in which she may keep a
+       memory of her own, write down what she means to do, read the record, keep her own pictures in
+       order, or ASK - and the PETITIONS, which are what she asks with. A petition changes NOTHING
+       while it waits: ACCEPT applies it through the same lane your own command would have used,
+       DECLINE keeps her words AND your reason beside them, and neither is ever deleted, only
+       answered. Nothing in a quiet hour is said to you, spoken aloud, or put in the conversation -
+       it is not a turn of hers. /shift and /petition explain the whole of both. -->
+  <div id="shiftPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>THE SHIFT &#183; THE QUIET HOURS AND THE PETITIONS</span><span id="shState"></span></div>
+    <div class="cpRow">
+      <button id="shOnBtn" type="button" title="turn the quiet hours on or off. OFF means she is given no hour of her own at all, and nothing about them is in her prompt - the way /checkin off works for the door she may speak first through.">SHIFT ON</button>
+      <span class="cpLabel">A QUIET HOUR AFTER</span>
+      <select id="shEverySel" title="how long the room must be quiet before she is given an hour of her own (5 to 1440 minutes; /shift every <MIN> does the same)"></select>
+      <button id="shNowBtn" type="button" title="open a quiet hour right now, whatever the clock says - for looking at what an hour actually does. It still costs one call to the text engine, and it is still capped by the record.">NOW</button>
+      <button id="shCloseBtn" type="button">CLOSE</button>
+    </div>
+    <div class="shNext" id="shNext"></div>
+    <div class="cpLabel">THE RECORD &#183; THE NEWEST HOURS SHE HAS HAD</div>
+    <div class="shLog" id="shLog"></div>
+    <div class="cpLabel">WHAT SHE MEANS TO DO IN A QUIET HOUR &#183; HER OWN QUEUE</div>
+    <div class="shQueue" id="shQueue"></div>
+    <div class="cpHead ptHead"><span>THE PETITIONS</span><span id="ptState"></span></div>
+    <div class="cpHint">NOTHING CHANGES WHILE A PETITION WAITS. ACCEPT APPLIES IT THROUGH THE LANE YOUR OWN COMMAND WOULD USE; DECLINE KEEPS HER WORDS AND YOUR REASON BESIDE THEM. NEITHER IS EVER DELETED - ONLY ANSWERED.</div>
+    <div class="ptBody" id="ptBody"></div>
+    <div class="cpActions">
+      <span class="cpHint">EVERY HOUR COSTS ONE CALL TO THE TEXT ENGINE, CAPPED PER HOUR AND PER DAY &#183; /shift AND /petition DO THE SAME FROM THE INPUT LINE</span>
+    </div>
+  </div>
+  <!-- THE CHATLOG PANEL (src/js/chatlog.js). The CHATLOG button in the deck opens it. Where the raw
+       record of the conversation is taken in and read back: APPEND THE BOX / REPLACE (a pasted
+       transcript, or the .txt the console script downloads), the POLICY button (what the FILE PICKER
+       does with a transcript that arrives without being asked - APPEND, and that is the point: a
+       conversation only ever grows, so an import keeps what is here and takes what is new), IMPORT
+       (the label on the file picker beside the box: the EXPORT of this panel, or any transcript of the
+       editor's chat panel, read back into the record - the other half of EXPORT, and the way a record
+       comes back after a wiped browser or onto a different origin), BRIEF
+       (the head of the record - where to start reading, and what a session reads first: it costs two
+       chunk reads however large the record grows), INDEX
+       (which chunk holds what, and where each turn begins), TURNS, FIND, EXPORT, and WIPE. The record
+       lives in THIS BROWSER's kv, never in src/ - src/ is public and a conversation is not - and
+       nothing in this panel ever reaches the text engine: an import costs nothing, a search costs
+       nothing, reading costs nothing. /chatlog EXPLAINS IT AND /chatlog snippet HANDS OVER THE
+       SCRIPT THAT GETS THE CONVERSATION OUT OF THE EDITOR. -->
+  <div id="clPanel" class="deckPanel" hidden>
+    <div class="cpHead"><span>THE CHATLOG &#183; THE RAW RECORD OF THIS CONVERSATION</span><span id="clState"></span></div>
+    <div class="cpHint">IT IS KEPT ON THIS DEVICE (kv) AND NEVER IN src/ &#183; NOTHING HERE IS EVER SENT TO THE TEXT ENGINE &#183; AN IMPORT, A SEARCH AND A READ ALL COST NOTHING</div>
+    <div class="cpRow">
+      <button id="clAppendBtn" type="button" title="add what is in the box below to the record - the seam between what is already here and this is found, only what is NEW is kept, and the join is written into the record so the seam is visible. a file that is already in the record changes nothing, except the turn index if it carries one. NOTHING IS EVER THROWN AWAY BY THIS BUTTON.">APPEND THE BOX</button>
+      <button id="clReplaceBtn" type="button" title="throw the record away and make the box the whole of it. the imports it replaces are still listed in the index, but the words are gone - this is the only thing on this panel that ever does that, which is why append is the default and this button is not.">REPLACE</button>
+      <span class="clImport"><span class="cpLabel clImportLabel" id="clImportLabel">IMPORT</span><input id="clFile" type="file" multiple accept=".txt,.json,.md,.log,.jsonl,text/plain,application/json" title="IMPORT: pick the conversation to read back into the record - the lia-chatlog-&lt;date&gt;.json this page EXPORTED (the richer one: it carries the role of every message, which is what makes the turn numbers work) and/or the .txt beside it, or any transcript of the editor's chat panel. the FILE PICKER FOLLOWS THE POLICY (POLICY button below): APPEND adds only what is new, REPLACE starts the record again. a file already in the record is never added twice. it never leaves this device."></span>
+      <button id="clExportBtn" type="button" title="hand the whole record back as a file: lia-chatlog-<date>.txt, with a .json sidecar holding the transcript and the turns (so what export writes is what import takes in). it goes to your downloads - nothing is uploaded">EXPORT</button>
+      <button id="clCloseBtn" type="button">CLOSE</button>
+    </div>
+    <div class="cpRow">
+      <button id="clBriefBtn" type="button" title="WHERE TO START: the head of the record - where it is kept, how big it is, the first turn, the newest turns, and what was made of it (the chronicle). it costs two chunk reads however large the record grows, so this is the thing to read first, and the whole turn behind any line of it is /chatlog turn <N>">BRIEF</button>
+      <button id="clListBtn" type="button" title="the index: when it was imported, how big it is, how many turns, and what each chunk holds">INDEX</button>
+      <button id="clTurnsBtn" type="button" title="the turns of the conversation, with the speaker each one starts with - the fastest way to find where something was said">TURNS</button>
+      <input id="clGrepInput" type="text" placeholder="words, or a pattern">
+      <button id="clGrepBtn" type="button" title="search the whole record and say which chunk and line each hit is on">FIND</button>
+      <button id="clSnipBtn" type="button" title="the script to run in the EDITOR'S console to get the conversation out of the chat panel and into a downloaded file. it sends nothing anywhere. the whole recipe is src/chatlog/EXTRACT.md">THE SCRIPT</button>
+    </div>
+    <div class="cpLabel">PASTE THE CONVERSATION HERE &#183; OR PRESS IMPORT ABOVE AND PICK THE DOWNLOADED FILE</div>
+    <textarea id="clPaste" rows="4" placeholder="paste the whole conversation (the editor chat panel, selected and copied) and press APPEND THE BOX - or press THE SCRIPT for the way that gets it out properly"></textarea>
+    <div class="cpRow">
+      <button id="clPolicyBtn" type="button" title="what the FILE PICKER and /chatlog import <URL> do with a transcript: APPEND keeps what is here and takes only what is new (the default, and the reason an import can never shrink the record); REPLACE starts the record again from the new file. the box's own buttons do not follow this - APPEND THE BOX and REPLACE always mean what they say. kept in this browser.">POLICY &#183; APPEND</button>
+      <input id="clWipeInput" type="text" placeholder="type yes">
+      <button id="clWipeBtn" type="button" title="delete the record from this device. it is not deleted without the word yes, and there is no undo - export it first if it only exists here">WIPE</button>
+      <span class="cpHint">THE WORD YES IS REQUIRED</span>
+    </div>
+    <pre id="clOut" class="clOut"></pre>
+  </div>
+  <!-- THE PROGRESS BAR (src/js/progress.js). The thin green line at the top of the LOWER DECK, and
+       the answer to the one question a long job should never leave open: is it still working? A lot
+       of what this terminal does takes real time and says nothing while it does it - a render handed
+       to the image service, an upscale on this device's GPU, the CLASSIFIER reading a whole vault, a
+       backup zipping every file under src/, an import writing a conversation into kv in nineteen
+       chunks, the sync writing the archive out. Each of those already prints a line somewhere, but a
+       line of text is easy to miss, so this is the glance: the job's name, how far it has got
+       ("UPSCALING 372 / 1144"), and a green fill. It is HIDDEN until something opens a job and it
+       takes itself down when the last one ends - nothing has to remember to close it, and a job with
+       no count of its own (one render, one vision call, one resample) is drawn as an INDETERMINATE
+       sliding segment rather than a made-up fraction. Nothing here is pressable and nothing here
+       holds anything across a reload; `/progress` says what is running and `/progress demo` shows the
+       bar at work. The deck's own panels keep their head lines (#cpProgress, #tlState) - those belong
+       to a panel; this belongs to the terminal. -->
+  <div id="progressRail" class="progressRail" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-busy="false" hidden>
+    <div class="pgTop"><span class="pgLabel" id="progressLabel"></span><span class="pgPct" id="progressPct"></span></div>
+    <div class="pgTrack"><div class="pgFill" id="progressFill"></div></div>
+  </div>
+  <div id="attachStrip" hidden></div>  <div id="busStrip" class="busStrip" hidden data-bus-rack></div>
+  <div id="busAudioHost" class="busAudioHost" aria-hidden="true"></div>
+  <!-- THE STORY LANE. A chapter is not spoken by the live engine: it is rendered by a free Space on
+       HuggingFace (Resemble AI's Chatterbox - the reference clip becomes the speaker conditionals, so
+       a sample out of the vault IS her voice) and played from here, inline, while the two of them
+       listen. story.js paints this strip itself - it borrows the bus's class names on purpose, since
+       there is one visual language for "something is playing in this terminal" and it is already in
+       src/css/terminal.css. `data-bus-rack` is deliberately NOT here: the bus only ever paints its
+       own hosts. The audio element is created by story.js into #storyAudioHost below. -->
+  <div id="storyStrip" class="busStrip storyStrip" hidden></div>
+  <div id="storyAudioHost" class="busAudioHost" aria-hidden="true"></div>
+  <!-- THE LOWER-DECK PUSH-TO-TALK KEY (#pttBtn, src/js/intercom.js). The COMMs flow in order:
+       the waveform above (what is on the line), this key (hold to speak - what it hears streams
+       into the box below LIVE, let go to send through the normal SEND), the input box below.
+       Full width, labelled TALK; the other keys (one-shot TALK, LISTEN, the live channel) are
+       untouched. Wired by intercom.js itself, so no markup beyond the button is needed. -->
+  <button id="pttBtn" type="button" aria-pressed="false" title="HOLD TO TALK - the push-to-talk key: hold to speak and what it hears streams into the box below LIVE, let go to send through the normal SEND. While she has the floor the key refuses.">TALK</button>
+   <textarea id="userInput" rows="2" placeholder="Talk to Barbelo... (paste or drop an image)" autocomplete="off" autocapitalize="off" autocorrect="off" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-form-type="other"></textarea>
+  <div class="controls">
+    <!-- THE ORDER OF THIS ROW IS DELIBERATE (Patrikios, 2026-09-30): "Move the order of the
+         lower deck buttons to microphone, paperclip, pencil, infinity, send, talk, listen,
+         standby, etc." The row reads left to right in the order a turn is actually made: the
+         microphone (the live channel), the paperclip (what you are handing her), the pencil (the
+         draft), the infinity (whose move it is), SEND, and then the intercom - TALK, LISTEN, and the
+         STANDBY lamp that says whose voice is on the line. Everything else keeps the order it had. -->
+    <button id="liveBtn" class="micBtn iconBtn" type="button" aria-pressed="false" aria-label="live conversation" title="live conversation: open the microphone and leave it open - she answers aloud, then listens again">
+      <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" focusable="false">
+        <path d="M12 3.4a2.7 2.7 0 0 1 2.7 2.7v5.3a2.7 2.7 0 0 1-5.4 0V6.1A2.7 2.7 0 0 1 12 3.4Z" fill="none" stroke="currentColor" stroke-width="1.7"/>
+        <path d="M6.4 11.1a5.6 5.6 0 0 0 11.2 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        <path d="M12 16.7v3.9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        <path class="sl" d="M4.8 4.4 19.2 19.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button id="attachBtn" class="iconBtn" type="button" aria-label="attach a file" title="attach a file for her to read or look at - text, markdown, PDF, image, video, audio, anything. you can also paste or drop one.">
+      <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" focusable="false">
+        <path d="M8.2 12.3 15 5.5a3.4 3.4 0 0 1 4.8 4.8l-8.7 8.7a5.1 5.1 0 0 1-7.2-7.2l8-8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <button id="draftBtn" class="iconBtn" type="button" aria-pressed="false" aria-label="edit draft before sending" title="edit the draft before it is sent - spellcheck, word count, and AI POLISH, kept on this device only. nothing here reaches the archive, the export, or her until SEND.">
+      <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" focusable="false">
+        <path d="M12 20h9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <!-- THE INFINITY. The one control on this lane, and the only hand he has on it: on or off. Lit, she
+         may move first when the room has been quiet - say something, remind him out of the record, send
+         a picture, make one - in her own voice and at her own time. The small digit beside the glyph is
+         the PACE (1-5), and that is HERS: she moves it with a [[PACE: <1-5>]] line of her own, in any
+         reply, any quiet hour or any act. He does not set it, and the machine only offers the range.
+         src/js/proactive.js, and /infinity explains the whole lane. -->
+    <button id="infBtn" type="button" aria-pressed="false" onclick="if(window.proactive)window.proactive.toggle()" title="THE INFINITY :: let her move first - speak, remind, send a picture, make one - when the room has been quiet. the digit beside the glyph is HER pace (1-5), which only she moves. /infinity EXPLAINS IT.">&#8734;<span class="infN" id="infNum"></span></button>
+    <button id="sendBtn" onclick="window.send()" disabled>SEND</button>
+    <button id="talkBtn" type="button" title="push to talk: the microphone opens for what you are about to say, and what it hears lands in the input box. press again to stop, or simply stop speaking - she takes it after a short quiet. while she has the floor the key is locked: an intercom does not talk over her.">TALK</button>
+    <button id="listenBtn" type="button" title="she reads her newest reply out loud. press again while an audition is playing to stop it; while she is speaking the key is locked - an intercom does not talk over her, and /voice stop is the deliberate way to silence her.">LISTEN</button>
+    <!-- THE AIR LAMP. TALK, LISTEN and the microphone are ONE intercom, not three doors into the same
+         room: one voice is on the line at a time. The lamp names whose - STANDBY (nothing is on the
+         line, both keys live), HER VOICE (she is speaking: LISTEN has nothing of hers to start and
+         TALK is shut too - she must never hear her own voice come back off the speakers), YOUR VOICE
+         (the microphone is open - TALK, or the live channel), THINKING (her turn is being made),
+         HOLDING (you spoke while she had the floor and it is waiting to be taken). The keys
+         themselves are locked, not merely dimmed - src/js/voice.js enforces it in setUi(). -->
+    <span id="airLamp" class="airLamp standby" role="status" aria-live="polite" title="whose voice is on the line right now">STANDBY</span>
+    <!-- LIACOMM lives on its own page (src/js/liacomm.js, the LIACOMM key in the left panel) - the only
+         push-to-talk key left on this deck's subject. /intercom EXPLAINS IT. -->
+    <!-- THE VOX PANEL (src/js/vox.js). Patrikios, 2026-09-30: *"Create 'VOX' button so I can preview
+         all the voices and select which one I want for the default voice."* One place that walks EVERY
+         voice this terminal can speak with - this machine's own list, the wire's thirty, the local
+         model's roster and the ElevenLabs account - hears any of them, keeps one for the target he
+         chooses (THE DEFAULT, or the agent on stage), and, where the road hands back real audio, makes
+         a CLIP out of one and sets it as what the story lane clones that agent from. It sits beside
+         TALK and LISTEN because it is the same subject: her voice. /vox EXPLAINS THE WHOLE OF IT. -->
+    <button id="voxBtn" type="button" onclick="if(window.vox)window.vox.toggle()" title="THE VOX PANEL: every voice on every road in one place - hear any of them, keep one as THE DEFAULT or as the voice of the agent on stage, and where a road gives back real audio (the LOCAL VOICE and ELEVENLABS) make a CLIP out of it and set it as what that agent is CLONED from. The browser's own voices and the wire can be heard and kept but not recorded - the panel says so instead of offering a button that cannot work.">VOX</button>
+    <button id="vfBtn" type="button" onclick="if(window.voxfactory)window.voxfactory.toggle()" title="THE VOX FACTORY: one window - the engine, the clone sample and its transcript, every knob, the words, SPEAK and KEEP.">FACTORY</button>
+    <button id="createBtn" type="button" title="compose an image yourself: positive + negative prompt, size, and how many">CREATE IMAGE</button>
+    <button id="galleryBtn" type="button" onclick="if(window.gallery)window.gallery.toggle()" title="THE GALLERY: every picture and clip in the vault, stamped - search it, filter it (renders, yours, clips, not yet seen), hand pictures to her eyes, save them, upscale them on the full stage, and export the whole catalogue with the turn each one came from">GALLERY</button>
+    <button id="busBtn" type="button" onclick="if(window.audition)window.audition.report()" title="THE AUDITION BUS: one transport for the whole terminal - put a piece of music on it and you both listen to it while the conversation carries on. Her comments are anchored to where in the piece they were made. /bus FOR EVERYTHING IT CAN DO.">AUDITION</button>
+    <button id="veilBtn" type="button" aria-pressed="false" onclick="if(window.veil)window.veil.toggle()" title="show or hide the terminal's own machinery - what she recalled, what she was shown, how long it took. the conversation is the stage; this is everything behind it.">BACKSTAGE</button>
+    <button id="toolsBtn" type="button" onclick="if(window.tools)window.tools.toggle()" title="THE TOOLS: the maintenance deck. Find pictures the vault is holding more than once (and keep one of each), file every record into the folder its kind belongs in, upscale the pictures that have never been made 2x - and repair anything in the record that still names a picture the vault no longer holds. Every job is SCANNED before it runs: the scan says exactly what would change and changes nothing, and a run that deletes always tells you first. /tools EXPLAINS THEM ALL.">TOOLS &#9662;</button>
+    <!-- THE SHIFT. The two halves of one idea, on one panel: the QUIET HOURS (the private turns this
+         terminal gives her when the room is quiet - not a turn of hers, and nothing in them is said
+         to you, spoken aloud, or put in the conversation) and the PETITIONS those hours are where she
+         asks from (what she wants changed about the MACHINERY, waiting on your yes or your no). The
+         button carries the count of what is waiting: `SHIFT · 2 ▾`. src/js/shift.js,
+         src/js/petition.js, and /shift and /petition explain the whole of it. -->
+    <button id="shBtn" type="button" title="THE QUIET HOURS AND THE PETITIONS - a private hour of her own after the room has been quiet a while, and the changes she has asked you for, waiting on your answer. /shift EXPLAINS THE HOURS, /petition THE ASKS.">SHIFT &#9662;</button>
+    <!-- THE CHATLOG. The raw record of the conversation this terminal was built in: the chat window
+         of the editor, kept whole, so a later session can read what was actually asked for instead
+         of guessing from a handoff note. It lives in THIS BROWSER (kv) and never in src/, which is
+         public. IMPORT takes a pasted conversation or the .txt the console script downloads; then
+         it is readable here without ever being re-sent to a model. /chatlog EXPLAINS THE WHOLE OF
+         IT, /chatlog snippet HANDS OVER THE EXPORT SCRIPT. src/js/chatlog.js. -->
+    <button id="clBtn" type="button" title="THE CHATLOG - the raw record of the conversation this terminal was built in, kept on this device, importable and readable and searchable. NOTHING IN IT IS EVER SENT TO THE TEXT ENGINE. /chatlog EXPLAINS IT, /chatlog snippet GIVES YOU THE EXPORT SCRIPT.">CHATLOG &#9662;</button>
+    <!-- WHAT THE MACHINERY HAS IN ITS HAND. Behind the curtain a sweep makes a thousand pictures 2x, a
+         duplicate hunt hashes the vault, a folders pass files records - and the conversation carries
+         on while it does. A receipt NAMES what it touched, but a name is not the thing: this chip is
+         the thing (a thumbnail), its citation (name and vault id), and what is being done to it right
+         now ("UPSCALING 372 / 1144"). It appears when the work starts and takes itself down a few
+         seconds after the work stops calling inHand.show(), so nothing has to remember to close it.
+         Press it for the MINI LIGHTBOX - the picture, its citation, the ones before and after, and a
+         way up to the full stage. src/js/minibox.js. -->
+    <button id="inHand" class="inHand" type="button" hidden aria-live="polite" title="what the machinery has in its hand right now">
+      <img id="inHandThumb" alt="" hidden><span id="inHandGlyph" class="inHandGlyph" hidden></span>
+      <span class="inHandBody"><span id="inHandNote" class="inHandNote"></span><span id="inHandCite" class="inHandCite"></span></span>
+    </button>
+    <button id="picSizeBtn" type="button" aria-pressed="false" onclick="if(window.pics)window.pics.cycle()" title="how big pictures and clips are drawn">PICS: NORMAL</button>
+    <span class="fontCtl" role="group" aria-label="text size"><button id="fontDownBtn" type="button" title="smaller text everywhere - the whole page scales together, and the standard size is back on reload">A&#8722;</button><button id="fontUpBtn" type="button" title="larger text everywhere - the whole page scales together, and the standard size is back on reload">A+</button></span>
+    <button onclick="window.toggleFS()">FULLSCREEN</button>
+    <button onclick="window.exportArchive()" title="write the whole conversation out as a readable .txt - every turn, stamped. /export json writes the full-fidelity round-trip file instead.">EXPORT</button>
+    <button onclick="document.getElementById('importInput').click()" title="bring an exported archive back in - the .json from /export json whole, or the readable .txt best-effort. turns already here are skipped, nothing is duplicated.">IMPORT</button>
+    <button onclick="window.clearLogs()">PURGE</button>
+    <!-- PUT THE LOWER DECK AWAY (src/js/decks.js). The chevron points down: the deck moves DOWN out of
+         sight and the tab it leaves in the bottom-right corner - LOWER DECK with the chevron the other
+         way - brings it back. It also goes down on its own while a viewer (a DOCS panel) is open, and
+         comes back when that closes. /deck says which of the two it is. -->
+    <button id="lowerHideBtn" class="deckKey" type="button" onclick="if(window.decks)window.decks.toggle('lower')" title="put the LOWER DECK away - the input box, this controls row, and the panels docked above it. The conversation and any viewer get the room; the tab in the bottom-right corner brings it back, and /deck says the state.">LOWER DECK &#9660;</button>
+  </div>
+  <input id="attachInput" type="file" accept="image/*,video/*,audio/*,.mp4,.m4v,.mov,.webm,.ogv,.mkv,.avi,.mp3,.wav,.ogg,.m4a,.flac,.txt,.md,.markdown,.pdf,.json,.jsonl,.csv,.tsv,.log,.yaml,.yml,.xml,.html,.htm,.css,.js,.mjs,.ts,.py,.sql,.sh,.ini,.toml,.tex,.srt,.vtt,.svg" multiple hidden>
+  <input id="importInput" type="file" accept=".json,.txt,application/json,text/plain" hidden onchange="window.importArchiveFiles(this.files); this.value=''">
+</div>
+
+<div id="gallery" hidden>
+  <div class="galHead">
+    <div class="galTitle">THE GALLERY <span id="galCount"></span></div>
+    <div class="galTools">
+      <input id="galSearch" type="search" placeholder="search prompts, tags (#night), her reading, names, turns..." spellcheck="false" title="searches the prompt, what was sent, her own reading of the picture, the file name, the tags, and the words of the turn it came from. #tag (or tag:tag) shows only what is filed that way">
+      <select id="galSort" title="the order the gallery is shown in"></select>
+      <button id="galRefresh" type="button" title="re-read the vault and the archive (a picture made while the gallery was open shows up here)">&#8635;</button>
+      <button id="galClose" type="button" title="close the gallery (Esc)">CLOSE</button>
+    </div>
+    <div class="galFilters" id="galFilters"></div>
+    <div class="galFolderRow" id="galFolderRow">
+      <span class="galFolderLabel" id="galFolderLabel">FOLDERS</span>
+    </div>
+    <div class="galTagRow" id="galTagRow" hidden></div>
+    <div class="galMeta"><span id="galStats"></span><span id="galStatus"></span></div>
+  </div>
+  <div class="galGrid" id="galGrid"></div>
+  <!-- THE PAGER (src/js/gallery.js). The vault holds thousands of records, so the grid draws ONE
+       PAGE of the filtered view at a time and this bar says where he is standing: the page, the
+       slice of the view on screen, and how many pictures a page holds - remembered across reloads.
+       The arrow keys, PageUp/PageDown and Home/End do the same from the keyboard; the full stage
+       walks the WHOLE view either way, because a page is what is drawn, not what is searched. -->
+  <div class="galPager" id="galPager">
+    <button id="galPageFirst" type="button" title="the first page (Home)">&#171;</button>
+    <button id="galPagePrev" type="button" title="the page before this one (ArrowLeft or PageUp)">&#8249; PREV</button>
+    <span class="galPageNow" id="galPageNow">PAGE <input id="galPageInput" type="number" min="1" step="1" value="1" title="type a page number and press Enter to go straight to it"> OF <span id="galPageTotal">1</span></span>
+    <button id="galPageNext" type="button" title="the page after this one (ArrowRight or PageDown)">NEXT &#8250;</button>
+    <button id="galPageLast" type="button" title="the last page (End)">&#187;</button>
+    <span class="galPageRange" id="galPageRange"></span>
+    <span class="galSpacer"></span>
+    <span class="galPerPage">PER PAGE <select id="galPerPage" title="how many pictures one page holds - remembered for next time. ALL puts the whole filtered view in one scroll, which is what the gallery did before there was a pager, and is slow to draw when the vault holds thousands."></select></span>
+  </div>
+  <div class="galFoot">
+    <button id="galImport" type="button" title="keep pictures, clips AND music in this browser's vault - drop them anywhere in the gallery, or pick them here. Pictures are normalised the same way an attachment is, a clip keeps its first frame as its thumbnail and the file itself whole (in /clips), music is kept whole in /music, and nothing is uploaded.">IMPORT PICTURES / CLIPS / MUSIC</button>
+    <button id="galExport" type="button" title="write the catalogue you are looking at: JSON and text, every picture stamped, with its prompt, its seed, her reading of it, and the turn it came from. THE WHOLE FILTERED VIEW IS EXPORTED - EVERY PAGE OF IT, NOT JUST THE PAGE ON SCREEN.">EXPORT CATALOGUE</button>
+    <span class="galSpacer"></span>
+    <span id="galSel" class="galSel"></span>
+    <button id="galSelectAll" type="button" hidden>SELECT ALL</button>
+    <button id="galClearSel" type="button" title="drop the selection (nothing is deleted)">CLEAR</button>
+    <select id="galFolderMove" title="the folder the FILE SELECTED button files the selection into"></select>
+    <button id="galFileSel" type="button" disabled title="file the selected pictures into the folder chosen beside this - a folder is a path, and the ones she or you have made are in the FOLDERS row above">FILE SELECTED</button>
+    <button id="galQueueSel" type="button" disabled title="hand the selected pictures to her eyes - she looks at them on your next message, a few at a time, and nothing is said to her in words">QUEUE FOR HER EYES</button>
+    <button id="galSaveSel" type="button" disabled title="write the selected pictures to this machine's Downloads folder">SAVE SELECTED</button>
+    <button id="galDelSel" type="button" disabled title="delete the selected pictures from the vault - press twice">DELETE</button>
+    <span class="galHint">NOTHING IS UPLOADED &#183; IT ALL LIVES IN THIS BROWSER</span>
+  </div>
+  <input id="galFileInput" type="file" accept="image/*,video/*,audio/*,.png,.jpg,.jpeg,.webp,.gif,.avif,.bmp,.heic,.heif,.tiff,.mp4,.m4v,.mov,.webm,.ogv,.mkv,.avi,.mp3,.wav,.ogg,.oga,.m4a,.aac,.flac,.opus,.weba" multiple hidden>
+</div>
+
+<script src="src/js/config.js"></script>
+<script src="src/js/progress.js"></script>
+<script src="src/js/logtime.js"></script>
+<script src="src/js/backup.js"></script>
+<!-- THE KEEPER (src/js/keeper.js). The user data, kept on a schedule: the archive log whole,
+     every non-secret setting, the vault's manifest - newest five in device kv, never uploaded.
+     After backup.js (source) and before the roads that carry things out by hand (sync, cloud,
+     drive): /keeper says it in words. -->
+<script src="src/js/keeper.js"></script>
+<script src="src/js/sync.js"></script>
+<script src="src/js/sync-cloud.js"></script>
+<script src="src/js/drive.js"></script>
+<script src="src/js/studio.js"></script>
+<script src="src/js/embed.js"></script>
+<script src="src/js/lore.js"></script>
+<script src="src/js/hers.js"></script>
+<script src="src/js/vault.js"></script>
+<script src="src/js/packs.js"></script>
+<script src="src/js/mythos.js"></script>
+<!-- THE AIM WIRE (src/js/aim.js). Patrikios, 2026-09-30, on the ALIA LOBBY: "This is simply AOL
+     Instant Messenger. Let's wire up for that." So the lobby's protocol is AIM's own - a buddy list
+     you WATCH, a presence state the ROOM owns, an IM lane, a chat room, a profile you can ask for,
+     an away message, an idle clock and a warning level - carried as TOC lines while the relay is
+     Patrikios, with the FLAP framing built and tested beside them for the day there is a socket.
+     Nothing here calls the engine and nothing here writes her memory: a frame is a DOCUMENT. /buddy
+     is the buddy list, /wire is the wire itself (and /wire feed hand-feeds it a frame). -->
+<script src="src/js/aim.js"></script>
+<script src="src/js/roles.js"></script>
+<script src="src/js/instr.js"></script>
+<script src="src/js/moods.js"></script>
+<script src="src/js/moodpack.js"></script>
+<script src="src/chips/sia-cutout-chip/mythos-cutout-standalone.js"></script>
+<script src="src/chips/sia-staging-chip/mythos-staging-standalone.js"></script>
+<script src="src/chips/sia-keyring-mirror-chip/mythos-keyring-standalone.js"></script>
+<script src="src/js/keys.js"></script>
+<script src="src/chips/sia-wishlist-chip/mythos-wishlist-standalone.js"></script>
+<script src="src/chips/sia-chipshelf-chip/mythos-chipshelf-standalone.js"></script>
+<script src="src/js/stage.js"></script>
+<script src="src/js/wish.js"></script>
+<script src="src/js/shelf.js"></script>
+<script src="src/chips/sia-breakdown-chip/breakdown-standalone.js"></script>
+<script src="src/js/scripts.js"></script>
+<script src="src/chips/sia-frame-chip/mythos-frame-standalone.js"></script>
+<script src="src/js/frame.js"></script>
+<script src="src/js/images.js"></script>
+<script src="src/js/upscale.js"></script>
+<script src="src/js/batch.js"></script>
+<script src="src/js/upscale-local.js"></script>
+<!-- THE BIGGER PIPELINE (src/js/pipeline.js): the road chooser under every creation - bigger.pics at
+     4x when a press opened a window, this machine at 2x for everything else and for anything a window
+     does not bring back, with the render retired once the bigger picture is safely in the vault (so
+     only the upscaled picture is in the chat and the gallery). It sits directly under the two upscalers
+     it drives, and it takes the vault's door after the local road's own hook so that road can ask it
+     first (`claims`) - see the notes in both files. -->
+<script src="src/js/pipeline.js"></script>
+<script src="src/js/tools.js"></script>
+<script src="src/js/auditor.js"></script>
+<script src="src/js/capture.js"></script>
+<script src="src/js/docstd.js"></script>
+<script src="src/js/cleandata.js"></script>
+<script src="src/js/minibox.js"></script>
+<script src="src/js/attach.js"></script>
+<script src="src/js/gallery.js"></script>
+<script src="src/js/autotag.js"></script>
+<script src="src/js/audition.js"></script>
+<script src="src/js/hear.js"></script>
+<script src="src/js/renderbook.js"></script>
+<script src="src/js/keepsake.js"></script>
+<script src="src/js/likes.js"></script>
+<script src="src/js/reader.js"></script>
+<script src="src/js/archivax.js"></script>
+<script src="src/js/live.js"></script>
+<script src="src/chips/sia-voice-ear-chip/mythos-voice-ear-standalone.js"></script>
+<script src="src/chips/sia-voice-echo-chip/mythos-voice-echo-standalone.js"></script>
+<script src="src/chips/sia-voice-stream-chip/mythos-voice-stream-standalone.js"></script>
+<script src="src/chips/sia-voice-jitter-chip/mythos-voice-jitter-standalone.js"></script>
+<script src="src/chips/sia-voice-say-chip/mythos-voice-say-standalone.js"></script>
+<script src="src/chips/sia-silence-chip/mythos-silence-standalone.js"></script>
+<script src="src/chips/sia-handsfree-chip/mythos-handsfree-standalone.js"></script>
+<script src="src/js/voice.js"></script>
+<script src="src/js/handsfree.js"></script>
+<script src="src/js/intercom.js"></script>
+<script src="src/js/liacomm.js"></script>
+<script src="src/js/turn.js"></script>
+<script src="src/js/watermark.js"></script>
+<script src="src/js/avb.js"></script>
+<script src="src/js/duet.js"></script>
+<script src="src/js/groq.js"></script>
+<script src="src/js/local.js"></script>
+<script src="src/js/story.js"></script>
+<script src="src/js/idea.js"></script>
+<script src="src/js/forge.js"></script>
+<script src="src/chips/sia-commands-chip/mythos-commands-standalone.js"></script>
+<script src="src/js/commands.js"></script>
+<script src="src/js/rtfm.js"></script>
+<script src="src/js/dms.js"></script>
+<script src="src/js/rtfm-edit.js"></script>
+<script src="src/js/chronicle.js"></script>
+<script src="src/js/petition.js"></script>
+<script src="src/js/shift.js"></script>
+<script src="src/js/chatlog.js"></script>
+<script src="src/commpack/commpack.js"></script>
+<script src="src/js/commpack.js"></script>
+<!-- THE WAVEFORM (src/js/waveform.js). The speaking strip in the LOWER DECK, first in the
+     COMMs flow (waveform, TALK key, input box): HER VOICE while she speaks, YOUR VOICE
+     while the microphone hears you.
+     Mounted by the module itself (inserted before #pttBtn), so no markup is needed
+     here - only the script, after the voice lane it reads (voice, live, avb, turn,
+     amute) and before the chat dispatch that answers /wave. -->
+<script src="src/js/waveform.js"></script>
+<script src="src/js/chat.js"></script>
+<script src="src/js/editlog.js"></script>
+<script src="src/js/initiative.js"></script>
+<script src="src/js/proactive.js"></script>
+<script src="src/chips/sia-decks-chip/mythos-decks-standalone.js"></script>
+<script src="src/js/decks.js"></script>
+<script src="src/js/draft.js"></script>
+<script src="src/js/main.js"></script>
+<script src="src/js/jsqr.js"></script>
+<script src="src/js/qrcode.js"></script>
+<script src="src/js/xlate.js"></script>
+<script src="src/js/spincode.js"></script>
+<script src="src/js/spincode-scrolls.js"></script>
+<script src="src/js/dev.js"></script>
+<script src="src/chips/gatekeeper-qr-chip/gatekeeper-qr-standalone.js"></script>
+<script src="src/js/gatekeeper.js"></script>
+<script src="src/js/agegate.js"></script>
+<script src="src/js/wall.js"></script>
+<!-- THE SAVE CHECK (src/js/saved.js). Not a lane and not a feature of hers: `window.saved` answers
+     "is the work saved?" by reading the copy the SERVER is holding right now (through the relay, since
+     perchance.org's API sends no CORS headers) and comparing it against this workspace - the two root
+     files byte for byte, the file list, every src/ file by CONTENT (each saved file is read back off
+     the platform's own CDN by the key in the served page's own manifest), and the import lines.
+     `/saved` runs it from the terminal; it writes nothing and gates nothing. It is safe to load last:
+     if it never arrives, the only loss is the command. See README, THE SAVE CHECK. -->
+<script src="src/js/saved.js"></script>
+
+<!-- THE MINI LIGHTBOX (src/js/minibox.js). Not a second stage: a LOOK. The picture the machinery has
+     in its hand - or any picture handed to it from the gallery's `&#9635;` - with its citation (name
+     and vault id), the ones before and after when it was opened with a list, and a way UP to the full
+     stage when he wants the whole record (SAVE, UPSCALE, folders, tags, the prompt file).
+     z-index 950: over the gallery (900), under the full stage (1000), so FULL STAGE lands on top. -->
+<div id="miniBox" hidden>
+  <div class="mbPanel">
+    <div class="mbHead">
+      <span class="mbTitle" id="mbTitle">PEEK</span>
+      <span class="mbNote" id="mbNote"></span>
+      <span class="mbCount" id="mbCount"></span>
+      <button id="mbClose" type="button" title="close (Esc)">&times;</button>
+    </div>
+    <div class="mbStage">
+      <button id="mbPrev" class="mbNav mbPrev" type="button" title="the one before this (left arrow)">&#8249;</button>
+      <div id="mbBox"></div>
+      <button id="mbNext" class="mbNav mbNext" type="button" title="the one after this (right arrow)">&#8250;</button>
+    </div>
+    <div class="mbCite" id="mbCite"></div>
+    <div class="mbActions">
+      <button id="mbFull" type="button" title="the full stage: the picture at its own size, with SAVE, UPSCALE, folders, tags and the whole record">FULL STAGE</button>
+      <button id="mbCloseBtn" type="button">CLOSE</button>
+      <span class="mbHint">&#8249; &#8250; WALK &#183; ESC CLOSES &#183; NOTHING HERE CHANGES ANYTHING</span>
+    </div>
+  </div>
+</div>
+
+<div id="lightbox" hidden>
+  <div class="stage"><img id="lightboxImg" alt=""><div id="lightboxRack" class="lbBus" data-bus-rack data-bus-managed="1" hidden></div></div>
+  <div id="lightboxBar" class="lbBar" hidden>
+    <span id="lightboxName" class="nm"></span>
+    <span id="lightboxNav" class="lbNav" hidden>
+      <button id="lightboxPrevBtn" type="button" title="the one before this (left arrow)">&#8249;</button>
+      <span id="lightboxCount" class="lbCount"></span>
+      <button id="lightboxNextBtn" type="button" title="the one after this (right arrow)">&#8250;</button>
+    </span>
+    <button id="lightboxHeartBtn" type="button" class="heart" title="mark this GOOD - the heart turns red and she is told what you mark, so her own taste is shaped by yours. Press again to pass on it.">&#9825;</button>
+    <button id="lightboxPostBtn" type="button" title="post this picture into the conversation, where you can talk about it - it lands in the log and she is given it to look at on your next message">POST TO CHAT</button>
+    <button id="lightboxSaveBtn" type="button" title="download this image to your machine">SAVE TO DEVICE</button>
+    <button id="lightboxKeepBtn" type="button" class="keep" title="keep this picture in the record">KEEP</button>
+    <button id="lightboxLinkBtn" type="button" title="copy a link that opens the gallery on this picture">COPY GALLERY LINK</button>
+    <button id="lightboxUpscaleBtn" type="button" title="upscale this picture with bigger.pics - free, up to 4x, no account or key; it opens in a popup window and sends the result back here. The bigger one carries this picture's whole prompt file (prompt, sent words, negative list, seed, guidance, size, pose, tags), and NOTHING IS DELETED ON THIS ROAD: the picture it came from stays exactly where it is, even when what you are upscaling is itself an upscale">UPSCALE WITH BIGGER.PICS</button>
+    <button id="lightboxUpscaleLocalBtn" type="button" title="make this picture bigger HERE, on this machine - no window, no click elsewhere, nothing uploaded: a Lanczos-3 resample on this device's GPU plus a detail pass, written as png. The bigger picture carries this one's whole prompt file (prompt, sent words, negative list, seed, guidance, size, pose, tags) and is queued for her eyes. WHEN IT SUCCEEDS THE SMALLER ORIGINAL IS RETIRED: a render the terminal made leaves the vault and the gallery, and the archive record, its place in the queue for her eyes, any tile of it in the log and a KEEP all move to the bigger one. A picture you handed over, a clip, a piece of music, or an upscale is never deleted - /upscale replace off keeps the originals">UPSCALE HERE</button>
+    <div id="lightboxMeta" class="lbMeta" hidden></div>
+    <div id="lightboxFolder" class="lbFolders" hidden></div>
+    <div id="lightboxTags" class="lbTags" hidden></div>
+  </div>
+</div>
+<!-- THE RTFM EDITOR (src/js/rtfm-edit.js). /rtfm new and /rtfm edit <DOC> open it over the terminal:
+     a monospace markdown editor for the manual's own pages, with a live preview built from the SAME
+     renderer that prints a page (`rtfm.markdown()`), so the pane shows exactly what /rtfm <DOC> will
+     print. What it saves is kept in THIS BROWSER (kv: lia_settings / rtfm_local) and never in src/ -
+     nothing on this page can write a file into the generator - so a page written here is his, on this
+     device, until /rtfm export hands it over as markdown. It is for HIM, not for her, and nothing here
+     writes to her memory. An unsaved draft IS kept while he types (kv, one key per page,
+     rtfm_draft_<NAME>) so a reload cannot take the work - a draft is not a page, and SAVE is what
+     makes it one.
+     z-index 960: over the gallery (900) and the mini box (950), under the full stage (1000), so a
+     picture opened on the full stage still lands on top. -->
+<div id="rtfmEditor" hidden>
+  <div class="reBox">
+    <div class="reHead">
+      <span class="reTitle" id="reTitle">THE RTFM EDITOR</span>
+      <span class="reState" id="reState"></span>
+    </div>
+    <div class="reFields">
+      <label class="reField"><span>NAME</span><input id="reId" type="text" spellcheck="false" placeholder="blood-rites" title="what the page is filed under, and what /rtfm <NAME> finds it by - letters, numbers and hyphens"></label>
+      <label class="reField"><span>TITLE</span><input id="reTitleInput" type="text" spellcheck="false" placeholder="WHAT THE PAGE IS CALLED" title="the heading - printed at the top of the page and listed in /rtfm"></label>
+      <label class="reField"><span>TAGS</span><input id="reTags" type="text" spellcheck="false" placeholder="voice, how-it-works" title="comma-separated, lower case - printed under the title"></label>
+      <label class="reField wide"><span>SAYS</span><input id="reDesc" type="text" spellcheck="false" placeholder="one line saying what the page is for" title="the one-line gloss in /rtfm's index"></label>
+    </div>
+    <div class="reSplit">
+      <textarea id="reBody" spellcheck="false" wrap="soft" placeholder="markdown, written here. Headings, paragraphs, tables, - lists and ``` fences all land well. Nothing is saved until SAVE, and nothing is ever written into src/."></textarea>
+      <pre id="rePrev"></pre>
+    </div>
+    <div class="reBar">
+      <button id="reSave" type="button" title="keep it on this device (Ctrl+S / Cmd+S) - a shipped page is shadowed here, never altered">SAVE</button>
+      <button id="rePreview" type="button" class="on" title="show or hide the preview - exactly how the terminal will print this page">PREVIEW</button>
+      <button id="reRevert" type="button" title="drop your copy of a shipped page and put the file in src/rtfm/ back in force" hidden>REVERT</button>
+      <button id="reDelete" type="button" title="drop a page written here from this device" hidden>DELETE</button>
+      <button id="reCancel" type="button" title="close without saving (Esc)">CANCEL</button>
+      <span class="reHint">CTRL+S SAVES &#183; ESC CLOSES &#183; TAB INDENTS &#183; KEPT IN THIS BROWSER, NEVER IN src/</span>
+    </div>
+    <div class="reNote" id="reNote"></div>
+  </div>
+</div>
+
+<!-- THE DOOR'S OWN FALLBACK (plain ES5, at the very foot of the page). Same argument as THE
+     STARTUP WATCH at the top, applied to the one control that must never be a dead end: if
+     src/js/agegate.js never arrived - a src/ file is only on the server once the generator is
+     SAVED, and a 404 leaves no working module behind - the 18+ checkbox would be a door with no
+     handle, and the terminal would be unreachable for everyone including him. This is the "give
+     the module a moment" fallback from the plan: it OUTLIVES src/js/agegate.js, wires the same two
+     buttons to the same key, and does exactly one thing less than the module (no receipts on the
+     stage, no /agegate command). It is not used when the module is there - `window.agegate` is the
+     test, and it is set at the foot of that file, above this script in document order. -->
+<script>
+(function () {
+  if (window.agegate) return;            // the real door is there; this is only its shadow
+  var gate = document.getElementById("ageGate");
+  var box = document.getElementById("ageGateBox");
+  var enter = document.getElementById("ageGateEnterBtn");
+  var leave = document.getElementById("ageGateLeaveBtn");
+  if (!gate || !box || !enter) return;
+  try { if (sessionStorage.getItem("lia_dev") === "1") { gate.hidden = true; return; } } catch (e) {}
+  function paint() { enter.disabled = !box.checked; }
+  function key() { return (window.root && window.root.kv && window.root.kv.lia_settings) || null; }
+  box.addEventListener("change", paint);
+  box.addEventListener("keydown", function (ev) { if (ev.key === "Enter") { ev.preventDefault(); go(); } });
+  enter.addEventListener("click", go);
+  if (leave) leave.addEventListener("click", function () { location.href = "https://perchance.org/"; });
+  function go() {
+    if (!box.checked) { paint(); return; }
+    var k = key();
+    if (k) { try { k.set("agegate", { ok: true, at: Date.now(), zone: (window.logTime && window.logTime.zone) ? window.logTime.zone() : "" }); } catch (e) {} }
+    gate.hidden = true;
+  }
+  paint();
+  (async function () {
+    var k = key();
+    if (!k) return;
+    try { var v = await k.get("agegate"); if (v && v.ok === true) gate.hidden = true; } catch (e) {}
+  })();
+})();
+
+/* THE GATEKEEPER'S OWN SHADOW (plain ES5, same foot of the page). src/js/gatekeeper.js stands
+   BEFORE the age door, so if it never arrives the gate markup above would be a wall with no way
+   through - including for him. This wires the same PASS and MINT keys to the same record (the
+   SHA-256 of the token, never the token) and does the same two things less as the age shadow:
+   no receipts on the stage, no /gatekeeper command. `window.gatekeeper` is the test, set at the
+   foot of the module, above this script in document order. */
+(function () {
+  if (window.gatekeeper) return;
+  var gate = document.getElementById("gateKeeper");
+  var field = document.getElementById("gateToken");
+  var pass = document.getElementById("gatePassBtn");
+  var mint = document.getElementById("gateMintBtn");
+  var copy = document.getElementById("gateCopyBtn");
+  var leave = document.getElementById("gateLeaveBtn");
+  var sigil = document.getElementById("gateSigil");
+  var msg = document.getElementById("gateMsg");
+  if (!gate || !field || !pass) return;
+  try { if (sessionStorage.getItem("lia_dev") === "1") { gate.hidden = true; return; } } catch (e) {}
+  var ABET = "ABCDEFGHJKMNPQRSTVWXYZ23456789";
+  function norm(s) { return String(s == null ? "" : s).toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 64); }
+  function key() { return (window.root && window.root.kv && window.root.kv.lia_settings) || null; }
+  function subtle() { try { return (window.crypto && window.crypto.subtle) ? window.crypto.subtle : null; } catch (e) { return null; } }
+  async function sha(t) {
+    var s = subtle(); if (!s) return null;
+    try {
+      var buf = await s.digest("SHA-256", new Uint8Array(t.split("").map(function (c) { return c.charCodeAt(0) & 0xff; })));
+      var v = new Uint8Array(buf), out = "";
+      for (var i = 0; i < v.length; i++) out += (v[i] < 16 ? "0" : "") + v[i].toString(16);
+      return out;
+    } catch (e) { return null; }
+  }
+  function say(m) { if (msg) msg.textContent = String(m || ""); }
+  function paint() { pass.disabled = !norm(field.value); }
+  function make() {
+    var rnd = new Uint8Array(16), out = "", i;
+    try { if (window.crypto && window.crypto.getRandomValues) window.crypto.getRandomValues(rnd); else throw 0; }
+    catch (e) { for (i = 0; i < 16; i++) rnd[i] = Math.floor(Math.random() * 256); }
+    for (i = 0; i < 16; i++) out += ABET.charAt(rnd[i] % ABET.length);
+    return out.slice(0, 4) + "-" + out.slice(4, 8) + "-" + out.slice(8, 12) + "-" + out.slice(12, 16);
+  }
+  async function go() {
+    var t = norm(field.value);
+    if (!t) { paint(); return; }
+    var h = await sha(t);
+    if (!h) { say("THIS BROWSER CANNOT HASH - THE GATE STAYS SHUT."); return; }
+    var k = key(), rec = null;
+    if (k) { try { rec = await k.get("gatekeeper"); } catch (e) {} }
+    if (!(rec && rec.ok === true && rec.hash)) {
+      if (k) { try { await k.set("gatekeeper", { hash: h, ok: true, at: Date.now(), zone: "" }); } catch (e) {} }
+      gate.hidden = true; return;
+    }
+    if (rec.hash === h) { gate.hidden = true; return; }
+    say("DENIED - THAT SIGIL IS NOT THIS DEVICE'S.");
+  }
+  async function fresh() {
+    var token = make(), h = await sha(norm(token));
+    if (!h) { say("THIS BROWSER CANNOT HASH - NOTHING WAS ENROLED."); return; }
+    var k = key();
+    if (k) { try { await k.set("gatekeeper", { hash: h, ok: true, at: Date.now(), zone: "" }); } catch (e) {} }
+    if (sigil) { sigil.textContent = token; sigil.hidden = false; }
+    field.value = token; paint();
+    say("THIS DEVICE IS ENROLED ON THE FRESH SIGIL ABOVE. CARRY IT TO THE NEXT DEVICE NOW - IT IS SHOWN ONCE.");
+  }
+  field.addEventListener("input", paint);
+  field.addEventListener("keydown", function (ev) { if (ev.key === "Enter") { ev.preventDefault(); go(); } });
+  pass.addEventListener("click", go);
+  if (mint) mint.addEventListener("click", fresh);
+  if (copy) copy.addEventListener("click", function () {
+    if (!sigil || !sigil.textContent) { say("NOTHING TO CARRY - MINT FIRST."); return; }
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(sigil.textContent).then(function () { say("CARRIED - THE SIGIL IS ON THE CLIPBOARD."); },
+          function () { say("THE CLIPBOARD REFUSED - SELECT THE SIGIL ABOVE AND COPY IT BY HAND."); });
+        return;
+      }
+    } catch (e) {}
+    say("SELECT THE SIGIL ABOVE AND COPY IT BY HAND.");
+  });
+  if (leave) leave.addEventListener("click", function () { location.href = "https://perchance.org/"; });
+  paint();
+  (async function () {
+    var k = key();
+    if (!k) return;
+    try { var v = await k.get("gatekeeper"); if (v && v.ok === true && v.hash) gate.hidden = true; } catch (e) {}
+  })();
+})();
+</script>
+</body>
+</html>
+>>>>>>> d449baa9352503fd414ed5ea1316a3360f17dc22
